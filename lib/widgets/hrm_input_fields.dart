@@ -12,6 +12,7 @@ class HrmInputField extends StatelessWidget {
   final Color color;
   final Widget? leftWidget;
   final EdgeInsets? padding;
+  final TextEditingController? textController;
 
   const HrmInputField(
       {this.color = AppColors.inputFieldBackgroundColor,
@@ -21,6 +22,7 @@ class HrmInputField extends StatelessWidget {
       this.mandate = false,
       this.password = false,
       this.padding,
+      this.textController,
       Key? key})
       : super(key: key);
 
@@ -36,7 +38,7 @@ class HrmInputField extends StatelessWidget {
           decoration: BoxDecoration(color: color, borderRadius: BorderRadius.all(Radius.circular(8.0))),
           child: Row(
             children: [
-              Expanded(child: inputTextFormField(placeHolderText: text)),
+              Expanded(child: inputTextFormField(controller: textController, placeHolderText: text)),
               leftWidget ?? Container(),
               if (mandate)
                 Container(width: 6.0, height: 6.0, decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.red))

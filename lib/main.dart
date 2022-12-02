@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         return RouteTransition(routeName: settings.name??"/");
       },
-      home: MarkAttendanceTypeTwo(),
+      home: LoginScreen(),
     );
   }
 }

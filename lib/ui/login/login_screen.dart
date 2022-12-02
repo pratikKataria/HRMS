@@ -9,6 +9,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController emailTextEditingController = TextEditingController();
+  TextEditingController passwordTextEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       text: "Enter email address",
                       headingText: "Email Address",
                       leftWidget: Text("@", style: textStyle14px600w),
+                      textController: emailTextEditingController,
                     ),
                     verticalSpace(20.0),
                     HrmInputField(
@@ -49,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       headingText: "Password",
                       password: true,
                       leftWidget: Icon(Icons.lock),
+                      textController: passwordTextEditingController,
                     ),
                     verticalSpace(20.0),
                     HrmGradientButton(text: "Login").onClick(() => doLogin()),
@@ -73,8 +78,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> doLogin() async {
+    FocusScope.of(context).unfocus();
     Dialogs.showLoader(context, "Checking user detail ...");
-    var formData = FormData.fromMap({'user_id': "vinode2@gmail.com", 'password': "1234568", 'Login': "Login"});
+    var formData = FormData.fromMap({
+      'user_id': emailTextEditingController.text.toString(),
+      'password': passwordTextEditingController.text.toString(),
+      'Login': "Login"
+    });
     LoginResponse response = await apiController.post<LoginResponse>(EndPoints.LOGIN, body: formData);
     Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
