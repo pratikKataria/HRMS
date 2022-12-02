@@ -22,8 +22,9 @@ import 'package:hrms/ui/scanner/qr_scanner_screen.dart';
 /// Created by 🔱 Pratik Kataria 🔱 on 12-08-2021.
 class RouteTransition extends PageRouteBuilder {
   final String routeName;
+  final dynamic arguments;
 
-  RouteTransition({required this.routeName})
+  RouteTransition({required this.routeName, this.arguments})
       : super(
           pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
 
@@ -32,7 +33,7 @@ class RouteTransition extends PageRouteBuilder {
               case Screens.LOGIN_SCREEN: return LoginScreen();
               case Screens.HOME_SCREEN: return HomeScreen();
               case Screens.QR_SCANNER_SCREEN: return QrScannerScreen();
-              case Screens.QR_SCANNED_SCREEN: return UserScannedScreen();
+              case Screens.QR_SCANNED_SCREEN: return UserScannedScreen(arguments as String);
               case Screens.EMPLOYEE_BASIC_DETAIL: return BasicDetailEmployee();
               case Screens.EMPLOYEE_ADDRESS_DETAIL: return AddressDetailEmployee();
               case Screens.EMPLOYEE_SKILL_DETAIL: return SkillDetailEmployee();

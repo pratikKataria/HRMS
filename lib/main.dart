@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue, scaffoldBackgroundColor: AppColors.white),
       initialRoute: "/",
       onGenerateRoute: (RouteSettings settings) {
-        return RouteTransition(routeName: settings.name??"/");
+        return RouteTransition(routeName: settings.name??"/", arguments: settings.arguments);
       },
       home: LoginScreen(),
     );

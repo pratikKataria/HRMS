@@ -38,7 +38,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                         debugPrint('Failed to scan Barcode');
                       } else {
                         final String code = barcode.rawValue!;
-                        Navigator.pushReplacementNamed(context, Screens.QR_SCANNED_SCREEN);
+                        Navigator.pushReplacementNamed(context, Screens.QR_SCANNED_SCREEN, arguments: code);
                         debugPrint('Barcode found! $code');
                       }
                     }),

@@ -2,7 +2,8 @@ import 'package:hrms/export.dart';
 import 'package:hrms/ui/scanned/employee_response.dart';
 
 class UserScannedScreen extends StatefulWidget {
-  const UserScannedScreen({Key? key}) : super(key: key);
+  final String arguments;
+  const UserScannedScreen(this.arguments, {Key? key}) : super(key: key);
 
   @override
   State<UserScannedScreen> createState() => _UserScannedScreenState();
@@ -13,7 +14,7 @@ class _UserScannedScreenState extends State<UserScannedScreen> {
 
   @override
   void initState() {
-    getEmployeeDataById("21");
+    getEmployeeDataById(widget.arguments);
     super.initState();
   }
 
@@ -24,11 +25,14 @@ class _UserScannedScreenState extends State<UserScannedScreen> {
     response = await apiController.get<EmployeeResponse>(EndPoints.GET_USER_PROFILE, payload: payload);
     Dialogs.hideLoader(context);
     if (response?.status?.isApiSuccessful  ?? false) {
-      // FlutterToastX.showSuccessToastBottom(context, "Login successful");
+      FlutterToastX.showSuccessToastBottom(context, "Mark Attendance one or two");
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${response?.message ?? ""}");
+      Navigator.pop(context);
     }
+    setState(() {});
+
   }
 
   @override
