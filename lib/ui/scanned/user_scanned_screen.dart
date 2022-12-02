@@ -67,12 +67,12 @@ class _UserScannedScreenState extends State<UserScannedScreen> {
                     children: [
                       Flexible(
                         child: HrmGradientButton(text: "Attendance T1")
-                            .onClick(() => Navigator.pushNamed(context, Screens.ATTENDANCE_TYPE_ONE)),
+                            .onClick(() => Navigator.pushNamed(context, Screens.ATTENDANCE_TYPE_ONE, arguments: response)),
                       ),
                       horizontalSpace(20.0),
                       Flexible(
                         child: HrmGradientButton(text: "Attendance T2")
-                            .onClick(() => Navigator.pushNamed(context, Screens.ATTENDANCE_TYPE_TWO)),
+                            .onClick(() => Navigator.pushNamed(context, Screens.ATTENDANCE_TYPE_TWO, arguments: response)),
                       )
                     ],
                   ),

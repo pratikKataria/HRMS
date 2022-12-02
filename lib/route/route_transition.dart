@@ -14,6 +14,7 @@ import 'package:hrms/ui/attendance/typeOne/mark_attendence_type_one.dart';
 import 'package:hrms/ui/attendance/typeTwo/mark_attendence_type_two.dart';
 import 'package:hrms/ui/home/home_screen.dart';
 import 'package:hrms/ui/login/login_screen.dart';
+import 'package:hrms/ui/scanned/employee_response.dart';
 import 'package:hrms/ui/scanned/user_scanned_screen.dart';
 import 'package:hrms/ui/scanner/qr_scanner_screen.dart';
 
@@ -42,8 +43,8 @@ class RouteTransition extends PageRouteBuilder {
               case Screens.CLIENT_ADDRESS_DETAIL: return AddressDetailClient();
               case Screens.CLIENT_SKILL_DETAIL: return SkillDetailClient();
               case Screens.CLIENT_BANK_DETAIL: return BankDetailClient();
-              case Screens.ATTENDANCE_TYPE_ONE: return MarkAttendanceTypeOne();
-              case Screens.ATTENDANCE_TYPE_TWO: return MarkAttendanceTypeTwo();
+              case Screens.ATTENDANCE_TYPE_ONE: return MarkAttendanceTypeOne(arguments as EmployeeResponse);
+              case Screens.ATTENDANCE_TYPE_TWO: return MarkAttendanceTypeTwo(arguments as EmployeeResponse);
               case Screens.AADHAAR_CARD_VERIFICATION_SCREEN: return AadhaarVerificationScreen();
             }
             return LoginScreen();

@@ -1,8 +1,10 @@
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/attendance/typeTwo/mark_attendance_type_two_response.dart';
+import 'package:hrms/ui/scanned/employee_response.dart';
 
 class MarkAttendanceTypeTwo extends StatefulWidget {
-  const MarkAttendanceTypeTwo({Key? key}) : super(key: key);
+  final EmployeeResponse employeeResponse;
+  const MarkAttendanceTypeTwo(this.employeeResponse, {Key? key}) : super(key: key);
 
   @override
   State<MarkAttendanceTypeTwo> createState() => _MarkAttendanceTypeTwoState();
