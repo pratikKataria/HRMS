@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hrms/export.dart';
 import 'package:hrms/generated/assets.dart';
 import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/Fonts.dart';
+import 'package:hrms/ui/addEmployee/model/add_employee_request.dart';
+import 'package:hrms/ui/addEmployee/model/add_employee_response.dart';
 import 'package:hrms/util/extension.dart';
 import 'package:hrms/widgets/header.dart';
 import 'package:hrms/widgets/hrm_gradient_button.dart';
@@ -60,5 +63,24 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
         ),
       ),
     );
+  }
+
+  Future<void> registerEmployee(String userId) async {
+    // await Future.delayed(Duration(milliseconds: 200));
+    AddEmployeeRequest addEmployeeRequest = AddEmployeeRequest();
+    var formData = FormData.fromMap(addEmployeeRequest.toJson());
+
+    Dialogs.showLoader(context, "Marking attendance please wait ...");
+    AddEmployeeResponse addEmployeeResponse = await apiController.post<AddEmployeeResponse>(
+      EndPoints.REGISTER_EMPLOYEE,
+      body: formData,
+    );
+    Dialogs.hideLoader(context);
+    if (addEmployeeResponse.status?.isApiSuccessful ?? false) {
+      FlutterToastX.showSuccessToastBottom(context, addEmployeeResponse.message ?? "Attendance marked!");
+      // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${addEmployeeResponse.message ?? ""}");
+    }
   }
 }

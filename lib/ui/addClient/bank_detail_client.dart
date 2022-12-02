@@ -1,12 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:hrms/generated/assets.dart';
-import 'package:hrms/res/AppColors.dart';
-import 'package:hrms/res/Fonts.dart';
-import 'package:hrms/util/extension.dart';
-import 'package:hrms/widgets/header.dart';
-import 'package:hrms/widgets/hrm_gradient_button.dart';
-import 'package:hrms/widgets/hrm_input_fields.dart';
-import 'package:hrms/widgets/widget_util.dart';
+import 'package:hrms/export.dart';
+import 'package:hrms/ui/addClient/model/add_client_request.dart';
+import 'package:hrms/ui/addEmployee/model/add_employee_response.dart';
 
 class BankDetailClient extends StatefulWidget {
   const BankDetailClient({Key? key}) : super(key: key);
@@ -61,5 +55,24 @@ class _BankDetailClientState extends State<BankDetailClient> {
         ),
       ),
     );
+  }
+
+  Future<void> registerClient(String userId) async {
+    // await Future.delayed(Duration(milliseconds: 200));
+    AddClientRequest addClientRequest = AddClientRequest();
+    var formData = FormData.fromMap(addClientRequest.toJson());
+
+    Dialogs.showLoader(context, "Marking attendance please wait ...");
+    AddEmployeeResponse addEmployeeResponse = await apiController.post<AddEmployeeResponse>(
+      EndPoints.REGISTER_CLIENT,
+      body: formData,
+    );
+    Dialogs.hideLoader(context);
+    if (addEmployeeResponse.status?.isApiSuccessful ?? false) {
+      FlutterToastX.showSuccessToastBottom(context, addEmployeeResponse.message ?? "Attendance marked!");
+      // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${addEmployeeResponse.message ?? ""}");
+    }
   }
 }
