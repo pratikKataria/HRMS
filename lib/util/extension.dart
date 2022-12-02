@@ -11,6 +11,8 @@ extension stringNotNull on String {
   String get checkNullOrGiveEmpty => this ?? "";
 
   String get checkNullOrGiveError => this ?? "Something went wrong !!";
+
+  bool get isApiSuccessful => (this ?? "") == "200";
 }
 
 extension boolNotNull on bool {

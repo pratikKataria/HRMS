@@ -1,8 +1,14 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hrms/api/api_controller_expo.dart';
+import 'package:hrms/api/end_points.dart';
 import 'package:hrms/generated/assets.dart';
 import 'package:hrms/res/Fonts.dart';
 import 'package:hrms/route/screens.dart';
+import 'package:hrms/ui/login/login_response.dart';
 import 'package:hrms/util/extension.dart';
+import 'package:hrms/widgets/flutter_toast.dart';
 import 'package:hrms/widgets/hrm_gradient_button.dart';
 import 'package:hrms/widgets/hrm_input_fields.dart';
 import 'package:hrms/widgets/widget_util.dart';
@@ -50,11 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       leftWidget: Text("@", style: textStyle14px600w),
                     ),
                     verticalSpace(20.0),
-                    HrmInputField(text: "Enter password", headingText: "Password", password: true, leftWidget: Icon(Icons.lock),),
+                    HrmInputField(
+                      text: "Enter password",
+                      headingText: "Password",
+                      password: true,
+                      leftWidget: Icon(Icons.lock),
+                    ),
                     verticalSpace(20.0),
-                    HrmGradientButton(text: "Login").onClick(() async {
-                      Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
-                    }),
+                    HrmGradientButton(text: "Login").onClick(() => checkUserData()),
                     Column(
                       children: <Widget>[
                         verticalSpace(20.0),
@@ -62,10 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         verticalSpace(20.0),
                         FittedBox(child: Text("By clicking on login button you are accepting our", style: textStyle12px500w)),
                         verticalSpace(4.0),
-                        Text(
-                          "Terms and Conditions",
-                          style: textStylePrimary12px500wUnderline,
-                        ),
+                        Text("Terms and Conditions", style: textStylePrimary12px500wUnderline),
                       ],
                     ),
                   ],
@@ -76,5 +82,16 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> checkUserData() async {
+    var formData = FormData.fromMap({'user_id': "vinode2@gmail.com", 'password': "1234568", 'Login': "Login"});
+    LoginResponse response = await apiController.post<LoginResponse>(EndPoints.LOGIN, body: formData);
+    if (response.status!.isApiSuccessful) {
+      FlutterToastX.showSuccessToastBottom(context, "Login successful");
+      Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed to Login ${response.message ?? ""}");
+    }
   }
 }
