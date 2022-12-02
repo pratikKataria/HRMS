@@ -1,14 +1,35 @@
-import 'package:flutter/material.dart';
-import 'package:hrms/res/AppColors.dart';
-import 'package:hrms/res/Fonts.dart';
-import 'package:hrms/route/screens.dart';
-import 'package:hrms/util/extension.dart';
-import 'package:hrms/widgets/header.dart';
-import 'package:hrms/widgets/hrm_gradient_button.dart';
-import 'package:hrms/widgets/widget_util.dart';
+import 'package:hrms/export.dart';
+import 'package:hrms/ui/scanned/employee_response.dart';
 
-class UserScannedScreen extends StatelessWidget {
+class UserScannedScreen extends StatefulWidget {
   const UserScannedScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UserScannedScreen> createState() => _UserScannedScreenState();
+}
+
+class _UserScannedScreenState extends State<UserScannedScreen> {
+  EmployeeResponse? response;
+
+  @override
+  void initState() {
+    getEmployeeDataById("21");
+    super.initState();
+  }
+
+  Future<void> getEmployeeDataById(String userId) async {
+    await Future.delayed(Duration(milliseconds: 200));
+    Map<String, String> payload = {"GET": "get", "user_id": userId};
+    Dialogs.showLoader(context, "Getting employee details ...");
+    response = await apiController.get<EmployeeResponse>(EndPoints.GET_USER_PROFILE, payload: payload);
+    Dialogs.hideLoader(context);
+    if (response?.status?.isApiSuccessful  ?? false) {
+      // FlutterToastX.showSuccessToastBottom(context, "Login successful");
+      // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${response?.message ?? ""}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +50,11 @@ class UserScannedScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Name: Rajesh shree vashtav", style: textStyle14px500w),
-                        Text("Employee Id: 45331233", style: textStyle14px500w),
-                        verticalSpace(8.0),
-                        Text("Receptionist", style: textStyleGreen14px500w),
+                        Text("Name: ${response?.data?.first.firstName?? ""} ${response?.data?.first.lastName??""}",
+                            style: textStyle14px500w),
+                        Text("Employee Id: ${response?.data?.first.id??""}", style: textStyle14px500w),
+                        verticalSpace(4.0),
+                        Text("${response?.data?.first.designation??""}", style: textStyleGreen14px500w),
                       ],
                     ),
                   ),

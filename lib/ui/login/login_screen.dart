@@ -1,17 +1,5 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:hrms/api/api_controller_expo.dart';
-import 'package:hrms/api/end_points.dart';
-import 'package:hrms/generated/assets.dart';
-import 'package:hrms/res/Fonts.dart';
-import 'package:hrms/route/screens.dart';
+import 'package:hrms/export.dart';
 import 'package:hrms/ui/login/login_response.dart';
-import 'package:hrms/util/extension.dart';
-import 'package:hrms/widgets/flutter_toast.dart';
-import 'package:hrms/widgets/hrm_gradient_button.dart';
-import 'package:hrms/widgets/hrm_input_fields.dart';
-import 'package:hrms/widgets/widget_util.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -85,8 +73,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> doLogin() async {
+    Dialogs.showLoader(context, "Checking user detail ...");
     var formData = FormData.fromMap({'user_id': "vinode2@gmail.com", 'password': "1234568", 'Login': "Login"});
     LoginResponse response = await apiController.post<LoginResponse>(EndPoints.LOGIN, body: formData);
+    Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "Login successful");
       Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
