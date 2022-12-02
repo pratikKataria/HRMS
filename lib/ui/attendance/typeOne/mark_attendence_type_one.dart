@@ -51,6 +51,8 @@ class _MarkAttendanceTypeOneState extends State<MarkAttendanceTypeOne> {
                   verticalSpace(20.0),
                   Text("Present Employee", style: textStyle14px500w),
                   verticalSpace(10.0),
+
+                  //employee detail block
                   Container(
                     color: AppColors.inputFieldBackgroundColor,
                     padding: EdgeInsets.all(20.0),
