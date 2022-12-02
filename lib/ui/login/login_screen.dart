@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       leftWidget: Icon(Icons.lock),
                     ),
                     verticalSpace(20.0),
-                    HrmGradientButton(text: "Login").onClick(() => checkUserData()),
+                    HrmGradientButton(text: "Login").onClick(() => doLogin()),
                     Column(
                       children: <Widget>[
                         verticalSpace(20.0),
@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> checkUserData() async {
+  Future<void> doLogin() async {
     var formData = FormData.fromMap({'user_id': "vinode2@gmail.com", 'password': "1234568", 'Login': "Login"});
     LoginResponse response = await apiController.post<LoginResponse>(EndPoints.LOGIN, body: formData);
     if (response.status!.isApiSuccessful) {
