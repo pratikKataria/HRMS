@@ -1,4 +1,5 @@
 import 'package:hrms/export.dart';
+import 'package:hrms/ui/addClient/basic_detail_client.dart';
 import 'package:hrms/ui/addClient/model/add_client_request.dart';
 import 'package:hrms/ui/addEmployee/model/add_employee_response.dart';
 
@@ -10,6 +11,11 @@ class BankDetailClient extends StatefulWidget {
 }
 
 class _BankDetailClientState extends State<BankDetailClient> {
+  TextEditingController accountTextController = TextEditingController();
+  TextEditingController ifscTextController = TextEditingController();
+  TextEditingController aadhaarCardTextController = TextEditingController();
+  TextEditingController panCardTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +51,16 @@ class _BankDetailClientState extends State<BankDetailClient> {
                     verticalSpace(20.0),
                     HrmInputField(headingText: "Pan Card", text: "Enter working days"),
                     verticalSpace(20.0),
-                    HrmGradientButton(text: "Confirm").onClick(() => Navigator.of(context).popUntil((route) => route.isFirst)),
+                    HrmGradientButton(text: "Confirm").onClick(() {
+
+
+                      addClientRequest.accountNumber = accountTextController.text.toString();
+                      addClientRequest.ifsc = ifscTextController.text.toString();
+                      addClientRequest.aadhar = aadhaarCardTextController.text.toString();
+                      addClientRequest.pan = panCardTextController.text.toString();
+
+                      registerClient();
+                    }),
                     verticalSpace(20.0),
                   ],
                 ),
@@ -57,7 +72,7 @@ class _BankDetailClientState extends State<BankDetailClient> {
     );
   }
 
-  Future<void> registerClient(String userId) async {
+  Future<void> registerClient() async {
     // await Future.delayed(Duration(milliseconds: 200));
     AddClientRequest addClientRequest = AddClientRequest();
     var formData = FormData.fromMap(addClientRequest.toJson());
@@ -71,6 +86,7 @@ class _BankDetailClientState extends State<BankDetailClient> {
     if (addEmployeeResponse.status?.isApiSuccessful ?? false) {
       FlutterToastX.showSuccessToastBottom(context, addEmployeeResponse.message ?? "Attendance marked!");
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
+      Navigator.of(context).popUntil((route) => route.isFirst);
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${addEmployeeResponse.message ?? ""}");
     }

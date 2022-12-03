@@ -3,7 +3,9 @@ import 'package:hrms/generated/assets.dart';
 import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/Fonts.dart';
 import 'package:hrms/route/screens.dart';
+import 'package:hrms/ui/addClient/basic_detail_client.dart';
 import 'package:hrms/util/extension.dart';
+import 'package:hrms/widgets/flutter_toast.dart';
 import 'package:hrms/widgets/header.dart';
 import 'package:hrms/widgets/hrm_gradient_button.dart';
 import 'package:hrms/widgets/hrm_input_fields.dart';
@@ -17,6 +19,11 @@ class AddressDetailClient extends StatefulWidget {
 }
 
 class _AddressDetailClientState extends State<AddressDetailClient> {
+  TextEditingController fullAddressTextController = TextEditingController();
+  TextEditingController pincodeTextController = TextEditingController();
+  TextEditingController landmarkTextController = TextEditingController();
+  TextEditingController cityTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +39,6 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
             ),
 
 
-
             //progress detail
             verticalSpace(20.0),
             Text("Detail progress", style: textStyleGreen14px500w),
@@ -46,15 +52,44 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
                 child: ListView(
                   children: [
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "Full Address", text: "Enter full address", mandate: true),
+                    HrmInputField(
+                        textController: fullAddressTextController,
+                        headingText: "Full Address",
+                        text: "Enter full address",
+                        mandate: true),
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "Pincode", text: "Enter pincode", mandate: true),
+                    HrmInputField(
+                      textController: pincodeTextController,
+                      headingText: "Pincode",
+                      text: "Enter pincode",
+                      mandate: true,
+                    ),
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "Landmark", text: "Enter landmark", mandate: true),
+                    HrmInputField(
+                      textController: landmarkTextController,
+                      headingText: "Landmark",
+                      text: "Enter landmark",
+                      mandate: true,
+                    ),
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "City", text: "City name", mandate: true),
+                    HrmInputField(
+                      textController: cityTextController,
+                      headingText: "City",
+                      text: "City name",
+                      mandate: true,
+                    ),
                     verticalSpace(20.0),
-                    HrmGradientButton(text: "Next").onClick(() => Navigator.pushNamed(context, Screens.CLIENT_SKILL_DETAIL)),
+                    HrmGradientButton(text: "Next").onClick(() {
+                      // bool isValidationFailed = !validateInputFields();
+                      // if (isValidationFailed) return;
+
+                      addClientRequest.fullAddress = fullAddressTextController.text.toString();
+                      addClientRequest.pincode = pincodeTextController.text.toString();
+                      addClientRequest.landmark = landmarkTextController.text.toString();
+                      addClientRequest.city = cityTextController.text.toString();
+
+                      Navigator.pushNamed(context, Screens.CLIENT_SKILL_DETAIL);
+                    }),
                     verticalSpace(20.0),
                   ],
                 ),
@@ -64,5 +99,33 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
         ),
       ),
     );
+  }
+
+  bool validateInputFields() {
+    if (fullAddressTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter full address");
+      return false;
+    }
+
+    if (pincodeTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter pincode");
+      return false;
+    }
+
+    if (landmarkTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter landmark");
+      return false;
+    }
+
+    if (cityTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter city");
+      return false;
+    }
+
+    return true;
+  }
+
+  void showErrorToast(String message) {
+    FlutterToastX.showErrorToastBottom(context, message);
   }
 }

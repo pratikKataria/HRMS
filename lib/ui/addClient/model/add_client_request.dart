@@ -82,7 +82,6 @@ class AddClientRequest {
     _pan = json['pan'];
     _panImg = json['pan_img'];
   }
-
   String? _register;
   String? _clientName;
   String? _registrationDate;
@@ -145,48 +144,29 @@ class AddClientRequest {
         pan: pan ?? _pan,
         panImg: panImg ?? _panImg,
       );
-
   String? get register => _register;
-
   String? get clientName => _clientName;
-
   String? get registrationDate => _registrationDate;
-
   String? get gstin => _gstin;
-
   String? get contactPerson => _contactPerson;
-
   String? get contactPersonMobile => _contactPersonMobile;
-
   String? get contactPersonEmail => _contactPersonEmail;
-
   String? get fullAddress => _fullAddress;
-
   String? get pincode => _pincode;
-
   String? get landmark => _landmark;
-
   String? get city => _city;
-
   String? get skilled => _skilled;
-
   String? get employees => _employees;
-
   String? get accountNumber => _accountNumber;
-
   String? get ifsc => _ifsc;
-
   String? get aadhar => _aadhar;
-
   String? get aadharImage => _aadharImage;
-
   String? get pan => _pan;
-
   String? get panImg => _panImg;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['Register'] = _register;
+    map['Register'] = "Register";
     map['client_name'] = _clientName;
     map['registration_date'] = _registrationDate;
     map['gstin'] = _gstin;
@@ -206,5 +186,81 @@ class AddClientRequest {
     map['pan'] = _pan;
     map['pan_img'] = _panImg;
     return map;
+  }
+
+  set panImg(String? value) {
+    _panImg = value;
+  }
+
+  set pan(String? value) {
+    _pan = value;
+  }
+
+  set aadharImage(String? value) {
+    _aadharImage = value;
+  }
+
+  set aadhar(String? value) {
+    _aadhar = value;
+  }
+
+  set ifsc(String? value) {
+    _ifsc = value;
+  }
+
+  set accountNumber(String? value) {
+    _accountNumber = value;
+  }
+
+  set employees(String? value) {
+    _employees = value;
+  }
+
+  set skilled(String? value) {
+    _skilled = value;
+  }
+
+  set city(String? value) {
+    _city = value;
+  }
+
+  set landmark(String? value) {
+    _landmark = value;
+  }
+
+  set pincode(String? value) {
+    _pincode = value;
+  }
+
+  set fullAddress(String? value) {
+    _fullAddress = value;
+  }
+
+  set contactPersonEmail(String? value) {
+    _contactPersonEmail = value;
+  }
+
+  set contactPersonMobile(String? value) {
+    _contactPersonMobile = value;
+  }
+
+  set contactPerson(String? value) {
+    _contactPerson = value;
+  }
+
+  set gstin(String? value) {
+    _gstin = value;
+  }
+
+  set registrationDate(String? value) {
+    _registrationDate = value;
+  }
+
+  set clientName(String? value) {
+    _clientName = value;
+  }
+
+  set register(String? value) {
+    _register = value;
   }
 }
