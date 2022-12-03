@@ -149,6 +149,7 @@ class _MarkAttendanceTypeTwoState extends State<MarkAttendanceTypeTwo> {
     var formData = FormData.fromMap(map);
     print(map);
 
+
     Dialogs.showLoader(context, "Marking attendance please wait ...");
     MarkAttendanceTypeTwoResponse markAttendanceTypeTwoResponse = await apiController.post<MarkAttendanceTypeTwoResponse>(
       EndPoints.ATTENDANCE_TYPE_TWO,
