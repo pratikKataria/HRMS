@@ -4,6 +4,7 @@ class Screens {
   static const String LOGIN_SCREEN = "LOGIN_SCREEN";
   static const String HOME_SCREEN = "HOME_SCREEN";
   static const String QR_SCANNER_SCREEN = "QR_SCANNER_SCREEN";
+  static const String MULTI_QR_SCANNER_SCREEN = "MULTI_QR_SCANNER_SCREEN";
   static const String QR_SCANNED_SCREEN = "QR_SCANNED_SCREEN";
   static const String AADHAAR_CARD_VERIFICATION_SCREEN = "AADHAAR_CARD_VERIFICATION_SCREEN";
   static const String EMPLOYEE_BASIC_DETAIL = "EMPLOYEE_BASIC_DETAIL";

@@ -1,5 +1,7 @@
 import 'package:hrms/export.dart';
+import 'package:hrms/res/keys.dart';
 import 'package:hrms/ui/login/login_response.dart';
+import 'package:hrms/util/shared_manager.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -79,6 +81,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> doLogin() async {
     FocusScope.of(context).unfocus();
+
+    if (emailTextEditingController.text.toString().isEmpty) {
+      showErrorToast("Please enter email id ");
+      return;
+    }
+
+    if (!emailTextEditingController.text.toString().isValidEmail) {
+      showErrorToast("Please enter valid email id");
+      return;
+    }
+
+    if (passwordTextEditingController.text.toString().isEmpty) {
+      showErrorToast("Please enter password");
+      return;
+    }
+
+    if (passwordTextEditingController.text.toString().length < 6) {
+      showErrorToast("Please enter valid password");
+      return;
+    }
+
     Dialogs.showLoader(context, "Checking user detail ...");
     var formData = FormData.fromMap({
       'user_id': emailTextEditingController.text.toString(),
@@ -89,9 +112,14 @@ class _LoginScreenState extends State<LoginScreen> {
     Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "Login successful");
+      SharedManager.setBooleanPreference(SharedPrefsKeys.kLoggedIn, true);
       Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
     } else {
-      FlutterToastX.showErrorToastBottom(context, "Failed to Login ${response.message ?? ""}");
+      showErrorToast("Failed to Login ${response.message ?? ""}");
     }
+  }
+
+  void showErrorToast(String message) {
+    FlutterToastX.showErrorToastBottom(context, message);
   }
 }

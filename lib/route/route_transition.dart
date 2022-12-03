@@ -16,6 +16,7 @@ import 'package:hrms/ui/home/home_screen.dart';
 import 'package:hrms/ui/login/login_screen.dart';
 import 'package:hrms/ui/scanned/employee_response.dart';
 import 'package:hrms/ui/scanned/user_scanned_screen.dart';
+import 'package:hrms/ui/scanner/multi_qr_scanner_screen.dart';
 import 'package:hrms/ui/scanner/qr_scanner_screen.dart';
 
 /// 🔥 MVP Architecture🔥
@@ -34,6 +35,7 @@ class RouteTransition extends PageRouteBuilder {
               case Screens.LOGIN_SCREEN: return LoginScreen();
               case Screens.HOME_SCREEN: return HomeScreen();
               case Screens.QR_SCANNER_SCREEN: return QrScannerScreen();
+              case Screens.MULTI_QR_SCANNER_SCREEN: return MultiQrScannerScreen();
               case Screens.QR_SCANNED_SCREEN: return UserScannedScreen(arguments as String);
               case Screens.EMPLOYEE_BASIC_DETAIL: return BasicDetailEmployee();
               case Screens.EMPLOYEE_ADDRESS_DETAIL: return AddressDetailEmployee();

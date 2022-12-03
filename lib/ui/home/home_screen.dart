@@ -3,8 +3,10 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:hrms/generated/assets.dart';
 import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/Fonts.dart';
+import 'package:hrms/res/keys.dart';
 import 'package:hrms/route/screens.dart';
 import 'package:hrms/util/extension.dart';
+import 'package:hrms/util/shared_manager.dart';
 import 'package:hrms/widgets/widget_util.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,7 +35,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(),
+                    Text("Logout", style: textStyleRegular16px600w).onClick(() {
+                      SharedManager.setBooleanPreference(SharedPrefsKeys.kLoggedIn, false);
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, Screens.LOGIN_SCREEN);
+                    }),
                     Text("HRM", style: textStyleRegular16px600w),
                     Image.asset(Assets.imagesIcScanner, height: 28.0)
                         .onClick(() => Navigator.pushNamed(context, Screens.QR_SCANNER_SCREEN)),

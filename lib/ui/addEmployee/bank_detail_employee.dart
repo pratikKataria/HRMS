@@ -3,6 +3,7 @@ import 'package:hrms/export.dart';
 import 'package:hrms/generated/assets.dart';
 import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/Fonts.dart';
+import 'package:hrms/ui/addEmployee/aadhaar_verification_screen.dart';
 import 'package:hrms/ui/addEmployee/model/add_employee_request.dart';
 import 'package:hrms/ui/addEmployee/model/add_employee_response.dart';
 import 'package:hrms/util/extension.dart';
@@ -19,6 +20,11 @@ class BankDetailEmployee extends StatefulWidget {
 }
 
 class _BankDetailEmployeeState extends State<BankDetailEmployee> {
+  TextEditingController accountTextController = TextEditingController();
+  TextEditingController ifscTextController = TextEditingController();
+  TextEditingController aadhaarCardTextController = TextEditingController();
+  TextEditingController panCardTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,15 +51,39 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
                 child: ListView(
                   children: [
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "Account Number", text: "Enter skill"),
+                    HrmInputField(
+                      textController: accountTextController,
+                      headingText: "Account Number",
+                      text: "Enter account number",
+                    ),
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "IFSC Code", text: "Enter company name"),
+                    HrmInputField(
+                      textController: ifscTextController,
+                      headingText: "IFSC Code",
+                      text: "Enter IFSC code",
+                    ),
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "Aadhaar Card", text: "Enter joining date"),
+                    HrmInputField(
+                      textController: aadhaarCardTextController,
+                      headingText: "Aadhaar Card",
+                      text: "Enter aadhaar card",
+                    ),
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "Pan Card", text: "Enter working days"),
+                    HrmInputField(
+                      textController: panCardTextController,
+                      headingText: "Pan Card",
+                      text: "Enter pancard",
+                    ),
                     verticalSpace(20.0),
-                    HrmGradientButton(text: "Confirm").onClick(() => Navigator.of(context).popUntil((route) => route.isFirst)),
+                    HrmGradientButton(text: "Confirm").onClick(() {
+                      addEmployeeRequest.accountNumber = accountTextController.text.toString();
+                      addEmployeeRequest.ifsc = ifscTextController.text.toString();
+                      addEmployeeRequest.aadharNumber = aadhaarCardTextController.text.toString();
+                      addEmployeeRequest.panNumber = panCardTextController.text.toString();
+
+                      registerEmployee();
+
+                    }),
                     verticalSpace(20.0),
                   ],
                 ),
@@ -65,9 +95,10 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
     );
   }
 
-  Future<void> registerEmployee(String userId) async {
+  Future<void> registerEmployee() async {
     // await Future.delayed(Duration(milliseconds: 200));
-    AddEmployeeRequest addEmployeeRequest = AddEmployeeRequest();
+
+    print(addEmployeeRequest.toJson());
     var formData = FormData.fromMap(addEmployeeRequest.toJson());
 
     Dialogs.showLoader(context, "Marking attendance please wait ...");
@@ -78,6 +109,7 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
     Dialogs.hideLoader(context);
     if (addEmployeeResponse.status?.isApiSuccessful ?? false) {
       FlutterToastX.showSuccessToastBottom(context, addEmployeeResponse.message ?? "Attendance marked!");
+      Navigator.of(context).popUntil((route) => route.isFirst);
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${addEmployeeResponse.message ?? ""}");

@@ -85,6 +85,11 @@ class _MarkAttendanceTypeOneState extends State<MarkAttendanceTypeOne> {
 
     FocusScope.of(context).unfocus();
 
+    if (jobTitleController.text.toString().isEmpty) {
+      FlutterToastX.showErrorToastBottom(context, "Please enter job title");
+      return;
+    }
+
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(now);
 

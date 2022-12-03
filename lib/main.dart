@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/res/AppColors.dart';
+import 'package:hrms/res/keys.dart';
 import 'package:hrms/route/route_transition.dart';
-import 'package:hrms/ui/attendance/typeOne/mark_attendence_type_one.dart';
-import 'package:hrms/ui/attendance/typeTwo/mark_attendence_type_two.dart';
+import 'package:hrms/ui/home/home_screen.dart';
 import 'package:hrms/ui/login/login_screen.dart';
-import 'package:hrms/ui/scanned/user_scanned_screen.dart';
+import 'package:hrms/util/shared_manager.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  bool login = await SharedManager.getBooleanPreference(SharedPrefsKeys.kLoggedIn);
+  runApp(MyApp(login??false));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool login;
+
+  const MyApp(this.login, {super.key});
 
   // This widget is the root of your application.
   @override
@@ -21,9 +26,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue, scaffoldBackgroundColor: AppColors.white),
       initialRoute: "/",
       onGenerateRoute: (RouteSettings settings) {
-        return RouteTransition(routeName: settings.name??"/", arguments: settings.arguments);
+        return RouteTransition(routeName: settings.name ?? "/", arguments: settings.arguments);
       },
-      home: LoginScreen(),
+      home: login ? HomeScreen() : LoginScreen(),
     );
   }
 }
