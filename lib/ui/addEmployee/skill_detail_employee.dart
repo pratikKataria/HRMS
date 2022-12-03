@@ -6,6 +6,7 @@ import 'package:hrms/res/Fonts.dart';
 import 'package:hrms/route/screens.dart';
 import 'package:hrms/ui/addEmployee/aadhaar_verification_screen.dart';
 import 'package:hrms/util/extension.dart';
+import 'package:hrms/widgets/flutter_toast.dart';
 import 'package:hrms/widgets/header.dart';
 import 'package:hrms/widgets/hrm_gradient_button.dart';
 import 'package:hrms/widgets/hrm_input_fields.dart';
@@ -83,10 +84,19 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                       ),
                     ),
                     verticalSpace(20.0),
-                    HrmInputField(textController: skillsTextController, headingText: "Select Skill", text: "Enter skill"),
+                    HrmInputField(
+                      textController: skillsTextController,
+                      headingText: "Select Skill",
+                      text: "Enter skill",
+                      mandate: true,
+                    ),
                     verticalSpace(20.0),
                     HrmInputField(
-                        textController: companyTextController, headingText: "Company", text: "Enter company name", mandate: true),
+                      textController: companyTextController,
+                      headingText: "Company",
+                      text: "Enter company name",
+                      mandate: true,
+                    ),
                     verticalSpace(20.0),
                     HrmInputField(
                         textController: joiningDateTextController,
@@ -95,11 +105,24 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                         mandate: true),
                     verticalSpace(20.0),
                     HrmInputField(
-                        textController: workingdaysTextController, headingText: "Working days", text: "Enter working days"),
+                      textController: workingdaysTextController,
+                      headingText: "Working days",
+                      text: "Enter working days",
+                    ),
                     verticalSpace(20.0),
-                    HrmInputField(textController: shiftsTimingTextController, headingText: "Shifts Timing", text: "Enter timing"),
+                    HrmInputField(
+                      textController: shiftsTimingTextController,
+                      headingText: "Shifts Timing",
+                      text: "Enter timing",
+                    ),
                     verticalSpace(20.0),
-                    HrmInputField(textController: departmentTextController, headingText: "Department", text: "Enter department"),
+                    HrmInputField(
+                      textController: departmentTextController,
+                      headingText: "Department",
+                      text: "Enter department",
+                    ),
+
+                    //
                     verticalSpace(20.0),
                     Container(
                       height: 40.0,
@@ -144,12 +167,16 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                     ),
                     verticalSpace(20.0),
                     HrmGradientButton(text: "Next").onClick(() {
+                      // bool isValidationFailed = !validateInputFields();
+                      // if (isValidationFailed) return;
+
                       addEmployeeRequest.skills = skillsTextController.text.toString();
                       addEmployeeRequest.company = companyTextController.text.toString();
-                      addEmployeeRequest.workingdays = joiningDateTextController.text.toString();
-                      addEmployeeRequest.shiftTime = workingdaysTextController.text.toString();
-                      addEmployeeRequest.department = shiftsTimingTextController.text.toString();
-                      addEmployeeRequest.pf = departmentTextController.text.toString();
+                      addEmployeeRequest.workingdays = workingdaysTextController.text.toString();
+                      addEmployeeRequest.shiftTime = shiftsTimingTextController.text.toString();
+                      addEmployeeRequest.department = departmentTextController.text.toString();
+                      addEmployeeRequest.doj = joiningDateTextController.text.toString();
+                      // addEmployeeRequest.pf = departmentTextController.text.toString();
                       addEmployeeRequest.uan = uanTextController.text.toString();
                       addEmployeeRequest.pfemployeecontribution = pfEmpContributionTextController.text.toString();
                       addEmployeeRequest.pfemployercontribution = pfEmperContributionTextController.text.toString();
@@ -168,5 +195,34 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
         ),
       ),
     );
+  }
+
+  bool validateInputFields() {
+    if (skillsTextController.text.isEmpty) {
+      showErrorToast("Please enter skill");
+      return false;
+    }
+    if (companyTextController.text.isEmpty) {
+      showErrorToast("Please enter company name");
+      return false;
+    }
+    if (joiningDateTextController.text.isEmpty) {
+      showErrorToast("Please enter joining date");
+      return false;
+    }
+    //if (workingdaysTextController.text.isEmpty){ showErrorToast("Please enter working days"); return false;}
+    //if (shiftsTimingTextController.text.isEmpty){ showErrorToast("Please enter shift timing"); return false;}
+    //if (departmentTextController.text.isEmpty){ showErrorToast("Please enter department"); return false;}
+    //if (uanTextController.text.isEmpty){ showErrorToast("Please enter uan"); return false;}
+    //if (pfEmpContributionTextController.text.isEmpty){ showErrorToast("Please enter pf employee contribution "); return false;}
+    //if (pfEmperContributionTextController.text.isEmpty){ showErrorToast("Please enter pf employer contribution"); return false;}
+    //if (esicEmpContributionTextController.text.isEmpty){ showErrorToast("Please enter pf esic employee contribution"); return false;}
+    //if (esicEmperContributionTextController.text.isEmpty){ showErrorToast("Please enter esic employer contribution"); return false;}
+
+    return true;
+  }
+
+  void showErrorToast(String message) {
+    FlutterToastX.showErrorToastBottom(context, message);
   }
 }

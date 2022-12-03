@@ -12,6 +12,7 @@ import 'package:hrms/widgets/hrm_input_fields.dart';
 import 'package:hrms/widgets/widget_util.dart';
 
 late AddEmployeeRequest addEmployeeRequest;
+
 class AadhaarVerificationScreen extends StatelessWidget {
   TextEditingController aadhaarTextController = TextEditingController();
 
@@ -49,10 +50,12 @@ class AadhaarVerificationScreen extends StatelessWidget {
                   HrmGradientButton(text: "Verify").onClick(() {
                     addEmployeeRequest.aadharNumber = aadhaarTextController.text.toString();
 
-                    if (aadhaarTextController.text.isEmpty) {
-                      FlutterToastX.showErrorToastBottom(context, "Please enter aadhaar card");
-                      return;
-                    }
+                    // if (aadhaarTextController.text.isEmpty) {
+                    //   FlutterToastX.showErrorToastBottom(context, "Please enter aadhaar card");
+                    //   return;
+                    // }
+
+                    print(addEmployeeRequest.toJson());
 
                     Navigator.pushNamed(context, Screens.EMPLOYEE_BASIC_DETAIL);
                   }),

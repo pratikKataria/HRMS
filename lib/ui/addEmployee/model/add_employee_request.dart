@@ -40,46 +40,45 @@
 
 class AddEmployeeRequest {
   AddEmployeeRequest({
-    String? firstName,
-    String? lastName,
-    String? contactNo,
-    String? emergencynumber,
-    String? email,
-    String? password,
-    String? gender,
-    String? dob,
-    String? permanentAddress,
-    String? pincode,
-    String? landmark,
-    String? city,
-    String? skilled,
-    String? skills,
-    String? company,
-    String? department,
-    String? designation,
-    String? operations,
-    String? doj,
-    String? workingdays,
-    String? shiftTime,
-    String? perdayspayout,
-    String? pf,
-    String? esic,
-    String? uan,
-    String? pfemployeecontribution,
-    String? pfemployercontribution,
-    String? esicemployeecontribution,
-    String? esicemployercontribution,
-    String? accountNumber,
-    String? accountHolder,
-    String? ifsc,
-    String? aadharNumber,
-    String? aadharImg,
-    String? panNumber,
-    String? panImg,
-    String? signatureImg,
-    String? businessId,
-    String? register,
-  }) {
+      String? firstName, 
+      String? lastName, 
+      String? contactNo, 
+      String? emergencynumber, 
+      String? email, 
+      String? password, 
+      String? gender, 
+      String? dob, 
+      String? permanentAddress, 
+      String? pincode, 
+      String? landmark, 
+      String? city, 
+      String? skilled, 
+      String? skills, 
+      String? company, 
+      String? department, 
+      String? designation, 
+      String? operations, 
+      String? doj, 
+      String? workingdays, 
+      String? shiftTime, 
+      String? perdayspayout, 
+      String? pf, 
+      String? esic, 
+      String? uan, 
+      String? pfemployeecontribution, 
+      String? pfemployercontribution, 
+      String? esicemployeecontribution, 
+      String? esicemployercontribution, 
+      String? accountNumber, 
+      String? accountHolder, 
+      String? ifsc, 
+      String? aadharNumber, 
+      String? aadharImg, 
+      String? panNumber, 
+      String? panImg, 
+      String? signatureImg, 
+      String? businessId, 
+      String? register,}){
     _firstName = firstName;
     _lastName = lastName;
     _contactNo = contactNo;
@@ -162,7 +161,6 @@ class AddEmployeeRequest {
     _businessId = json['business_id'];
     _register = json['Register'];
   }
-
   String? _firstName;
   String? _lastName;
   String? _contactNo;
@@ -202,88 +200,125 @@ class AddEmployeeRequest {
   String? _signatureImg;
   String? _businessId;
   String? _register;
-
+AddEmployeeRequest copyWith({  String? firstName,
+  String? lastName,
+  String? contactNo,
+  String? emergencynumber,
+  String? email,
+  String? password,
+  String? gender,
+  String? dob,
+  String? permanentAddress,
+  String? pincode,
+  String? landmark,
+  String? city,
+  String? skilled,
+  String? skills,
+  String? company,
+  String? department,
+  String? designation,
+  String? operations,
+  String? doj,
+  String? workingdays,
+  String? shiftTime,
+  String? perdayspayout,
+  String? pf,
+  String? esic,
+  String? uan,
+  String? pfemployeecontribution,
+  String? pfemployercontribution,
+  String? esicemployeecontribution,
+  String? esicemployercontribution,
+  String? accountNumber,
+  String? accountHolder,
+  String? ifsc,
+  String? aadharNumber,
+  String? aadharImg,
+  String? panNumber,
+  String? panImg,
+  String? signatureImg,
+  String? businessId,
+  String? register,
+}) => AddEmployeeRequest(  firstName: firstName ?? _firstName,
+  lastName: lastName ?? _lastName,
+  contactNo: contactNo ?? _contactNo,
+  emergencynumber: emergencynumber ?? _emergencynumber,
+  email: email ?? _email,
+  password: password ?? _password,
+  gender: gender ?? _gender,
+  dob: dob ?? _dob,
+  permanentAddress: permanentAddress ?? _permanentAddress,
+  pincode: pincode ?? _pincode,
+  landmark: landmark ?? _landmark,
+  city: city ?? _city,
+  skilled: skilled ?? _skilled,
+  skills: skills ?? _skills,
+  company: company ?? _company,
+  department: department ?? _department,
+  designation: designation ?? _designation,
+  operations: operations ?? _operations,
+  doj: doj ?? _doj,
+  workingdays: workingdays ?? _workingdays,
+  shiftTime: shiftTime ?? _shiftTime,
+  perdayspayout: perdayspayout ?? _perdayspayout,
+  pf: pf ?? _pf,
+  esic: esic ?? _esic,
+  uan: uan ?? _uan,
+  pfemployeecontribution: pfemployeecontribution ?? _pfemployeecontribution,
+  pfemployercontribution: pfemployercontribution ?? _pfemployercontribution,
+  esicemployeecontribution: esicemployeecontribution ?? _esicemployeecontribution,
+  esicemployercontribution: esicemployercontribution ?? _esicemployercontribution,
+  accountNumber: accountNumber ?? _accountNumber,
+  accountHolder: accountHolder ?? _accountHolder,
+  ifsc: ifsc ?? _ifsc,
+  aadharNumber: aadharNumber ?? _aadharNumber,
+  aadharImg: aadharImg ?? _aadharImg,
+  panNumber: panNumber ?? _panNumber,
+  panImg: panImg ?? _panImg,
+  signatureImg: signatureImg ?? _signatureImg,
+  businessId: businessId ?? _businessId,
+  register: register ?? _register,
+);
   String? get firstName => _firstName;
-
   String? get lastName => _lastName;
-
   String? get contactNo => _contactNo;
-
   String? get emergencynumber => _emergencynumber;
-
   String? get email => _email;
-
   String? get password => _password;
-
   String? get gender => _gender;
-
   String? get dob => _dob;
-
   String? get permanentAddress => _permanentAddress;
-
   String? get pincode => _pincode;
-
   String? get landmark => _landmark;
-
   String? get city => _city;
-
   String? get skilled => _skilled;
-
   String? get skills => _skills;
-
   String? get company => _company;
-
   String? get department => _department;
-
   String? get designation => _designation;
-
   String? get operations => _operations;
-
   String? get doj => _doj;
-
   String? get workingdays => _workingdays;
-
   String? get shiftTime => _shiftTime;
-
   String? get perdayspayout => _perdayspayout;
-
   String? get pf => _pf;
-
   String? get esic => _esic;
-
   String? get uan => _uan;
-
   String? get pfemployeecontribution => _pfemployeecontribution;
-
   String? get pfemployercontribution => _pfemployercontribution;
-
   String? get esicemployeecontribution => _esicemployeecontribution;
-
   String? get esicemployercontribution => _esicemployercontribution;
-
   String? get accountNumber => _accountNumber;
-
   String? get accountHolder => _accountHolder;
-
   String? get ifsc => _ifsc;
-
   String? get aadharNumber => _aadharNumber;
-
   String? get aadharImg => _aadharImg;
-
   String? get panNumber => _panNumber;
-
   String? get panImg => _panImg;
-
   String? get signatureImg => _signatureImg;
-
   String? get businessId => _businessId;
-
   String? get register => _register;
 
-  set firstName(String? value) {
-    _firstName = value;
-  }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -292,14 +327,14 @@ class AddEmployeeRequest {
     map['contact_no'] = _contactNo;
     map['emergencynumber'] = _emergencynumber;
     map['email'] = _email;
-    map['password'] = _password;
+    map['password'] = "123456";
     map['gender'] = _gender;
     map['dob'] = _dob;
     map['permanent_address'] = _permanentAddress;
     map['pincode'] = _pincode;
     map['landmark'] = _landmark;
     map['city'] = _city;
-    map['skilled'] = _skilled;
+    map['skilled'] = "1";
     map['skills'] = _skills;
     map['company'] = _company;
     map['department'] = _department;
@@ -320,13 +355,17 @@ class AddEmployeeRequest {
     map['account_holder'] = _accountHolder;
     map['ifsc'] = _ifsc;
     map['aadhar_number'] = _aadharNumber;
-    map['aadhar_img'] = _aadharImg;
-    map['pan_number'] = _panNumber;
-    map['pan_img'] = _panImg;
-    map['signature_img'] = _signatureImg;
-    map['business_id'] = _businessId;
-    map['Register'] = _register;
+    map['aadhar_img'] = "img.jpg";
+    map['pan_number'] = "img.jpg";
+    map['pan_img'] = "img.jpg";
+    map['signature_img'] = "img.jpg";
+    map['business_id'] = "12";
+    map['Register'] = "Register";
     return map;
+  }
+
+  set firstName(String? value) {
+    _firstName = value;
   }
 
   set lastName(String? value) {

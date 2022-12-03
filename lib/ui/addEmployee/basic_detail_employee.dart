@@ -104,6 +104,7 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
               addEmployeeRequest.emergencynumber = emContactNumberTextController.text.toString();
               addEmployeeRequest.email = emailTextController.text.toString();
               addEmployeeRequest.dob = dobTextController.text.toString();
+              print(addEmployeeRequest.toJson());
 
               Navigator.pushNamed(context, Screens.EMPLOYEE_ADDRESS_DETAIL);
             }),

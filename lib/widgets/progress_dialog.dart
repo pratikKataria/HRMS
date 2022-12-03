@@ -23,7 +23,7 @@ class Dialogs {
               Container(width: 24.0, height: 24.0, child: CircularProgressIndicator()),
               horizontalSpace(20.0),
               Expanded(
-                child: Text('$description', style: textStylePrimary14px500w, overflow: TextOverflow.ellipsis),
+                child: Text('$description', style: textStyle14px500w, overflow: TextOverflow.ellipsis),
               ),
               AnimatedCloseButton(),
             ],
