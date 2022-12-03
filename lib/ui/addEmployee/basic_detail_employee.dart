@@ -5,6 +5,7 @@ import 'package:hrms/res/Fonts.dart';
 import 'package:hrms/route/screens.dart';
 import 'package:hrms/ui/addEmployee/aadhaar_verification_screen.dart';
 import 'package:hrms/util/extension.dart';
+import 'package:hrms/widgets/flutter_toast.dart';
 import 'package:hrms/widgets/header.dart';
 import 'package:hrms/widgets/hrm_gradient_button.dart';
 import 'package:hrms/widgets/hrm_input_fields.dart';
@@ -23,7 +24,7 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
   TextEditingController mobileNumberTextController = TextEditingController();
   TextEditingController emContactNumberTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
-  TextEditingController aadhaarTextController = TextEditingController();
+  TextEditingController dobTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +81,12 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
                         text: "Enter email address",
                         mandate: true),
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "Date of Birth", text: "DD/MM/YYYY", mandate: true),
+                    HrmInputField(
+                      textController: dobTextController,
+                      headingText: "Date of Birth",
+                      text: "DD/MM/YYYY",
+                      mandate: true,
+                    ),
                     verticalSpace(20.0),
                   ],
                 ),
@@ -88,12 +94,16 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
             ),
             verticalSpace(20.0),
             HrmGradientButton(text: "Next", margin: EdgeInsets.symmetric(horizontal: 20.0)).onClick(() {
+
+              bool isValidationFailed = !validateInputFields();
+              if (isValidationFailed) return;
+
               addEmployeeRequest.firstName = firstNameTextController.text.toString();
-              addEmployeeRequest.lastName = firstNameTextController.text.toString();
-              // addEmployeeRequest.mobileNumber = firstNameTextController.text.toString();
-              addEmployeeRequest.emergencynumber = firstNameTextController.text.toString();
-              addEmployeeRequest.email = firstNameTextController.text.toString();
-              addEmployeeRequest.dob = firstNameTextController.text.toString();
+              addEmployeeRequest.lastName = lastNameTextController.text.toString();
+              addEmployeeRequest.contactNo = mobileNumberTextController.text.toString();
+              addEmployeeRequest.emergencynumber = emContactNumberTextController.text.toString();
+              addEmployeeRequest.email = emailTextController.text.toString();
+              addEmployeeRequest.dob = dobTextController.text.toString();
 
               Navigator.pushNamed(context, Screens.EMPLOYEE_ADDRESS_DETAIL);
             }),
@@ -102,5 +112,43 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
         ),
       ),
     );
+  }
+
+  bool validateInputFields() {
+    if (firstNameTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter first name");
+      return false;
+    }
+
+    if (lastNameTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter last name");
+      return false;
+    }
+
+    if (mobileNumberTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter mobile number");
+      return false;
+    }
+
+    if (emContactNumberTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter emergency contact number");
+      return false;
+    }
+
+    if (emailTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter email id");
+      return false;
+    }
+
+    if (dobTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter email id");
+      return false;
+    }
+
+    return true;
+  }
+
+  void showErrorToast(String message) {
+    FlutterToastX.showErrorToastBottom(context, message);
   }
 }

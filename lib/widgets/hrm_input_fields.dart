@@ -13,6 +13,9 @@ class HrmInputField extends StatelessWidget {
   final Widget? leftWidget;
   final EdgeInsets? padding;
   final TextEditingController? textController;
+  final bool inputTypeNumber;
+  final List<TextInputFormatter>? inputFilters;
+  final int inputLength;
 
   const HrmInputField(
       {this.color = AppColors.inputFieldBackgroundColor,
@@ -21,8 +24,11 @@ class HrmInputField extends StatelessWidget {
       this.text = "",
       this.mandate = false,
       this.password = false,
+      this.inputTypeNumber = false,
       this.padding,
       this.textController,
+      this.inputFilters,
+      this.inputLength = 256,
       Key? key})
       : super(key: key);
 
@@ -49,13 +55,13 @@ class HrmInputField extends StatelessWidget {
     );
   }
 
-  TextFormField inputTextFormField({TextEditingController? controller, String? placeHolderText, bool inputTypeNumber = false}) {
+  TextFormField inputTextFormField({TextEditingController? controller, String? placeHolderText}) {
     return TextFormField(
       obscureText: password,
       textAlign: TextAlign.left,
       controller: controller,
       maxLines: 1,
-      inputFormatters: [inputTypeNumber ? LengthLimitingTextInputFormatter(4) : LengthLimitingTextInputFormatter(256)],
+      inputFormatters: inputFilters ?? [LengthLimitingTextInputFormatter(inputLength)],
       textCapitalization: TextCapitalization.none,
       keyboardType: inputTypeNumber ? TextInputType.number : TextInputType.emailAddress,
       style: textStyleSubText14px500w,
