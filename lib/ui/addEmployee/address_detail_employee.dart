@@ -4,6 +4,7 @@ import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/Fonts.dart';
 import 'package:hrms/route/screens.dart';
 import 'package:hrms/util/extension.dart';
+import 'package:hrms/widgets/flutter_toast.dart';
 import 'package:hrms/widgets/header.dart';
 import 'package:hrms/widgets/hrm_gradient_button.dart';
 import 'package:hrms/widgets/hrm_input_fields.dart';
@@ -77,6 +78,10 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
                     ),
                     verticalSpace(20.0),
                     HrmGradientButton(text: "Next").onClick(() {
+
+                      bool isValidationFailed = !validateInputFields();
+                      if (isValidationFailed) return;
+
                       addEmployeeRequest.permanentAddress = fullAddressTextController.text.toString();
                       addEmployeeRequest.pincode = pincodeTextController.text.toString();
                       addEmployeeRequest.landmark = landmarkTextController.text.toString();
@@ -93,5 +98,33 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
         ),
       ),
     );
+  }
+
+  bool validateInputFields() {
+    if (fullAddressTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter full address");
+      return false;
+    }
+
+    if (pincodeTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter pincode");
+      return false;
+    }
+
+    if (landmarkTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter landmark");
+      return false;
+    }
+
+    if (cityTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter city");
+      return false;
+    }
+
+    return true;
+  }
+
+  void showErrorToast(String message) {
+    FlutterToastX.showErrorToastBottom(context, message);
   }
 }
