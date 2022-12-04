@@ -1,16 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
-import 'package:hrms/generated/assets.dart';
-import 'package:hrms/res/AppColors.dart';
-import 'package:hrms/res/Fonts.dart';
 import 'package:hrms/ui/addEmployee/aadhaar_verification_screen.dart';
-import 'package:hrms/ui/addEmployee/model/add_employee_request.dart';
 import 'package:hrms/ui/addEmployee/model/add_employee_response.dart';
-import 'package:hrms/util/extension.dart';
-import 'package:hrms/widgets/header.dart';
-import 'package:hrms/widgets/hrm_gradient_button.dart';
-import 'package:hrms/widgets/hrm_input_fields.dart';
-import 'package:hrms/widgets/widget_util.dart';
 
 class BankDetailEmployee extends StatefulWidget {
   const BankDetailEmployee({Key? key}) : super(key: key);
@@ -20,6 +11,7 @@ class BankDetailEmployee extends StatefulWidget {
 }
 
 class _BankDetailEmployeeState extends State<BankDetailEmployee> {
+  TextEditingController accountHolderNameTextController = TextEditingController();
   TextEditingController accountTextController = TextEditingController();
   TextEditingController ifscTextController = TextEditingController();
   TextEditingController aadhaarCardTextController = TextEditingController();
@@ -52,27 +44,50 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
                   children: [
                     verticalSpace(20.0),
                     HrmInputField(
+                      textController: accountHolderNameTextController,
+                      headingText: "Account Holder Name",
+                      text: "Enter account holder name",
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                        LengthLimitingTextInputFormatter(24)
+                      ],
+                    ),
+                    verticalSpace(20.0),
+                    HrmInputField(
                       textController: accountTextController,
                       headingText: "Account Number",
                       text: "Enter account number",
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(17)],
                     ),
                     verticalSpace(20.0),
                     HrmInputField(
                       textController: ifscTextController,
                       headingText: "IFSC Code",
                       text: "Enter IFSC code",
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("^[A-Za-z0-9_.-]*")),
+                        LengthLimitingTextInputFormatter(11)
+                      ],
                     ),
                     verticalSpace(20.0),
                     HrmInputField(
                       textController: aadhaarCardTextController,
                       headingText: "Aadhaar Card",
                       text: "Enter aadhaar card",
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(12)],
                     ),
                     verticalSpace(20.0),
                     HrmInputField(
                       textController: panCardTextController,
                       headingText: "Pan Card",
                       text: "Enter pancard",
+                      inputTypeNumber: true,
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("^[A-Za-z0-9_.-]*")),
+                        LengthLimitingTextInputFormatter(10)
+                      ],
                     ),
                     verticalSpace(20.0),
                     HrmGradientButton(text: "Confirm").onClick(() {
@@ -82,7 +97,6 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
                       addEmployeeRequest.panNumber = panCardTextController.text.toString();
 
                       registerEmployee();
-
                     }),
                     verticalSpace(20.0),
                   ],

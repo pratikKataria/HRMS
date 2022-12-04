@@ -1,15 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:hrms/generated/assets.dart';
-import 'package:hrms/res/AppColors.dart';
-import 'package:hrms/res/Fonts.dart';
-import 'package:hrms/route/screens.dart';
+import 'package:flutter/services.dart';
+import 'package:hrms/export.dart';
 import 'package:hrms/ui/addEmployee/aadhaar_verification_screen.dart';
-import 'package:hrms/util/extension.dart';
-import 'package:hrms/widgets/flutter_toast.dart';
-import 'package:hrms/widgets/header.dart';
-import 'package:hrms/widgets/hrm_gradient_button.dart';
-import 'package:hrms/widgets/hrm_input_fields.dart';
-import 'package:hrms/widgets/widget_util.dart';
+import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
 
 class BasicDetailEmployee extends StatefulWidget {
   const BasicDetailEmployee({Key? key}) : super(key: key);
@@ -25,6 +17,8 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
   TextEditingController emContactNumberTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
   TextEditingController dobTextController = TextEditingController();
+
+  String? dob;
 
   @override
   Widget build(BuildContext context) {
@@ -54,25 +48,37 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
                   children: [
                     verticalSpace(20.0),
                     HrmInputField(
-                        textController: firstNameTextController,
-                        headingText: "First Name",
-                        text: "Enter First Name",
-                        mandate: true),
+                      textController: firstNameTextController,
+                      headingText: "First Name",
+                      text: "Enter First Name",
+                      inputFilters: [FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")), LengthLimitingTextInputFormatter(64)],
+                      mandate: true,
+                    ),
                     verticalSpace(20.0),
                     HrmInputField(
-                        textController: lastNameTextController, headingText: "Last Name", text: "Enter last Name", mandate: true),
+                      textController: lastNameTextController,
+                      headingText: "Last Name",
+                      text: "Enter last Name",
+                      mandate: true,
+                      inputFilters: [FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")), LengthLimitingTextInputFormatter(64)],
+                    ),
                     verticalSpace(20.0),
                     HrmInputField(
                         textController: mobileNumberTextController,
                         headingText: "Mobile Number",
                         text: "Enter 10 digit mobile number",
-                        mandate: true),
+                        mandate: true,
+                        inputTypeNumber: true,
+                        inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(10)],
+                        inputLength: 10),
                     verticalSpace(20.0),
                     HrmInputField(
                       textController: emContactNumberTextController,
                       headingText: "Emergency Contact Number",
                       text: "Brother/Father/Friend mobile number",
                       mandate: true,
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(10)],
                     ),
                     verticalSpace(20.0),
                     HrmInputField(
@@ -81,12 +87,15 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
                         text: "Enter email address",
                         mandate: true),
                     verticalSpace(20.0),
-                    HrmInputField(
-                      textController: dobTextController,
-                      headingText: "Date of Birth",
-                      text: "DD/MM/YYYY",
-                      mandate: true,
-                    ),
+                    HrmInputFieldDummy(
+                            textController: dobTextController,
+                            headingText: "Date of Birth",
+                            text: dob ?? "DD/MM/YYYY",
+                            mandate: true)
+                        .onClick(() {
+                      FocusScope.of(context).unfocus();
+                      _selectDate(context);
+                    }),
                     verticalSpace(20.0),
                   ],
                 ),
@@ -113,6 +122,26 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
         ),
       ),
     );
+  }
+
+
+  void _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1800),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked == null && dob != null)
+      dob = dob;
+    else if (picked == null)
+      dob = null;
+    else
+      dob = "${picked.day}/${picked.month}/${picked.year}";
+
+    setState(() {});
+    dobTextController.text = dob ?? "";
   }
 
   bool validateInputFields() {
@@ -142,7 +171,7 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
     }
 
     if (dobTextController.text.toString().isEmpty) {
-      showErrorToast("Please enter email id");
+      showErrorToast("Please enter dob");
       return false;
     }
 

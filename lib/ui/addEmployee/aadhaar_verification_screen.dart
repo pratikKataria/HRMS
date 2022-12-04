@@ -1,15 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+ import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
-import 'package:hrms/res/AppColors.dart';
-import 'package:hrms/res/Fonts.dart';
-import 'package:hrms/route/screens.dart';
 import 'package:hrms/ui/addEmployee/model/add_employee_request.dart';
-import 'package:hrms/util/extension.dart';
-import 'package:hrms/widgets/header.dart';
-import 'package:hrms/widgets/hrm_gradient_button.dart';
-import 'package:hrms/widgets/hrm_input_fields.dart';
-import 'package:hrms/widgets/widget_util.dart';
 
 late AddEmployeeRequest addEmployeeRequest;
 
@@ -50,12 +41,15 @@ class AadhaarVerificationScreen extends StatelessWidget {
                   HrmGradientButton(text: "Verify").onClick(() {
                     addEmployeeRequest.aadharNumber = aadhaarTextController.text.toString();
 
-                    // if (aadhaarTextController.text.isEmpty) {
-                    //   FlutterToastX.showErrorToastBottom(context, "Please enter aadhaar card");
-                    //   return;
-                    // }
+                    if (aadhaarTextController.text.isEmpty) {
+                      FlutterToastX.showErrorToastBottom(context, "Please enter aadhaar card");
+                      return;
+                    }
 
-                    print(addEmployeeRequest.toJson());
+                    if (aadhaarTextController.text.length < 12) {
+                      FlutterToastX.showErrorToastBottom(context, "Please enter valid aadhar card");
+                      return;
+                    }
 
                     Navigator.pushNamed(context, Screens.EMPLOYEE_BASIC_DETAIL);
                   }),

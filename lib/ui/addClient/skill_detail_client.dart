@@ -1,7 +1,10 @@
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addClient/basic_detail_client.dart';
 import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
+import 'package:hrms/ui/addEmployee/model/add_employee_request.dart';
 import 'package:hrms/util/utility.dart';
+
+AddEmployeeRequest addEmployeeRequest = AddEmployeeRequest();
 
 class SkillDetailClient extends StatefulWidget {
   const SkillDetailClient({Key? key}) : super(key: key);
@@ -16,6 +19,7 @@ class _SkillDetailClientState extends State<SkillDetailClient> {
   TextEditingController searchTextController = TextEditingController();
 
   bool addNew = false;
+  String? dob;
 
   @override
   void initState() {

@@ -1,14 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:hrms/generated/assets.dart';
-import 'package:hrms/res/AppColors.dart';
-import 'package:hrms/res/Fonts.dart';
-import 'package:hrms/route/screens.dart';
-import 'package:hrms/util/extension.dart';
-import 'package:hrms/widgets/flutter_toast.dart';
-import 'package:hrms/widgets/header.dart';
-import 'package:hrms/widgets/hrm_gradient_button.dart';
-import 'package:hrms/widgets/hrm_input_fields.dart';
-import 'package:hrms/widgets/widget_util.dart';
+import 'package:flutter/services.dart';
+import 'package:hrms/export.dart';
 
 import 'aadhaar_verification_screen.dart';
 
@@ -60,7 +51,9 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
                       textController: pincodeTextController,
                       headingText: "Pincode",
                       text: "Enter pincode",
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(6)],
                       mandate: true,
+                      inputTypeNumber: true,
                     ),
                     verticalSpace(20.0),
                     HrmInputField(
@@ -75,6 +68,10 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
                       headingText: "City",
                       text: "City name",
                       mandate: true,
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                        LengthLimitingTextInputFormatter(24)
+                      ],
                     ),
                     verticalSpace(20.0),
                     HrmGradientButton(text: "Next").onClick(() {
