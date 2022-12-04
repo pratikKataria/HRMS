@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:hrms/generated/assets.dart';
-import 'package:hrms/res/AppColors.dart';
-import 'package:hrms/res/Fonts.dart';
-import 'package:hrms/route/screens.dart';
-import 'package:hrms/util/extension.dart';
-import 'package:hrms/widgets/header.dart';
-import 'package:hrms/widgets/hrm_gradient_button.dart';
-import 'package:hrms/widgets/widget_util.dart';
+import 'package:hrms/export.dart';
+import 'package:hrms/ui/addClient/basic_detail_client.dart';
+import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
+import 'package:hrms/util/utility.dart';
 
 class SkillDetailClient extends StatefulWidget {
   const SkillDetailClient({Key? key}) : super(key: key);
@@ -16,6 +11,21 @@ class SkillDetailClient extends StatefulWidget {
 }
 
 class _SkillDetailClientState extends State<SkillDetailClient> {
+  Set<Data> allEmployeesList = Set();
+  Set<Data> selectedEmployees = Set();
+  TextEditingController searchTextController = TextEditingController();
+
+  bool addNew = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getAllUsers();
+    searchTextController.addListener(() {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,60 +34,140 @@ class _SkillDetailClientState extends State<SkillDetailClient> {
         child: Column(
           children: [
             Header(headerText: "Client Skill Detail"),
-            Container(
-              color: AppColors.alert,
-              padding: EdgeInsets.symmetric(vertical: 6.0),
-              child: Center(child: Text("Fields marked in the red are compulsory", style: textStyleWhite12px600w)),
-            ),
+            line(width: Utility.screenWidth(context)),
 
             //progress detail
+            // verticalSpace(20.0),
+            // Image(image: AssetImage(Assets.imagesIcDetailProcessThree), height: 40.0),
             verticalSpace(20.0),
-            Text("Detail progress", style: textStyleGreen14px500w),
-            verticalSpace(20.0),
-            Image(image: AssetImage(Assets.imagesIcDetailProcessThree), height: 40.0),
-            verticalSpace(10.0),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Add Employee", style: textStyle14px600w),
-                      Text("Add New+", style: textStylePrimary14px600w),
-                    ],
-                  ),
-                  verticalSpace(20.0),
-                  Container(
-                    color: AppColors.inputFieldBackgroundColor,
-                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text("Rajesh shree vashtav", style: textStyle14px500w),
-                            Spacer(),
-                            Icon(Icons.delete, color: AppColors.textColorSubText,),
-                          ],
-                        ),
-                        verticalSpace(4.0),
-                        Text("Employee Id: 45331233", style: textStyle12px500w),
-                        verticalSpace(4.0),
-                        Text("Receptionist", style: textStyleGreen14px500w),
-                      ],
-                    ),
-                  ),
-                  verticalSpace(20.0),
-                  HrmGradientButton(text: "Next").onClick(() => Navigator.pushNamed(context, Screens.CLIENT_BANK_DETAIL)),
-                ],
+              child: Align(alignment: Alignment.centerLeft, child: Text("Add Employee in project", style: textStyle14px600w)),
+            ),
+
+            HrmInputField(
+              text: "Type name to search",
+              margin: EdgeInsets.symmetric(horizontal: 20.0),
+              leftWidget: Icon(Icons.search),
+              textController: searchTextController,
+            ),
+            verticalSpace(6.0),
+
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+                child: ListView(
+                  children: allEmployeesList
+                      .difference(selectedEmployees)
+                      .where((element) =>
+                          (element.firstName ?? "")
+                              .toString()
+                              .toLowerCase()
+                              .contains(searchTextController.text.toString().toLowerCase()) ||
+                          (element.lastName ?? "")
+                              .toString()
+                              .toLowerCase()
+                              .contains(searchTextController.text.toString().toLowerCase()))
+                      .map((e) => cardViewAddEmployee(e))
+                      .toList(),
+                ),
               ),
-            )
+            ),
+
+            verticalSpace(6.0),
+
+            Expanded(
+              child: ListView(
+                children: selectedEmployees.map((e) => cardViewRemoveEmployee(e)).toList(),
+              ),
+            ),
+
+            verticalSpace(10.0),
+            HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Next").onClick(() {
+              String selectedEmployeeStringCommaSeparated = selectedEmployees.map((e) => e.id).toList().join(",");
+              addClientRequest.employees = selectedEmployeeStringCommaSeparated;
+              Navigator.pushNamed(context, Screens.CLIENT_BANK_DETAIL);
+            }),
+            verticalSpace(10.0),
           ],
         ),
       ),
     );
+  }
+
+  Container cardViewAddEmployee(Data e) {
+    return Container(
+      color: AppColors.inputFieldBackgroundColor,
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text("Name: ${e.firstName} ${e.lastName}", style: textStyle14px500w),
+              Spacer(),
+              Icon(Icons.add_box_outlined, color: AppColors.textColorSubText).onClick(() {
+                selectedEmployees.add(e);
+                setState(() {});
+              }),
+            ],
+          ),
+          verticalSpace(4.0),
+          Text("Employee Id: ${e.id}", style: textStyle12px500w),
+          verticalSpace(4.0),
+          Text("${e.designation ?? "NA"}", style: textStyleGreen14px500w),
+        ],
+      ),
+    );
+  }
+
+  Container cardViewRemoveEmployee(Data e) {
+    return Container(
+      color: AppColors.inputFieldBackgroundColor,
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text("Name: ${e.firstName} ${e.lastName}", style: textStyle14px500w),
+              Spacer(),
+              Icon(Icons.remove_circle_outline, color: AppColors.textColorSubText).onClick(() {
+                selectedEmployees.remove(e);
+                setState(() {});
+              }),
+            ],
+          ),
+          verticalSpace(4.0),
+          Text("Employee Id: ${e.id}", style: textStyle12px500w),
+          verticalSpace(4.0),
+          Text("${e.designation ?? "NA"}", style: textStyleGreen14px500w),
+        ],
+      ),
+    );
+  }
+
+  Future<void> getAllUsers() async {
+    await Future.delayed(Duration(milliseconds: 200));
+
+    Dialogs.showLoader(context, "Getting all user list ...");
+    var formData = FormData.fromMap({
+      'Register': "Register",
+    });
+
+    GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER, body: formData);
+    Dialogs.hideLoader(context);
+    if (response.status!.isApiSuccessful) {
+      FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
+
+      allEmployeesList.clear();
+      if (response.data?.isNotEmpty ?? false) allEmployeesList.addAll(response.data!);
+      setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+    }
   }
 }

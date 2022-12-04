@@ -34,9 +34,9 @@ class _AnimatedCloseButtonState extends State<AnimatedCloseButton> {
               margin: EdgeInsets.only(right: 10.0, left: 2.0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.colorPrimaryLight,
+                color: AppColors.colorPrimary,
               ),
-              child: Icon(Icons.close, size: 24.0),
+              child: Icon(Icons.close, size: 24.0, color: AppColors.white),
             ).onClick(() => Navigator.pop(context))
           : Container(),
     );

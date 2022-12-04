@@ -12,5 +12,6 @@ class EndPoints {
   static final String ATTENDANCE_TYPE_TWO = BASE_URL + "Attandance_by_qr_type2.php";
   static final String REGISTER_EMPLOYEE = BASE_URL + "Register_User.php";
   static final String REGISTER_CLIENT = BASE_URL + "Register_Project.php";
+  static final String GET_ALL_USER = BASE_URL + "Get_All_Users.php";
 
 }

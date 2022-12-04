@@ -5,13 +5,14 @@ import 'package:hrms/res/Fonts.dart';
 import 'package:hrms/widgets/widget_util.dart';
 
 class HrmInputField extends StatelessWidget {
-  final String headingText;
+  final String? headingText;
   final String text;
   final bool password;
   final bool mandate;
   final Color color;
   final Widget? leftWidget;
   final EdgeInsets? padding;
+  final EdgeInsets? margin;
   final TextEditingController? textController;
   final bool inputTypeNumber;
   final List<TextInputFormatter>? inputFilters;
@@ -20,7 +21,7 @@ class HrmInputField extends StatelessWidget {
   const HrmInputField(
       {this.color = AppColors.inputFieldBackgroundColor,
       this.leftWidget,
-      this.headingText = "",
+      this.headingText,
       this.text = "",
       this.mandate = false,
       this.password = false,
@@ -28,30 +29,34 @@ class HrmInputField extends StatelessWidget {
       this.padding,
       this.textController,
       this.inputFilters,
+      this.margin,
       this.inputLength = 256,
       Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(headingText, style: textStyle14px600w),
-        verticalSpace(5.0),
-        Container(
-          padding: padding ?? EdgeInsets.symmetric(horizontal: 20.0),
-          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.all(Radius.circular(8.0))),
-          child: Row(
-            children: [
-              Expanded(child: inputTextFormField(controller: textController, placeHolderText: text)),
-              leftWidget ?? Container(),
-              if (mandate)
-                Container(width: 6.0, height: 6.0, decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.red))
-            ],
+    return Container(
+      margin: margin,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (headingText != null) Text(headingText??"", style: textStyle14px600w),
+          verticalSpace(5.0),
+          Container(
+            padding: padding ?? EdgeInsets.symmetric(horizontal: 20.0),
+            decoration: BoxDecoration(color: color, borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            child: Row(
+              children: [
+                Expanded(child: inputTextFormField(controller: textController, placeHolderText: text)),
+                leftWidget ?? Container(),
+                if (mandate)
+                  Container(width: 6.0, height: 6.0, decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.red))
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
