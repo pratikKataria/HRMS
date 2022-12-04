@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
-import 'package:hrms/ui/addEmployee/aadhaar_verification_screen.dart';
+import 'package:hrms/ui/addClient/skill_detail_client.dart';
 import 'package:hrms/util/utility.dart';
 import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
+
+// late AddEmployeeRequest addEmployeeRequest = AddEmployeeRequest();
 
 class SkillDetailEmployee extends StatefulWidget {
   const SkillDetailEmployee({Key? key}) : super(key: key);
@@ -30,6 +32,8 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
   TextEditingController esicEmperContributionTextController = TextEditingController();
 
   String? doj;
+  String selectedShift = "Day";
+  List<String> shiftList = ["Day", "Night"];
 
   @override
   Widget build(BuildContext context) {
@@ -98,12 +102,71 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                           inputTypeNumber: true,
                           inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(2)],
                           inputLength: 10),
+
                       verticalSpace(20.0),
-                      HrmInputField(
+                      HrmInputFieldDummy(
                         textController: shiftsTimingTextController,
                         headingText: "Shifts Timing",
-                        text: "Enter timing",
-                      ),
+                        text: selectedShift,
+                      ).onClick(() {
+                        FocusScope.of(context).unfocus();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              backgroundColor: Colors.transparent,
+                              content: Wrap(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      color: AppColors.white,
+                                      padding: EdgeInsets.all(20.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Select Shift Time", style: textStyle14px600w),
+                                          verticalSpace(10.0),
+                                          ...shiftList.map((e) {
+                                            return Container(
+                                              color: AppColors.inputFieldBackgroundColor,
+                                              padding: EdgeInsets.all(20.0),
+                                              margin: EdgeInsets.only(bottom: 10.0),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Container(child: Text(e, style: textStyleSubText14px500w)),
+                                                      horizontalSpace(10.0),
+                                                      Icon(
+                                                        Icons.check_circle_outline,
+                                                        color: AppColors.textColorSubText,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ).onClick(() {
+                                              Navigator.pop(context, e);
+                                            });
+                                          }).toList(),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ).then((value) {
+                          setState(() {
+                            selectedShift = value ?? "Day";
+                          });
+                        });
+                      }),
+
                       verticalSpace(20.0),
                       HrmInputField(
                         textController: departmentTextController,
@@ -210,14 +273,14 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
 
             //Next
             HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Next").onClick(() {
-              // bool isValidationFailed = !validateInputFields();
-              // if (isValidationFailed) return;
+              bool isValidationFailed = !validateInputFields();
+              if (isValidationFailed) return;
 
               addEmployeeRequest.skills = skillsTextController.text.toString();
               addEmployeeRequest.company = companyTextController.text.toString();
               addEmployeeRequest.doj = joiningDateTextController.text.toString();
               addEmployeeRequest.workingdays = workingdaysTextController.text.toString();
-              addEmployeeRequest.shiftTime = shiftsTimingTextController.text.toString();
+              addEmployeeRequest.shiftTime = selectedShift;
               addEmployeeRequest.department = departmentTextController.text.toString();
               // addEmployeeRequest.pf = departmentTextController.text.toString();
               addEmployeeRequest.uan = uanTextController.text.toString();

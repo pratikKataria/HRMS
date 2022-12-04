@@ -19,6 +19,9 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
   TextEditingController dobTextController = TextEditingController();
 
   String? dob;
+  String selectedGender = "M";
+
+  List<String> genderList = ["M", "F"];
 
   @override
   Widget build(BuildContext context) {
@@ -97,13 +100,73 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
                       _selectDate(context);
                     }),
                     verticalSpace(20.0),
+                    HrmInputFieldDummy(
+                            textController: dobTextController, headingText: "Gender", text: selectedGender, mandate: true)
+                        .onClick(() {
+                      FocusScope.of(context).unfocus();
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor: Colors.transparent,
+                            content: Wrap(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  child: Container(
+                                    color: AppColors.white,
+                                    padding: EdgeInsets.all(20.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Select Gender", style: textStyle14px600w),
+                                        verticalSpace(10.0),
+                                        ...genderList.map((e) {
+                                          return Container(
+                                            color: AppColors.inputFieldBackgroundColor,
+                                            padding: EdgeInsets.all(20.0),
+                                            margin: EdgeInsets.only(bottom: 10.0),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Container(child: Text(e, style: textStyleSubText14px500w)),
+                                                    horizontalSpace(10.0),
+                                                    Icon(
+                                                      Icons.check_circle_outline,
+                                                      color: AppColors.textColorSubText,
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ).onClick(() {
+                                            Navigator.pop(context, e);
+                                          });
+                                        }).toList(),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ).then((value) {
+                        setState(() {
+                          selectedGender = value ?? "M";
+                        });
+                      });
+                    }),
+                    verticalSpace(20.0),
                   ],
                 ),
               ),
             ),
             verticalSpace(20.0),
             HrmGradientButton(text: "Next", margin: EdgeInsets.symmetric(horizontal: 20.0)).onClick(() {
-
               bool isValidationFailed = !validateInputFields();
               if (isValidationFailed) return;
 
@@ -113,6 +176,7 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
               addEmployeeRequest.emergencynumber = emContactNumberTextController.text.toString();
               addEmployeeRequest.email = emailTextController.text.toString();
               addEmployeeRequest.dob = dobTextController.text.toString();
+              addEmployeeRequest.gender = selectedGender;
               print(addEmployeeRequest.toJson());
 
               Navigator.pushNamed(context, Screens.EMPLOYEE_ADDRESS_DETAIL);
