@@ -22,8 +22,10 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
   TextEditingController shiftsTimingTextController = TextEditingController();
   TextEditingController departmentTextController = TextEditingController();
   TextEditingController uanTextController = TextEditingController();
+  TextEditingController esicTextController = TextEditingController();
   TextEditingController pfEmpContributionTextController = TextEditingController();
   TextEditingController pfEmperContributionTextController = TextEditingController();
+
   TextEditingController esicEmpContributionTextController = TextEditingController();
   TextEditingController esicEmperContributionTextController = TextEditingController();
 
@@ -132,7 +134,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                         children: [
                           Expanded(
                             child: HrmInputField(
-                              textController: esicEmpContributionTextController,
+                              textController: pfEmpContributionTextController,
                               headingText: "Employee Contribution",
                               text: "ex. 4.5%",
                               inputTypeNumber: true,
@@ -145,7 +147,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                           horizontalSpace(20.0),
                           Expanded(
                             child: HrmInputField(
-                              textController: esicEmperContributionTextController,
+                              textController: pfEmperContributionTextController,
                               headingText: "Employer Contribution",
                               text: "ex. 4.5%",
                               inputTypeNumber: true,
@@ -163,7 +165,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                       verticalSpace(20.0),
 
                       HrmInputField(
-                        textController: uanTextController,
+                        textController: esicTextController,
                         headingText: "ESIC",
                         text: "Enter esic",
                         inputTypeNumber: true,

@@ -112,7 +112,7 @@ class _BankDetailClientState extends State<BankDetailClient> {
     AddClientRequest addClientRequest = AddClientRequest();
     var formData = FormData.fromMap(addClientRequest.toJson());
 
-    Dialogs.showLoader(context, "Marking attendance please wait ...");
+    Dialogs.showLoader(context, "Creating new client ...");
     AddEmployeeResponse addEmployeeResponse = await apiController.post<AddEmployeeResponse>(
       EndPoints.REGISTER_CLIENT,
       body: formData,

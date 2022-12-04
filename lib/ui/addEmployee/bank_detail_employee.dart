@@ -115,7 +115,7 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
     print(addEmployeeRequest.toJson());
     var formData = FormData.fromMap(addEmployeeRequest.toJson());
 
-    Dialogs.showLoader(context, "Marking attendance please wait ...");
+    Dialogs.showLoader(context, "Creating new employee ...");
     AddEmployeeResponse addEmployeeResponse = await apiController.post<AddEmployeeResponse>(
       EndPoints.REGISTER_EMPLOYEE,
       body: formData,
