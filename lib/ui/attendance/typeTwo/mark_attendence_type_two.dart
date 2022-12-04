@@ -1,9 +1,9 @@
 import 'package:hrms/export.dart';
+import 'package:hrms/ui/attendance/typeOne/model/GetEmployeeByIdResponse.dart';
 import 'package:hrms/ui/attendance/typeTwo/mark_attendance_type_two_response.dart';
-import 'package:hrms/ui/scanned/employee_response.dart';
 
 class MarkAttendanceTypeTwo extends StatefulWidget {
-  final EmployeeResponse? employeeResponse;
+  final GetEmployeeByIdResponse? employeeResponse;
 
   const MarkAttendanceTypeTwo(this.employeeResponse, {Key? key}) : super(key: key);
 
@@ -17,7 +17,7 @@ class _MarkAttendanceTypeTwoState extends State<MarkAttendanceTypeTwo> {
   TextEditingController robotNoController = TextEditingController();
   TextEditingController inverterNoController = TextEditingController();
 
-  List<EmployeeResponse?> presentEmployees = [];
+  List<GetEmployeeByIdResponse?> presentEmployees = [];
 
   @override
   void initState() {
@@ -25,11 +25,11 @@ class _MarkAttendanceTypeTwoState extends State<MarkAttendanceTypeTwo> {
     presentEmployees.add(widget.employeeResponse);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundScreenColor,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -88,17 +88,17 @@ class _MarkAttendanceTypeTwoState extends State<MarkAttendanceTypeTwo> {
 
               Row(
                 children: [
-                  horizontalSpace(20.0),
-                  Expanded(
-                    child: HrmGradientButton(text: "Add More").onClick(() async {
-                      String? empId = await Navigator.pushNamed(context, Screens.MULTI_QR_SCANNER_SCREEN) as String;
-                      getEmployeeDataById(empId);
-                    }),
-                  ),
-                  horizontalSpace(10.0),
-                  Expanded(child: HrmGradientButton(text: "Approve").onClick(() => markAttendance("21"))),
-                  horizontalSpace(20.0),
-                ],
+                horizontalSpace(20.0),
+                Expanded(
+                  child: HrmGradientButton(text: "Add More").onClick(() async {
+                    String? empId = await Navigator.pushNamed(context, Screens.MULTI_QR_SCANNER_SCREEN) as String;
+                    getEmployeeDataById(empId);
+                  }),
+                ),
+                horizontalSpace(10.0),
+                Expanded(child: HrmGradientButton(text: "Approve").onClick(() => markAttendance())),
+                horizontalSpace(20.0),
+              ],
               ),
             verticalSpace(10.0),
           ],
@@ -107,7 +107,7 @@ class _MarkAttendanceTypeTwoState extends State<MarkAttendanceTypeTwo> {
     );
   }
 
-  Future<void> markAttendance(String userId) async {
+  Future<void> markAttendance() async {
     // await Future.delayed(Duration(milliseconds: 200));
     FocusScope.of(context).unfocus();
 
@@ -136,7 +136,7 @@ class _MarkAttendanceTypeTwoState extends State<MarkAttendanceTypeTwo> {
     Map<String, dynamic> map = {
       "user_id": userId,
       "business_id": "12",
-      "project_id": "20",
+      "project_id": widget.employeeResponse?.data?.first.projectId,
       "clock_in_note": "test",
       "blockno": blockNoController.text.toString(),
       "robotno": robotNoController.text.toString(),
@@ -170,7 +170,8 @@ class _MarkAttendanceTypeTwoState extends State<MarkAttendanceTypeTwo> {
     await Future.delayed(Duration(milliseconds: 200));
     Map<String, String> payload = {"GET": "get", "user_id": userId};
     Dialogs.showLoader(context, "Getting employee details ...");
-    EmployeeResponse response = await apiController.get<EmployeeResponse>(EndPoints.GET_USER_PROFILE, payload: payload);
+    GetEmployeeByIdResponse response =
+        await apiController.get<GetEmployeeByIdResponse>(EndPoints.GET_USER_PROFILE, payload: payload);
     Dialogs.hideLoader(context);
     if (response.status?.isApiSuccessful ?? false) {
       presentEmployees.add(response);

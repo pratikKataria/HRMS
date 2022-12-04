@@ -1,10 +1,11 @@
 import 'package:hrms/export.dart';
-import 'package:hrms/ui/attendance/typeOne/mark_attendance_type_one_response.dart';
+import 'package:hrms/ui/attendance/typeOne/model/GetEmployeeByIdResponse.dart';
+import 'package:hrms/ui/attendance/typeOne/model/mark_attendance_type_one_response.dart';
 import 'package:hrms/ui/scanned/employee_response.dart';
 import 'package:intl/intl.dart';
 
 class MarkAttendanceTypeOne extends StatefulWidget {
-  final EmployeeResponse employeeResponse;
+  final GetEmployeeByIdResponse employeeResponse;
 
   const MarkAttendanceTypeOne(this.employeeResponse, {Key? key}) : super(key: key);
 
@@ -70,7 +71,7 @@ class _MarkAttendanceTypeOneState extends State<MarkAttendanceTypeOne> {
                   ),
 
                   verticalSpace(50.0),
-                  HrmGradientButton(text: "Approve").onClick(() => markAttendance("22")),
+                  HrmGradientButton(text: "Approve").onClick(() => markAttendance()),
                 ],
               ),
             ),
@@ -80,7 +81,7 @@ class _MarkAttendanceTypeOneState extends State<MarkAttendanceTypeOne> {
     );
   }
 
-  Future<void> markAttendance(String userId) async {
+  Future<void> markAttendance() async {
     // await Future.delayed(Duration(milliseconds: 200));
 
     FocusScope.of(context).unfocus();
@@ -96,13 +97,13 @@ class _MarkAttendanceTypeOneState extends State<MarkAttendanceTypeOne> {
     var formData = FormData.fromMap({
       "Login": "Login",
       "user_id": widget.employeeResponse.data?.first.id ?? "",
-      "project_id": "12",
+      "project_id": widget.employeeResponse.data?.first.projectId,
       "business_id": "12",
       "clock_in_time": formattedDate,
       "clock_in_note": "na",
-      "clock_out_time": "2020-01-01 06:12:00",
       "clock_out_note": "test",
       "job_title": jobTitleController.text.toString(),
+      "status": "IN",
     });
 
     Dialogs.showLoader(context, "Marking attendance please wait ...");

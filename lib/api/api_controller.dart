@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:hrms/logging/simple_log.dart';
 import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
-import 'package:hrms/ui/addEmployee/model/add_employee_request.dart';
 import 'package:hrms/ui/addEmployee/model/add_employee_response.dart';
-import 'package:hrms/ui/attendance/typeOne/mark_attendance_type_one_response.dart';
+import 'package:hrms/ui/attendance/typeOne/model/GetEmployeeByIdResponse.dart';
+import 'package:hrms/ui/attendance/typeOne/model/mark_attendance_type_one_response.dart';
 import 'package:hrms/ui/attendance/typeTwo/mark_attendance_type_two_response.dart';
 import 'package:hrms/ui/login/login_response.dart';
 import 'package:hrms/ui/scanned/employee_response.dart';
@@ -81,6 +81,7 @@ class JsonConverter {
     if (T == MarkAttendanceTypeTwoResponse) return MarkAttendanceTypeTwoResponse.fromJson(value) as T;
     if (T == AddEmployeeResponse) return AddEmployeeResponse.fromJson(value) as T;
     if (T == GetAllUserResponse) return GetAllUserResponse.fromJson(value) as T;
+    if (T == GetEmployeeByIdResponse) return GetEmployeeByIdResponse.fromJson(value) as T;
     return throw Exception("Unknown class");
   }
 }

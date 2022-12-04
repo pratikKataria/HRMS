@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hrms/generated/assets.dart';
 import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/Fonts.dart';
@@ -62,40 +63,61 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
                   children: [
                     verticalSpace(20.0),
                     HrmInputField(
-                        textController: clientNameTextController,
-                        headingText: "Client Name",
-                        text: "Enter client name",
-                        mandate: true),
+                      textController: clientNameTextController,
+                      headingText: "Client Name",
+                      text: "Enter client name",
+                      mandate: true,
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                        LengthLimitingTextInputFormatter(80)
+                      ],
+                    ),
                     verticalSpace(20.0),
                     HrmInputField(
                         textController: registrationDateTextController,
                         headingText: "Registration Date",
-                        text: "Enter registration date",
+                        text: "DD/MM/YYYY",
                         mandate: true),
                     verticalSpace(20.0),
                     HrmInputField(
-                        textController: registrationNumberTextController,
-                        headingText: "Registration Number",
-                        text: "Enter registration number",
-                        mandate: true),
+                      textController: registrationNumberTextController,
+                      headingText: "Registration Number",
+                      text: "Enter registration number",
+                      mandate: true,
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
+                        LengthLimitingTextInputFormatter(50)
+                      ],
+                    ),
                     verticalSpace(20.0),
                     HrmInputField(
                       textController: contactPersonTextController,
                       headingText: "GSTIN",
                       text: "Enter GSTIN number",
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
+                        LengthLimitingTextInputFormatter(15)
+                      ],
                     ),
                     verticalSpace(20.0),
                     HrmInputField(
-                        textController: contactPersonMobileNumberTextController,
-                        headingText: "Contact Person Name",
-                        text: "Enter contact person name",
-                        mandate: true),
+                      textController: contactPersonMobileNumberTextController,
+                      headingText: "Contact Person Name",
+                      text: "Enter contact person name",
+                      mandate: true,
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                        LengthLimitingTextInputFormatter(50)
+                      ],
+                    ),
                     verticalSpace(20.0),
                     HrmInputField(
                       textController: contactPersonMobileNumberTextController,
                       headingText: "Contact Person mobile Number",
                       text: "Enter contact person mobile number",
                       mandate: true,
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(10)],
                     ),
                     verticalSpace(20.0),
                     HrmInputField(

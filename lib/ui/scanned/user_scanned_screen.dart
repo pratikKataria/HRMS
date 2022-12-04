@@ -1,4 +1,5 @@
 import 'package:hrms/export.dart';
+import 'package:hrms/ui/attendance/typeOne/model/GetEmployeeByIdResponse.dart';
 import 'package:hrms/ui/scanned/employee_response.dart';
 
 class UserScannedScreen extends StatefulWidget {
@@ -10,7 +11,7 @@ class UserScannedScreen extends StatefulWidget {
 }
 
 class _UserScannedScreenState extends State<UserScannedScreen> {
-  EmployeeResponse? response;
+  GetEmployeeByIdResponse? response;
 
   @override
   void initState() {
@@ -22,7 +23,7 @@ class _UserScannedScreenState extends State<UserScannedScreen> {
     await Future.delayed(Duration(milliseconds: 200));
     Map<String, String> payload = {"GET": "get", "user_id": userId};
     Dialogs.showLoader(context, "Getting employee details ...");
-    response = await apiController.get<EmployeeResponse>(EndPoints.GET_USER_PROFILE, payload: payload);
+    response = await apiController.get<GetEmployeeByIdResponse>(EndPoints.GET_USER_PROFILE, payload: payload);
     Dialogs.hideLoader(context);
     if (response?.status?.isApiSuccessful  ?? false) {
       FlutterToastX.showSuccessToastBottom(context, "Mark Attendance one or two");

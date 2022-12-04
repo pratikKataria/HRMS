@@ -51,9 +51,9 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
                       textController: pincodeTextController,
                       headingText: "Pincode",
                       text: "Enter pincode",
-                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(6)],
                       mandate: true,
                       inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(6)],
                     ),
                     verticalSpace(20.0),
                     HrmInputField(

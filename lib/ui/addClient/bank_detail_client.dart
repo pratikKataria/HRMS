@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addClient/basic_detail_client.dart';
 import 'package:hrms/ui/addClient/model/add_client_request.dart';
@@ -11,6 +12,7 @@ class BankDetailClient extends StatefulWidget {
 }
 
 class _BankDetailClientState extends State<BankDetailClient> {
+  TextEditingController accountHolderNameTextController = TextEditingController();
   TextEditingController accountTextController = TextEditingController();
   TextEditingController ifscTextController = TextEditingController();
   TextEditingController aadhaarCardTextController = TextEditingController();
@@ -43,17 +45,50 @@ class _BankDetailClientState extends State<BankDetailClient> {
                 child: ListView(
                   children: [
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "Account Number", text: "Enter skill"),
+                    HrmInputField(
+                      textController: accountHolderNameTextController,
+                      headingText: "Account Holder Name",
+                      text: "Enter account holder name",
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                        LengthLimitingTextInputFormatter(24)
+                      ],
+                    ),
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "IFSC Code", text: "Enter company name"),
+                    HrmInputField(
+                      headingText: "Account Number",
+                      text: "Enter account number",
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(17)],
+                    ),
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "Aadhaar Card", text: "Enter joining date"),
+                    HrmInputField(
+                      headingText: "IFSC Code",
+                      text: "Enter company name",
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("^[A-Za-z0-9_.-]*")),
+                        LengthLimitingTextInputFormatter(11)
+                      ],
+                    ),
                     verticalSpace(20.0),
-                    HrmInputField(headingText: "Pan Card", text: "Enter working days"),
+                    HrmInputField(
+                      headingText: "Aadhaar Card",
+                      text: "Enter aadhaar card",
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(12)],
+                    ),
+                    verticalSpace(20.0),
+                    HrmInputField(
+                      headingText: "Pan Card",
+                      text: "Enter pan",
+                      inputTypeNumber: true,
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("^[A-Za-z0-9_.-]*")),
+                        LengthLimitingTextInputFormatter(10)
+                      ],
+                    ),
                     verticalSpace(20.0),
                     HrmGradientButton(text: "Confirm").onClick(() {
-
-
                       addClientRequest.accountNumber = accountTextController.text.toString();
                       addClientRequest.ifsc = ifscTextController.text.toString();
                       addClientRequest.aadhar = aadhaarCardTextController.text.toString();

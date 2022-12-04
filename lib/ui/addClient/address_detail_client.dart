@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hrms/generated/assets.dart';
 import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/Fonts.dart';
@@ -77,6 +78,10 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
                       headingText: "City",
                       text: "City name",
                       mandate: true,
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                        LengthLimitingTextInputFormatter(24)
+                      ],
                     ),
                     verticalSpace(20.0),
                     HrmGradientButton(text: "Next").onClick(() {
