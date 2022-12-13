@@ -5,9 +5,12 @@ import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/Fonts.dart';
 import 'package:hrms/res/keys.dart';
 import 'package:hrms/route/screens.dart';
+import 'package:hrms/ui/home/model/get_all_projects_response.dart';
 import 'package:hrms/util/extension.dart';
 import 'package:hrms/util/shared_manager.dart';
 import 'package:hrms/widgets/widget_util.dart';
+
+import '../../export.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,6 +21,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<String> images = [Assets.imagesIcBannerPlaceholder, Assets.imagesImgLogin];
+  List<Data> listOfProjects = [];
+  String selectedProject = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getAllProjects();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,38 +121,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Column(
                       children: [
-                        Container(
-                          height: 30.0,
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [AppColors.buttonStartGradient, AppColors.buttonEndGradient],
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.background,
-                                spreadRadius: 2.0,
-                                blurRadius: 8.0,
-                                offset: Offset(2, 5),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Bombay Hospital", style: textStyleWhite14px500w),
-                              Icon(Icons.filter_list_sharp, size: 20.0, color: AppColors.white),
-                            ],
-                          ),
-                        ),
+                        projectFilter().onClick(() {
+                          showAlertDialog();
+                        }),
                         verticalSpace(20.0),
                         Row(
                           children: [
                             Flexible(
-                              child: categoryCard("Manage\nEmployee", Assets.imagesIcManageEmployee, "Edit")
-                                  .onClick(() => Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE))),
+                                child: categoryCard("Manage\nEmployee", Assets.imagesIcManageEmployee, "Edit")
+                                    .onClick(() => Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE))),
                             horizontalSpace(20.0),
                             Flexible(child: Container()),
                           ],
@@ -187,6 +175,35 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Container projectFilter() {
+    return Container(
+      height: 30.0,
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [AppColors.buttonStartGradient, AppColors.buttonEndGradient],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.background,
+            spreadRadius: 2.0,
+            blurRadius: 8.0,
+            offset: Offset(2, 5),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(selectedProject, style: textStyleWhite14px500w),
+          Icon(Icons.filter_list_sharp, size: 20.0, color: AppColors.white),
+        ],
+      ),
+    );
+  }
+
   Container categoryCard(String text, String image, String type) {
     return Container(
       height: 68.0,
@@ -221,9 +238,71 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
+  }
+
+  Future<void> getAllProjects() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    Dialogs.showLoader(context, "Getting projects ...");
+    GetAllProjectsResponse response = await apiController.get<GetAllProjectsResponse>(EndPoints.GET_ALL_PROJECTS);
+    Dialogs.hideLoader(context);
+    if (response.status?.isApiSuccessful ?? false) {
+      listOfProjects.clear();
+      listOfProjects.addAll(response.data!);
+      setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+    }
+    setState(() {});
+  }
+
+  showAlertDialog() {
+    SimpleDialog dialog = SimpleDialog(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),
+          child: Text("Select Project", style: textStyle14px600w),
+        ),
+        verticalSpace(10.0),
+        ...listOfProjects.map((e) {
+          return Container(
+            color: AppColors.inputFieldBackgroundColor,
+            padding: EdgeInsets.all(20.0),
+            margin: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(child: Text(e.clientName ?? "Not Found", style: textStyleSubText14px500w)),
+                    horizontalSpace(10.0),
+                    Icon(Icons.check_circle_outline, color: AppColors.textColorSubText)
+                  ],
+                ),
+              ],
+            ),
+          ).onClick(() {
+            Navigator.pop(context, e.clientName);
+          });
+        }).toList(),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return dialog;
+      },
+    ).then((value) {
+      setState(() {
+        selectedProject = value ?? "";
+      });
+    });
+    ;
   }
 }
