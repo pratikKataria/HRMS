@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 /// first_name : "pradeep"
 /// last_name : "soni"
 /// contact_no : "9856895698"
@@ -40,44 +42,44 @@
 
 class AddEmployeeRequest {
   AddEmployeeRequest({
-      String? firstName, 
-      String? lastName, 
-      String? contactNo, 
-      String? emergencynumber, 
-      String? email, 
-      String? password, 
-      String? gender, 
-      String? dob, 
-      String? permanentAddress, 
-      String? pincode, 
-      String? landmark, 
-      String? city, 
-      String? skilled, 
-      String? skills, 
-      String? company, 
-      String? department, 
-      String? designation, 
-      String? operations, 
-      String? doj, 
-      String? workingdays, 
-      String? shiftTime, 
-      String? perdayspayout, 
-      String? pf, 
-      String? esic, 
-      String? uan, 
-      String? pfemployeecontribution, 
-      String? pfemployercontribution, 
-      String? esicemployeecontribution, 
-      String? esicemployercontribution, 
-      String? accountNumber, 
-      String? accountHolder, 
-      String? ifsc, 
-      String? aadharNumber, 
-      String? aadharImg, 
-      String? panNumber, 
-      String? panImg, 
-      String? signatureImg, 
-      String? businessId, 
+      String? firstName,
+      String? lastName,
+      String? contactNo,
+      String? emergencynumber,
+      String? email,
+      String? password,
+      String? gender,
+      String? dob,
+      String? permanentAddress,
+      String? pincode,
+      String? landmark,
+      String? city,
+      String? skilled,
+      String? skills,
+      String? company,
+      String? department,
+      String? designation,
+      String? operations,
+      String? doj,
+      String? workingdays,
+      String? shiftTime,
+      String? perdayspayout,
+      String? pf,
+      String? esic,
+      String? uan,
+      String? pfemployeecontribution,
+      String? pfemployercontribution,
+      String? esicemployeecontribution,
+      String? esicemployercontribution,
+      String? accountNumber,
+      String? accountHolder,
+      String? ifsc,
+      String? aadharNumber,
+      String? aadharImg,
+      String? panNumber,
+      String? panImg,
+      String? signatureImg,
+      String? businessId,
       String? register,}){
     _firstName = firstName;
     _lastName = lastName;
@@ -320,7 +322,7 @@ AddEmployeeRequest copyWith({  String? firstName,
   String? get register => _register;
 
 
-  Map<String, dynamic> toJson() {
+  Future<Map<String, dynamic>> toJson() async {
     final map = <String, dynamic>{};
     map['first_name'] = _firstName;
     map['last_name'] = _lastName;
@@ -355,10 +357,16 @@ AddEmployeeRequest copyWith({  String? firstName,
     map['account_holder'] = _accountHolder;
     map['ifsc'] = _ifsc;
     map['aadhar_number'] = _aadharNumber;
+    map['pan_number'] = panNumber;
+    // map['aadhar_img'] = await MultipartFile.fromFile(aadharImg??"", filename:"aadharImage.jpg");
+    // map['pan_img'] =  await MultipartFile.fromFile(panImg??"", filename:"pan_img.jpg");
+    // map['signature_img'] =   await MultipartFile.fromFile(signatureImg??"", filename:"signature_img.jpg");
     map['aadhar_img'] = "img.jpg";
-    map['pan_number'] = "img.jpg";
     map['pan_img'] = "img.jpg";
     map['signature_img'] = "img.jpg";
+    map['aadhar_img'] = "1";
+    map['pan_img'] = "1";
+    map['signature_img'] = "1";
     map['business_id'] = "12";
     map['Register'] = "Register";
     return map;

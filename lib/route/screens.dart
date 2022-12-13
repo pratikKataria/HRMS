@@ -17,4 +17,7 @@ class Screens {
   static const String CLIENT_BANK_DETAIL = "CLIENT_BANK_DETAIL";
   static const String ATTENDANCE_TYPE_ONE = "ATTENDANCE_TYPE_ONE";
   static const String ATTENDANCE_TYPE_TWO = "ATTENDANCE_TYPE_TWO";
+  static const String MANAGE_EMPLOYEE = "MANAGE_EMPLOYEE";
+  static const String COMPLAINS = "COMPLAINS";
+
 }

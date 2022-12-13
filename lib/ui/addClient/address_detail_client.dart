@@ -64,6 +64,8 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
                       headingText: "Pincode",
                       text: "Enter pincode",
                       mandate: true,
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(6)],
                     ),
                     verticalSpace(20.0),
                     HrmInputField(
@@ -85,8 +87,8 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
                     ),
                     verticalSpace(20.0),
                     HrmGradientButton(text: "Next").onClick(() {
-                      // bool isValidationFailed = !validateInputFields();
-                      // if (isValidationFailed) return;
+                      bool isValidationFailed = !validateInputFields();
+                      if (isValidationFailed) return;
 
                       addClientRequest.fullAddress = fullAddressTextController.text.toString();
                       addClientRequest.pincode = pincodeTextController.text.toString();
@@ -114,6 +116,11 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
 
     if (pincodeTextController.text.toString().isEmpty) {
       showErrorToast("Please enter pincode");
+      return false;
+    }
+
+    if (pincodeTextController.text.toString().length < 6) {
+      showErrorToast("Please enter valid pincode");
       return false;
     }
 

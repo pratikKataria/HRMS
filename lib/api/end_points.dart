@@ -13,5 +13,6 @@ class EndPoints {
   static final String REGISTER_EMPLOYEE = BASE_URL + "Register_User.php";
   static final String REGISTER_CLIENT = BASE_URL + "Register_Project.php";
   static final String GET_ALL_USER = BASE_URL + "Get_All_Users.php";
+  static final String DELETE_USER = BASE_URL + "Manage_Employees.php";
 
 }

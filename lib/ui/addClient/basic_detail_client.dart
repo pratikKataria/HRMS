@@ -10,6 +10,7 @@ import 'package:hrms/widgets/flutter_toast.dart';
 import 'package:hrms/widgets/header.dart';
 import 'package:hrms/widgets/hrm_gradient_button.dart';
 import 'package:hrms/widgets/hrm_input_fields.dart';
+import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
 import 'package:hrms/widgets/widget_util.dart';
 
 late AddClientRequest addClientRequest;
@@ -29,6 +30,7 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
   TextEditingController contactPersonTextController = TextEditingController();
   TextEditingController contactPersonMobileNumberTextController = TextEditingController();
   TextEditingController contactPersonEmailIdTextController = TextEditingController();
+  String? dob;
 
   @override
   void initState() {
@@ -72,12 +74,18 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
                         LengthLimitingTextInputFormatter(80)
                       ],
                     ),
+
                     verticalSpace(20.0),
-                    HrmInputField(
+                    HrmInputFieldDummy(
                         textController: registrationDateTextController,
                         headingText: "Registration Date",
-                        text: "DD/MM/YYYY",
-                        mandate: true),
+                        text: dob ?? "DD/MM/YYYY",
+                        mandate: true)
+                        .onClick(() {
+                      FocusScope.of(context).unfocus();
+                      _selectDate(context);
+                    }),
+
                     verticalSpace(20.0),
                     HrmInputField(
                       textController: registrationNumberTextController,
@@ -91,7 +99,7 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
                     ),
                     verticalSpace(20.0),
                     HrmInputField(
-                      textController: contactPersonTextController,
+                      textController: gstinTextController,
                       headingText: "GSTIN",
                       text: "Enter GSTIN number",
                       inputFilters: [
@@ -101,7 +109,7 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
                     ),
                     verticalSpace(20.0),
                     HrmInputField(
-                      textController: contactPersonMobileNumberTextController,
+                      textController: contactPersonTextController,
                       headingText: "Contact Person Name",
                       text: "Enter contact person name",
                       mandate: true,
@@ -133,8 +141,8 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
             verticalSpace(20.0),
 
             HrmGradientButton(text: "Next", margin: EdgeInsets.symmetric(horizontal: 20.0)).onClick(() {
-              // bool isValidationFailed = !validateInputFields();
-              // if (isValidationFailed) return;
+              bool isValidationFailed = !validateInputFields();
+              if (isValidationFailed) return;
 
               addClientRequest.clientName = clientNameTextController.text.toString();
               addClientRequest.registrationDate = registrationDateTextController.text.toString();
@@ -166,20 +174,34 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
       showErrorToast("Please enter registration number");
       return false;
     }
-    if (gstinTextController.text.isEmpty) {
-      showErrorToast("Please enter GSTIN number");
-      return false;
-    }
+
+    // if (gstinTextController.text.isEmpty) {
+    //   showErrorToast("Please enter GSTIN number");
+    //   return false;
+    // }
+
     if (contactPersonTextController.text.isEmpty) {
       showErrorToast("Please enter contact person name");
       return false;
     }
+
     if (contactPersonMobileNumberTextController.text.isEmpty) {
       showErrorToast("Please enter contact mobile number");
       return false;
     }
+
+    if (contactPersonMobileNumberTextController.text.toString().length < 10) {
+      showErrorToast("Please enter valid contact person mobile");
+      return false;
+    }
+
     if (contactPersonEmailIdTextController.text.isEmpty) {
       showErrorToast("Please enter contact person email id");
+      return false;
+    }
+
+    if (!contactPersonEmailIdTextController.text.toString().isValidEmail) {
+      showErrorToast("Please enter valid email id");
       return false;
     }
 
@@ -189,4 +211,24 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
   void showErrorToast(String message) {
     FlutterToastX.showErrorToastBottom(context, message);
   }
+
+  void _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1800),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked == null && dob != null)
+      dob = dob;
+    else if (picked == null)
+      dob = null;
+    else
+      dob = "${picked.day}/${picked.month}/${picked.year}";
+
+    setState(() {});
+    registrationDateTextController.text = dob ?? "";
+  }
+
 }

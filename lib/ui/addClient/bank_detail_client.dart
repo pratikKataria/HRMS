@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addClient/basic_detail_client.dart';
-import 'package:hrms/ui/addClient/model/add_client_request.dart';
 import 'package:hrms/ui/addEmployee/model/add_employee_response.dart';
 
 class BankDetailClient extends StatefulWidget {
@@ -58,6 +57,7 @@ class _BankDetailClientState extends State<BankDetailClient> {
                     HrmInputField(
                       headingText: "Account Number",
                       text: "Enter account number",
+                      textController: accountTextController,
                       inputTypeNumber: true,
                       inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(17)],
                     ),
@@ -65,6 +65,7 @@ class _BankDetailClientState extends State<BankDetailClient> {
                     HrmInputField(
                       headingText: "IFSC Code",
                       text: "Enter company name",
+                      textController: ifscTextController,
                       inputFilters: [
                         FilteringTextInputFormatter.allow(RegExp("^[A-Za-z0-9_.-]*")),
                         LengthLimitingTextInputFormatter(11)
@@ -74,6 +75,7 @@ class _BankDetailClientState extends State<BankDetailClient> {
                     HrmInputField(
                       headingText: "Aadhaar Card",
                       text: "Enter aadhaar card",
+                      textController: aadhaarCardTextController,
                       inputTypeNumber: true,
                       inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(12)],
                     ),
@@ -81,7 +83,7 @@ class _BankDetailClientState extends State<BankDetailClient> {
                     HrmInputField(
                       headingText: "Pan Card",
                       text: "Enter pan",
-                      inputTypeNumber: true,
+                      textController: panCardTextController,
                       inputFilters: [
                         FilteringTextInputFormatter.allow(RegExp("^[A-Za-z0-9_.-]*")),
                         LengthLimitingTextInputFormatter(10)
@@ -109,7 +111,7 @@ class _BankDetailClientState extends State<BankDetailClient> {
 
   Future<void> registerClient() async {
     // await Future.delayed(Duration(milliseconds: 200));
-    AddClientRequest addClientRequest = AddClientRequest();
+    print("${addClientRequest.toJson()}");
     var formData = FormData.fromMap(addClientRequest.toJson());
 
     Dialogs.showLoader(context, "Creating new client ...");

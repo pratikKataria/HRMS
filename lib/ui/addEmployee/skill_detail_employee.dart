@@ -273,8 +273,11 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
 
             //Next
             HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Next").onClick(() {
-              bool isValidationFailed = !validateInputFields();
-              if (isValidationFailed) return;
+              if (isSkilled) {
+                bool isValidationFailed = !validateInputFields();
+                if (isValidationFailed) return;
+
+              }
 
               addEmployeeRequest.skills = skillsTextController.text.toString();
               addEmployeeRequest.company = companyTextController.text.toString();

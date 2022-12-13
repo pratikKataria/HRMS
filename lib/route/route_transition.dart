@@ -15,6 +15,7 @@ import 'package:hrms/ui/attendance/typeOne/model/GetEmployeeByIdResponse.dart';
 import 'package:hrms/ui/attendance/typeTwo/mark_attendence_type_two.dart';
 import 'package:hrms/ui/home/home_screen.dart';
 import 'package:hrms/ui/login/login_screen.dart';
+import 'package:hrms/ui/manageEmployee/manage_employee_screen.dart';
 import 'package:hrms/ui/scanned/employee_response.dart';
 import 'package:hrms/ui/scanned/user_scanned_screen.dart';
 import 'package:hrms/ui/scanner/multi_qr_scanner_screen.dart';
@@ -49,6 +50,7 @@ class RouteTransition extends PageRouteBuilder {
               case Screens.ATTENDANCE_TYPE_ONE: return MarkAttendanceTypeOne(arguments as GetEmployeeByIdResponse);
               case Screens.ATTENDANCE_TYPE_TWO: return MarkAttendanceTypeTwo(arguments as GetEmployeeByIdResponse);
               case Screens.AADHAAR_CARD_VERIFICATION_SCREEN: return AadhaarVerificationScreen();
+              case Screens.MANAGE_EMPLOYEE: return  ManageEmployeeScreen();
             }
             return LoginScreen();
           },

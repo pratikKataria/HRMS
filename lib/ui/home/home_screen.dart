@@ -139,7 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         verticalSpace(20.0),
                         Row(
                           children: [
-                            Flexible(child: categoryCard("Manage\nEmployee", Assets.imagesIcManageEmployee, "Edit")),
+                            Flexible(
+                              child: categoryCard("Manage\nEmployee", Assets.imagesIcManageEmployee, "Edit")
+                                  .onClick(() => Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE))),
                             horizontalSpace(20.0),
                             Flexible(child: Container()),
                           ],
@@ -167,7 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Row(
                           children: [
-                            Flexible(child: categoryCard("Register\nEmployee", Assets.imagesIcViewReports, "View")),
+                            Flexible(child: categoryCard("Complains/\nSuggestion", Assets.imagesIcViewReports, "View")
+                            .onClick(() => {Navigator.pushNamed(context, Screens.COMPLAINS)})),
                             horizontalSpace(20.0),
                             Flexible(child: Container()),
                           ],

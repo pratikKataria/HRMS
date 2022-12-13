@@ -75,7 +75,6 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
                     ),
                     verticalSpace(20.0),
                     HrmGradientButton(text: "Next").onClick(() {
-
                       bool isValidationFailed = !validateInputFields();
                       if (isValidationFailed) return;
 
@@ -105,6 +104,11 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
 
     if (pincodeTextController.text.toString().isEmpty) {
       showErrorToast("Please enter pincode");
+      return false;
+    }
+
+    if (pincodeTextController.text.toString().length < 6) {
+      showErrorToast("Please enter valid pincode");
       return false;
     }
 

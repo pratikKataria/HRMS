@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addEmployee/aadhaar_verification_screen.dart';
 import 'package:hrms/ui/addEmployee/model/add_employee_response.dart';
+import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
+import 'package:image_picker/image_picker.dart';
 
 class BankDetailEmployee extends StatefulWidget {
   const BankDetailEmployee({Key? key}) : super(key: key);
@@ -16,6 +20,10 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
   TextEditingController ifscTextController = TextEditingController();
   TextEditingController aadhaarCardTextController = TextEditingController();
   TextEditingController panCardTextController = TextEditingController();
+
+  String? aadhaarImage;
+  String? panImage;
+  String? signatureImage;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +86,24 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
                       inputTypeNumber: true,
                       inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(12)],
                     ),
+                    verticalSpace(10.0),
+                    HrmInputFieldDummy(
+                      textController: aadhaarCardTextController,
+                      headingText: aadhaarImage,
+                      text: "Pick Aadhaar image",
+                      leftWidget: Icon(Icons.attach_file),
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(12)],
+                    ).onClick(() async {
+                      final ImagePicker _picker = ImagePicker();
+                      final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+                      aadhaarImage = image?.name;
+                      if (image != null) {
+                        final File imageFile = File(image.path);
+                        addEmployeeRequest.aadharImg = imageFile.path;
+                      }
+                      setState(() {});
+                    }),
                     verticalSpace(20.0),
                     HrmInputField(
                       textController: panCardTextController,
@@ -89,20 +115,56 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
                         LengthLimitingTextInputFormatter(10)
                       ],
                     ),
+                    HrmInputFieldDummy(
+                      textController: aadhaarCardTextController,
+                      headingText: panImage,
+                      text: "Pick pan image",
+                      leftWidget: Icon(Icons.attach_file),
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(12)],
+                    ).onClick(() async {
+                      final ImagePicker _picker = ImagePicker();
+                      final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+                      panImage = image?.name;
+                      if (image != null) {
+                        final File imageFile = File(image.path);
+                        addEmployeeRequest.panImg = imageFile.path;
+                      }
+                      setState(() {});
+                    }),
                     verticalSpace(20.0),
-                    HrmGradientButton(text: "Confirm").onClick(() {
-                      addEmployeeRequest.accountNumber = accountTextController.text.toString();
-                      addEmployeeRequest.ifsc = ifscTextController.text.toString();
-                      addEmployeeRequest.aadharNumber = aadhaarCardTextController.text.toString();
-                      addEmployeeRequest.panNumber = panCardTextController.text.toString();
-
-                      registerEmployee();
+                    HrmInputFieldDummy(
+                      textController: aadhaarCardTextController,
+                      headingText: signatureImage ?? "Signature Image",
+                      text: "Pick signature image",
+                      leftWidget: Icon(Icons.attach_file),
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(12)],
+                    ).onClick(() async {
+                      final ImagePicker _picker = ImagePicker();
+                      final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+                      signatureImage = image?.name;
+                      if (image != null) {
+                        final File imageFile = File(image.path);
+                        addEmployeeRequest.signatureImg = imageFile.path;
+                      }
+                      setState(() {});
                     }),
                     verticalSpace(20.0),
                   ],
                 ),
               ),
             ),
+
+            HrmGradientButton(text: "Confirm", margin: EdgeInsets.symmetric(horizontal: 20.00)).onClick(() {
+              addEmployeeRequest.accountNumber = accountTextController.text.toString();
+              addEmployeeRequest.ifsc = ifscTextController.text.toString();
+              addEmployeeRequest.aadharNumber = aadhaarCardTextController.text.toString();
+              addEmployeeRequest.panNumber = panCardTextController.text.toString();
+
+              registerEmployee();
+            }),
+            verticalSpace(20.0),
           ],
         ),
       ),
@@ -113,7 +175,7 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
     // await Future.delayed(Duration(milliseconds: 200));
 
     print(addEmployeeRequest.toJson());
-    var formData = FormData.fromMap(addEmployeeRequest.toJson());
+    var formData = FormData.fromMap(await addEmployeeRequest.toJson());
 
     Dialogs.showLoader(context, "Creating new employee ...");
     AddEmployeeResponse addEmployeeResponse = await apiController.post<AddEmployeeResponse>(

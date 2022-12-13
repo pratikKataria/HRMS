@@ -25,15 +25,14 @@ class _SkillDetailClientState extends State<SkillDetailClient> {
   void initState() {
     super.initState();
     getAllUsers();
-    searchTextController.addListener(() {
-      setState(() {});
-    });
-  }
+    searchTextController.addListener(() => setState(() {}));
+   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundScreenColor,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -89,6 +88,12 @@ class _SkillDetailClientState extends State<SkillDetailClient> {
 
             verticalSpace(10.0),
             HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Next").onClick(() {
+
+              if (selectedEmployees.isEmpty) {
+                FlutterToastX.showErrorToastBottom(context, "Please select at least one employee");
+                return;
+              }
+
               String selectedEmployeeStringCommaSeparated = selectedEmployees.map((e) => e.id).toList().join(",");
               addClientRequest.employees = selectedEmployeeStringCommaSeparated;
               Navigator.pushNamed(context, Screens.CLIENT_BANK_DETAIL);

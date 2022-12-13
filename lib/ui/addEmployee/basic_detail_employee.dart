@@ -224,13 +224,28 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
       return false;
     }
 
+    if (mobileNumberTextController.text.toString().length < 10) {
+      showErrorToast("Please enter valid mobile number");
+      return false;
+    }
+
     if (emContactNumberTextController.text.toString().isEmpty) {
       showErrorToast("Please enter emergency contact number");
       return false;
     }
 
+    if (emContactNumberTextController.text.toString().length < 10) {
+      showErrorToast("Please enter valid emergency contact number");
+      return false;
+    }
+
     if (emailTextController.text.toString().isEmpty) {
       showErrorToast("Please enter email id");
+      return false;
+    }
+
+    if (!emailTextController.text.toString().isValidEmail) {
+      showErrorToast("Please enter valid email id");
       return false;
     }
 
