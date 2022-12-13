@@ -56,35 +56,35 @@ class _SkillDetailClientState extends State<SkillDetailClient> {
             ),
             verticalSpace(6.0),
 
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.0),
-                decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
-                child: ListView(
-                  children: allEmployeesList
-                      .difference(selectedEmployees)
-                      .where((element) =>
-                          (element.firstName ?? "")
-                              .toString()
-                              .toLowerCase()
-                              .contains(searchTextController.text.toString().toLowerCase()) ||
-                          (element.lastName ?? "")
-                              .toString()
-                              .toLowerCase()
-                              .contains(searchTextController.text.toString().toLowerCase()))
-                      .map((e) => cardViewAddEmployee(e))
-                      .toList(),
-                ),
-              ),
-            ),
-
-            verticalSpace(6.0),
-
-            Expanded(
-              child: ListView(
-                children: selectedEmployees.map((e) => cardViewRemoveEmployee(e)).toList(),
-              ),
-            ),
+            // Expanded(
+            //   child: Container(
+            //     margin: EdgeInsets.symmetric(horizontal: 20.0),
+            //     decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+            //     child: ListView(
+            //       children: allEmployeesList
+            //           .difference(selectedEmployees)
+            //           .where((element) =>
+            //               (element.firstName ?? "")
+            //                   .toString()
+            //                   .toLowerCase()
+            //                   .contains(searchTextController.text.toString().toLowerCase()) ||
+            //               (element.lastName ?? "")
+            //                   .toString()
+            //                   .toLowerCase()
+            //                   .contains(searchTextController.text.toString().toLowerCase()))
+            //           .map((e) => cardViewAddEmployee(e))
+            //           .toList(),
+            //     ),
+            //   ),
+            // ),
+            //
+            // verticalSpace(6.0),
+            //
+            // Expanded(
+            //   child: ListView(
+            //     children: selectedEmployees.map((e) => cardViewRemoveEmployee(e)).toList(),
+            //   ),
+            // ),
 
             verticalSpace(10.0),
             HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Next").onClick(() {

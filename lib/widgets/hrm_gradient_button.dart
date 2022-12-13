@@ -7,8 +7,10 @@ class HrmGradientButton extends StatelessWidget {
   final String text;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
+  final double? radius;
 
-  const HrmGradientButton({this.padding, this.margin, this.text = "", Key? key}) : super(key: key);
+
+  const HrmGradientButton({this.radius, this.padding, this.margin, this.text = "", Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class HrmGradientButton extends StatelessWidget {
             end: Alignment.centerRight,
             colors: [AppColors.buttonEndGradient, AppColors.buttonStartGradient],
           ),
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          borderRadius: BorderRadius.all(Radius.circular(radius ?? 8.0)),
           boxShadow: [
             BoxShadow(
               color: AppColors.background,

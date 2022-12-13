@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/keys.dart';
 import 'package:hrms/route/route_transition.dart';
-import 'package:hrms/ui/addEmployee/bank_detail_employee.dart';
 import 'package:hrms/ui/home/home_screen.dart';
 import 'package:hrms/ui/login/login_screen.dart';
 import 'package:hrms/util/shared_manager.dart';

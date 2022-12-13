@@ -21,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<String> images = [Assets.imagesIcBannerPlaceholder, Assets.imagesImgLogin];
-  List<Data> listOfProjects = [];
+  List<Data?> listOfProjects = [];
   String selectedProject = "";
 
   @override
@@ -244,21 +244,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<void> getAllProjects() async {
-    await Future.delayed(Duration(milliseconds: 200));
-    Dialogs.showLoader(context, "Getting projects ...");
-    GetAllProjectsResponse response = await apiController.get<GetAllProjectsResponse>(EndPoints.GET_ALL_PROJECTS);
-    Dialogs.hideLoader(context);
-    if (response.status?.isApiSuccessful ?? false) {
-      listOfProjects.clear();
-      listOfProjects.addAll(response.data!);
-      setState(() {});
-    } else {
-      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
-    }
-    setState(() {});
-  }
-
   showAlertDialog() {
     SimpleDialog dialog = SimpleDialog(
       children: [
@@ -278,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(child: Text(e.clientName ?? "Not Found", style: textStyleSubText14px500w)),
+                    Container(child: Text(e?.clientName ?? "Not Found", style: textStyleSubText14px500w)),
                     horizontalSpace(10.0),
                     Icon(Icons.check_circle_outline, color: AppColors.textColorSubText)
                   ],
@@ -286,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ).onClick(() {
-            Navigator.pop(context, e.clientName);
+            Navigator.pop(context, e?.clientName);
           });
         }).toList(),
       ],
@@ -305,4 +290,21 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     ;
   }
+
+  Future<void> getAllProjects() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    Dialogs.showLoader(context, "Getting projects ...");
+    GetAllProjectsResponse response = await apiController.get<GetAllProjectsResponse>(EndPoints.GET_ALL_PROJECTS);
+    Dialogs.hideLoader(context);
+    if (response.status?.isApiSuccessful ?? false) {
+      listOfProjects.clear();
+      listOfProjects.addAll(response.data!);
+      if (listOfProjects.isNotEmpty) selectedProject = listOfProjects?.first?.clientName ?? "";
+      setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+    }
+    setState(() {});
+  }
+
 }

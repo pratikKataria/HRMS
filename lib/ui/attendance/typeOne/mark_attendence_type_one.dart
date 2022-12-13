@@ -5,7 +5,7 @@ import 'package:hrms/ui/scanned/employee_response.dart';
 import 'package:intl/intl.dart';
 
 class MarkAttendanceTypeOne extends StatefulWidget {
-  final GetEmployeeByIdResponse employeeResponse;
+  final GetEmployeeByIdResponse? employeeResponse;
 
   const MarkAttendanceTypeOne(this.employeeResponse, {Key? key}) : super(key: key);
 
@@ -61,7 +61,7 @@ class _MarkAttendanceTypeOneState extends State<MarkAttendanceTypeOne> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            "Name: ${widget.employeeResponse.data?.first.firstName ?? ""} ${widget.employeeResponse?.data?.first.lastName ?? ""}",
+                            "Name: ${widget.employeeResponse?.data?.first.firstName ?? ""} ${widget.employeeResponse?.data?.first.lastName ?? ""}",
                             style: textStyle14px500w),
                         Text("Employee Id: ${widget.employeeResponse?.data?.first.id ?? ""}", style: textStyle14px500w),
                         verticalSpace(4.0),
@@ -96,8 +96,8 @@ class _MarkAttendanceTypeOneState extends State<MarkAttendanceTypeOne> {
 
     var formData = FormData.fromMap({
       "Login": "Login",
-      "user_id": widget.employeeResponse.data?.first.id ?? "",
-      "project_id": widget.employeeResponse.data?.first.projectId,
+      "user_id": widget.employeeResponse?.data?.first.id ?? "",
+      "project_id": widget.employeeResponse?.data?.first.projectId,
       "business_id": "12",
       "clock_in_time": formattedDate,
       "clock_in_note": "na",

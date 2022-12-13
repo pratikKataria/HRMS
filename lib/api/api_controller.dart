@@ -31,6 +31,12 @@ class ApiController {
     // Map<String, dynamic> headersMap = {"Authorization": await AuthUser.getInstance().token()};
     // if (headers != null) headersMap.addAll(headers);
 
+    if (body is FormData) {
+      body.fields.forEach((element) {
+        print("${element.value}  :  ${element.key}");
+      });
+    }
+
     SimpleLogger.debug(ApiController, "Type: Request\n Api Call: $url\n Inputs: $body\n Payload: ${payload.toString()}\n");
 
     Response response = await dio.post(
