@@ -59,7 +59,18 @@ class _ManageEmployeeScreenState extends State<ManageEmployeeScreen> {
                 margin: EdgeInsets.symmetric(horizontal: 20.0),
                 decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
                 child: ListView(
-                  children: allEmployeesList.map((e) => cardViewRemoveEmployee(e)).toList(),
+                  children: allEmployeesList
+                      .where((element) =>
+                          (element.firstName ?? "")
+                              .toString()
+                              .toLowerCase()
+                              .contains(searchTextController.text.toString().toLowerCase()) ||
+                          (element.lastName ?? "")
+                              .toString()
+                              .toLowerCase()
+                              .contains(searchTextController.text.toString().toLowerCase()))
+                      .map((e) => cardViewRemoveEmployee(e))
+                      .toList(),
                 ),
               ),
             ),

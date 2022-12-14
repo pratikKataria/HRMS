@@ -18,11 +18,14 @@ import 'package:hrms/ui/attendance/typeTwo/mark_attendence_type_two_version_2.da
 import 'package:hrms/ui/complains/complains_and_suggestion_screen.dart';
 import 'package:hrms/ui/home/home_screen.dart';
 import 'package:hrms/ui/login/login_screen.dart';
+import 'package:hrms/ui/manageEmployee/manage_employe_options_screen.dart';
 import 'package:hrms/ui/manageEmployee/manage_employee_screen.dart';
+import 'package:hrms/ui/manageEmployee/view_attendance_screen.dart';
 import 'package:hrms/ui/scanned/employee_response.dart';
 import 'package:hrms/ui/scanned/user_scanned_screen.dart';
 import 'package:hrms/ui/scanner/multi_qr_scanner_screen.dart';
 import 'package:hrms/ui/scanner/qr_scanner_screen.dart';
+import 'package:hrms/ui/workorder/get_all_workorder.dart';
 
 /// 🔥 MVP Architecture🔥
 /// 🍴 Focused on Clean Architecture
@@ -56,7 +59,10 @@ class RouteTransition extends PageRouteBuilder {
               case Screens.ATTENDANCE_TYPE_TWO_V2: return MarkAttendanceTypeTwoV2(arguments as String);
               case Screens.AADHAAR_CARD_VERIFICATION_SCREEN: return AadhaarVerificationScreen();
               case Screens.MANAGE_EMPLOYEE: return  ManageEmployeeScreen();
+              case Screens.MANAGE_EMPLOYEE_OPTIONS: return  ManageEmployeeOptionsScreen(arguments as String);
               case Screens.COMPLAINS: return  ComplainsAndSuggestionScreen();
+              case Screens.VIEW_ATTENDANCE: return  ViewAttendanceScreen(arguments as String);
+              case Screens.VIEW_WORKORDER_SCREEN: return  GetAllWorkOrderScreen(arguments as String);
             }
             return LoginScreen();
           },

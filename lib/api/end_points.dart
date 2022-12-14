@@ -16,5 +16,7 @@ class EndPoints {
   static final String DELETE_USER = BASE_URL + "Manage_Employees.php";
   static final String COMPLAINS = BASE_URL + "Manage_Employees.php";
   static final String GET_ALL_PROJECTS = BASE_URL + "Get_All_Projects.php?GET=GET";
+  static final String ATTENDANCE_REPORT = BASE_URL + "Attendance_Report.php";
+  static final String GET_ALL_WORK_ORDER = BASE_URL + "Get_all_workorders.php";
 
 }

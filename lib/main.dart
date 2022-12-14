@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/keys.dart';
 import 'package:hrms/route/route_transition.dart';
+import 'package:hrms/ui/attendance/typeTwo/mark_attendence_type_two_version_2.dart';
 import 'package:hrms/ui/home/home_screen.dart';
 import 'package:hrms/ui/login/login_screen.dart';
+import 'package:hrms/ui/workorder/get_all_workorder.dart';
 import 'package:hrms/util/shared_manager.dart';
 
 Future<void> main() async {
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         return RouteTransition(routeName: settings.name ?? "/", arguments: settings.arguments);
       },
-      home: login ? HomeScreen() : LoginScreen(),
+      home: login ? HomeScreen(): LoginScreen(),
     );
   }
 }

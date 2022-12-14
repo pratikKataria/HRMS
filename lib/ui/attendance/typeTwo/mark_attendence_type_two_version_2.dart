@@ -229,8 +229,9 @@ class _MarkAttendanceTypeTwoV2State extends State<MarkAttendanceTypeTwoV2> {
     if (markAttendanceTypeTwoResponse.status?.isApiSuccessful ?? false) {
       FlutterToastX.showSuccessToastBottom(context, markAttendanceTypeTwoResponse.message ?? "Attendance marked!");
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
-      Navigator.pop(context);
-      Navigator.pop(context);
+      Navigator.pop(context); // manage employee
+      Navigator.pop(context); // current pop
+      Navigator.pushNamed(context, Screens.VIEW_WORKORDER_SCREEN, arguments: widget.projectId);
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${markAttendanceTypeTwoResponse.message ?? ""}");
     }
@@ -254,7 +255,7 @@ class _MarkAttendanceTypeTwoV2State extends State<MarkAttendanceTypeTwoV2> {
   // }
 
   Future<void> getAllUsers() async {
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 400));
 
     Dialogs.showLoader(context, "Getting all user list ...");
     var formData = FormData.fromMap({

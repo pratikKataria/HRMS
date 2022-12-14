@@ -1,14 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:hrms/generated/assets.dart';
-import 'package:hrms/res/AppColors.dart';
-import 'package:hrms/res/Fonts.dart';
 import 'package:hrms/res/keys.dart';
-import 'package:hrms/route/screens.dart';
 import 'package:hrms/ui/home/model/get_all_projects_response.dart';
-import 'package:hrms/util/extension.dart';
 import 'package:hrms/util/shared_manager.dart';
-import 'package:hrms/widgets/widget_util.dart';
 
 import '../../export.dart';
 
@@ -23,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> images = [Assets.imagesIcBannerPlaceholder, Assets.imagesImgLogin];
   List<Data?> listOfProjects = [];
   String selectedProject = "";
+  String selectedProjectId = "";
 
   @override
   void initState() {
@@ -128,8 +122,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           children: [
                             Flexible(
-                                child: categoryCard("Manage\nEmployee", Assets.imagesIcManageEmployee, "Edit")
-                                    .onClick(() => Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE))),
+                              child: categoryCard("Manage\nEmployee", Assets.imagesIcManageEmployee, "Edit").onClick(() =>
+                                  Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE_OPTIONS, arguments: selectedProjectId)),
+                            ),
                             horizontalSpace(20.0),
                             Flexible(child: Container()),
                           ],
@@ -300,6 +295,7 @@ class _HomeScreenState extends State<HomeScreen> {
       listOfProjects.clear();
       listOfProjects.addAll(response.data!);
       if (listOfProjects.isNotEmpty) selectedProject = listOfProjects?.first?.clientName ?? "";
+      if (listOfProjects.isNotEmpty) selectedProjectId = listOfProjects?.first?.projectId ?? "";
       setState(() {});
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");

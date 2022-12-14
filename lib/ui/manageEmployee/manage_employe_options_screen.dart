@@ -56,7 +56,14 @@ class _ManageEmployeeOptionsScreenState extends State<ManageEmployeeOptionsScree
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
               child: Text("Add / Remove / Edit Employee", style: textStyle12px600w),
-            ),
+            ).onClick(() => Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE, arguments: widget.projectId)),
+
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+              child: Text("View Attendance", style: textStyle12px600w),
+            ).onClick(() => Navigator.pushNamed(context, Screens.VIEW_ATTENDANCE, arguments: widget.projectId)),
             Spacer(),
             verticalSpace(10.0),
             // HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Add New").onClick(() {

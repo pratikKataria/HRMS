@@ -9,7 +9,9 @@ import 'package:hrms/ui/attendance/typeOne/model/mark_attendance_type_one_respon
 import 'package:hrms/ui/attendance/typeTwo/mark_attendance_type_two_response.dart';
 import 'package:hrms/ui/home/model/get_all_projects_response.dart';
 import 'package:hrms/ui/login/login_response.dart';
+import 'package:hrms/ui/manageEmployee/model/view_attendance_response.dart';
 import 'package:hrms/ui/scanned/employee_response.dart';
+import 'package:hrms/ui/workorder/model/get_all_work_order.dart';
 
 import 'dio_http.dart';
 
@@ -74,7 +76,7 @@ class ApiController {
         ));
 
     SimpleLogger.debug(ApiController,
-        "Type: Response\n Api Call: $url\n Inputs: $body\n Payload: ${payload.toString()}\n Header: km\n Response:${response.toString()}\n");
+        "Type: Response\n Api Call: $url\n Inputs: $body\n Payload: ${payload.toString()}\n Header: \n Response:${response.toString()}\n");
 
     return JsonConverter.fromJson<T>(response.data);
   }
@@ -90,6 +92,8 @@ class JsonConverter {
     if (T == GetAllUserResponse) return GetAllUserResponse.fromJson(value) as T;
     if (T == GetEmployeeByIdResponse) return GetEmployeeByIdResponse.fromJson(value) as T;
     if (T == GetAllProjectsResponse) return GetAllProjectsResponse.fromJson(value) as T;
+    if (T == ViewAttendanceResponse) return ViewAttendanceResponse.fromJson(value) as T;
+    if (T == GetAllWorkOrderResponse) return GetAllWorkOrderResponse.fromJson(value) as T;
     return throw Exception("Unknown class");
   }
 }

@@ -1,4 +1,5 @@
 class Screens {
+
   Screens._();
 
   static const String LOGIN_SCREEN = "LOGIN_SCREEN";
@@ -20,6 +21,9 @@ class Screens {
   static const String ATTENDANCE_TYPE_TWO = "ATTENDANCE_TYPE_TWO";
   static const String ATTENDANCE_TYPE_TWO_V2 = "ATTENDANCE_TYPE_TWO_V2";
   static const String MANAGE_EMPLOYEE = "MANAGE_EMPLOYEE";
+  static const String MANAGE_EMPLOYEE_OPTIONS = "MANAGE_EMPLOYEE_OPTIONS";
   static const String COMPLAINS = "COMPLAINS";
+  static const String VIEW_ATTENDANCE = "VIEW_ATTENDANCE";
+  static const String VIEW_WORKORDER_SCREEN = "VIEW_WORKORDER_SCREEN";
 
 }

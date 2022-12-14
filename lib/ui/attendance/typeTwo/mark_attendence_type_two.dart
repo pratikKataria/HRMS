@@ -161,13 +161,14 @@ class _MarkAttendanceTypeTwoState extends State<MarkAttendanceTypeTwo> {
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
       Navigator.pop(context);
       Navigator.pop(context);
+      Navigator.pushNamed(context, Screens.VIEW_WORKORDER_SCREEN, arguments: widget.employeeResponse?.data?.first.projectId);
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${markAttendanceTypeTwoResponse.message ?? ""}");
     }
   }
 
   Future<void> getEmployeeDataById(String userId) async {
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 400));
     Map<String, String> payload = {"GET": "get", "user_id": userId};
     Dialogs.showLoader(context, "Getting employee details ...");
     GetEmployeeByIdResponse response =
