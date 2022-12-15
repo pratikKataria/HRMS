@@ -1,9 +1,6 @@
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
-import 'package:hrms/ui/addEmployee/model/add_employee_request.dart';
 import 'package:hrms/util/utility.dart';
-
-AddEmployeeRequest addEmployeeRequest = AddEmployeeRequest();
 
 class ManageEmployeeScreen extends StatefulWidget {
   const ManageEmployeeScreen({Key? key}) : super(key: key);

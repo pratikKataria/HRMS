@@ -1,6 +1,7 @@
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:hrms/res/keys.dart';
 import 'package:hrms/ui/home/model/get_all_projects_response.dart';
+import 'package:hrms/ui/manageAccount/all_account_screen.dart';
 import 'package:hrms/util/shared_manager.dart';
 
 import '../../export.dart';
@@ -138,7 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Row(
                           children: [
-                            Flexible(child: categoryCard("Manage\nExpenses", Assets.imagesIcManageExpenses, "View")),
+                            Flexible(
+                                child: categoryCard("Manage\nAccount", Assets.imagesIcManageExpenses, "View").onClick(() =>
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AllAccountScreen(selectedProjectId))))),
                             horizontalSpace(20.0),
                             Flexible(child: Container()),
                           ],
