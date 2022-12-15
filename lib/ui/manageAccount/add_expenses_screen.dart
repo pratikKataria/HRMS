@@ -1,20 +1,27 @@
+import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import "package:hrms/ui/manageAccount/model/get_all_types.dart";
 import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
 
-import 'model/get_balance_response.dart';
-
-class GetBalanceScreen extends StatefulWidget {
-  const GetBalanceScreen({Key? key}) : super(key: key);
+class AddExpensesScreen extends StatefulWidget {
+  const AddExpensesScreen({Key? key}) : super(key: key);
 
   @override
-  State<GetBalanceScreen> createState() => _GetBalanceScreenState();
+  State<AddExpensesScreen> createState() => _AddExpensesScreenState();
 }
 
-class _GetBalanceScreenState extends State<GetBalanceScreen> {
+class _AddExpensesScreenState extends State<AddExpensesScreen> {
+  TextEditingController amountTextController = TextEditingController();
+  TextEditingController noteTextController = TextEditingController();
+
+  Data? selectedGender;
+
   List<Data> listOfAccounts = [];
+  List<String> listOfTransferType = ["credit", "debit"];
+
   String? selectedTransferFromAccountString;
-  num? amountString;
+  String? selectedTransferToAccountString;
+  String? selectedTransferTypeString;
 
   @override
   void initState() {
@@ -29,7 +36,7 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Header(headerText: "Add Account"),
+            Header(headerText: "Add Expenses"),
 
             //fields
             Expanded(
@@ -40,20 +47,37 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
                     verticalSpace(20.0),
                     HrmInputFieldDummy(
                       headingText: "Select Account",
-                      text: selectedTransferFromAccountString ?? "Select account to get available balance",
+                      text: selectedTransferFromAccountString ?? "Select to add expense",
                       mandate: true,
                     ).onClick(() {
                       FocusScope.of(context).unfocus();
                       showFromAccountDialog();
                     }),
                     verticalSpace(20.0),
+                    HrmInputField(
+                      textController: amountTextController,
+                      headingText: "Amount",
+                      text: "Enter amount",
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(20)],
+                      mandate: true,
+                    ),
                     verticalSpace(20.0),
-                    Center(child: Text("${amountString ?? "0.0"}", style: textStyleBlue28px600w)),
-                    Center(child: Text("Available balance", style: textStyleRegular16px600w)),
+                    HrmInputField(
+                      textController: noteTextController,
+                      headingText: "Note",
+                      text: "Enter note",
+                      inputFilters: [LengthLimitingTextInputFormatter(120)],
+                      mandate: true,
+                    ),
                   ],
                 ),
               ),
             ),
+            verticalSpace(20.0),
+            HrmGradientButton(text: "Add", radius: 0.0).onClick(() {
+              FocusScope.of(context).unfocus();
+              if (validateInputFields()) addExpenses();
+            }),
           ],
         ),
       ),
@@ -114,7 +138,6 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
     ).then((Data? value) {
       setState(() {
         selectedTransferFromAccountString = value?.name ?? "";
-        getBalanceByAccount();
       });
     });
   }
@@ -124,11 +147,48 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
       showErrorToast("Please select from account");
       return false;
     }
+
+    if (amountTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter amount");
+      return false;
+    }
+
+    if (noteTextController.text.toString().isEmpty) {
+      showErrorToast("Please enter note");
+      return false;
+    }
+
     return true;
   }
 
   void showErrorToast(String message) {
     FlutterToastX.showErrorToastBottom(context, message);
+  }
+
+  Future<void> addExpenses() async {
+    await Future.delayed(Duration(milliseconds: 200));
+
+    Dialogs.showLoader(context, "Adding expenses...");
+    String fromIdString = listOfAccounts.where((element) => (element.name == selectedTransferFromAccountString)).first.id ?? "";
+
+    var formData = FormData.fromMap({
+      "Register": "register",
+      "Add_Expances": "Add_Expances",
+      "account_id": fromIdString,
+      "business_id": "12",
+      "amount": amountTextController.text.toString(),
+      "user_id": "12", //todo change this
+      "note": noteTextController.text.toString(),
+    });
+
+    GetAllTypes response = await apiController.post<GetAllTypes>(EndPoints.GET_ALL_ACCOUNT, body: formData);
+    Dialogs.hideLoader(context);
+    if (response.status!.isApiSuccessful) {
+      FlutterToastX.showSuccessToastBottom(context, "Expenses added successfully");
+      Navigator.pop(context);
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+    }
   }
 
   Future<void> getAllAccounts() async {
@@ -146,28 +206,6 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
     if (response.status!.isApiSuccessful) {
       listOfAccounts.clear();
       listOfAccounts.addAll(response.data!);
-      setState(() {});
-    } else {
-      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
-    }
-  }
-
-  Future<void> getBalanceByAccount() async {
-    String fromIdString = listOfAccounts.where((element) => (element.name == selectedTransferFromAccountString)).first.id ?? "";
-    Dialogs.showLoader(context, "Checking account balance...");
-    var formData = FormData.fromMap({
-      "Register": "register", // todo change this
-      "account_id": fromIdString, // todo change this
-      "business_id": "12",
-      "Get_Balance": "Get_Balance",
-    });
-
-    GetBalanceResponse response = await apiController.post<GetBalanceResponse>(EndPoints.GET_ALL_ACCOUNT, body: formData);
-    await Future.delayed(Duration(milliseconds: 200));
-    Dialogs.hideLoader(context);
-    await Future.delayed(Duration(milliseconds: 200));
-    if (response.status!.isApiSuccessful) {
-      amountString = response.balance;
       setState(() {});
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");

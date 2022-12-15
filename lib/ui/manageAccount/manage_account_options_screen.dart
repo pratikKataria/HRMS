@@ -1,5 +1,6 @@
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
+import 'package:hrms/ui/manageAccount/add_expenses_screen.dart';
 import 'package:hrms/ui/manageAccount/all_account_screen.dart';
 import 'package:hrms/ui/manageAccount/get_balance_screen.dart';
 import 'package:hrms/ui/manageAccount/transfer_funds_screen.dart';
@@ -37,7 +38,7 @@ class _ManageAccountOptionsScreenState extends State<ManageAccountOptionsScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Header(headerText: "Manage Account"),
+            Header(headerText: "Add Expenses"),
             line(width: Utility.screenWidth(context)),
             verticalSpace(6.0),
             Container(
@@ -66,7 +67,7 @@ class _ManageAccountOptionsScreenState extends State<ManageAccountOptionsScreen>
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
               child: Text("Add Expenses", style: textStyle12px600w),
-            ).onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => GetBalanceScreen()))),
+            ).onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => AddExpensesScreen()))),
             Spacer(),
             verticalSpace(10.0),
             // HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Add New").onClick(() {
