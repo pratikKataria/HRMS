@@ -738,6 +738,12 @@ const textStyleBlue24px600w = TextStyle(
     fontWeight: FontWeight.w600,
     fontSize: 24);
 
+const textStyleBlue28px600w = TextStyle(
+    color: AppColors.textColor,
+    fontFamily: kFontFamily,
+    fontWeight: FontWeight.w600,
+    fontSize: 28);
+
 
 const textStyle20px500w = TextStyle(
     color: AppColors.textColor,

@@ -1,6 +1,7 @@
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
 import 'package:hrms/ui/manageAccount/all_account_screen.dart';
+import 'package:hrms/ui/manageAccount/get_balance_screen.dart';
 import 'package:hrms/ui/manageAccount/transfer_funds_screen.dart';
 import 'package:hrms/util/utility.dart';
 
@@ -44,30 +45,28 @@ class _ManageAccountOptionsScreenState extends State<ManageAccountOptionsScreen>
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
               child: Text("View / Add Account", style: textStyle12px600w),
-            )
-                .onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => AllAccountScreen(widget.projectId)))),
+            ).onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => AllAccountScreen(widget.projectId)))),
 
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
               child: Text("Transfer funds", style: textStyle12px600w),
-            )
-                .onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => TransferFundsScreen()))),
+            ).onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => TransferFundsScreen()))),
 
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
-              child: Text("Add / Remove / Edit Employee", style: textStyle12px600w),
-            ).onClick(() => Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE, arguments: widget.projectId)),
+              child: Text("Get Balance", style: textStyle12px600w),
+            ).onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => GetBalanceScreen()))),
 
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
-              child: Text("View Attendance", style: textStyle12px600w),
-            ).onClick(() => Navigator.pushNamed(context, Screens.VIEW_ATTENDANCE, arguments: widget.projectId)),
+              child: Text("Add Expenses", style: textStyle12px600w),
+            ).onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => GetBalanceScreen()))),
             Spacer(),
             verticalSpace(10.0),
             // HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Add New").onClick(() {
