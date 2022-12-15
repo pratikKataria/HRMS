@@ -21,8 +21,8 @@ class _ManageEmployeeOptionsScreenState extends State<ManageEmployeeOptionsScree
   @override
   void initState() {
     super.initState();
-    getAllUsers();
-    searchTextController.addListener(() => setState(() {}));
+    // getAllUsers();
+    // searchTextController.addListener(() => setState(() {}));
   }
 
   @override

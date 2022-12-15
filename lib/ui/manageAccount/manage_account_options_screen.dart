@@ -25,8 +25,8 @@ class _ManageAccountOptionsScreenState extends State<ManageAccountOptionsScreen>
   @override
   void initState() {
     super.initState();
-    getAllUsers();
-    searchTextController.addListener(() => setState(() {}));
+    // getAllUsers();
+    // searchTextController.addListener(() => setState(() {}));
   }
 
   @override
