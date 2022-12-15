@@ -1,6 +1,12 @@
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/attendance/typeOne/model/GetEmployeeByIdResponse.dart';
 import 'package:hrms/ui/attendance/typeTwo/mark_attendance_type_two_response.dart';
+import 'package:hrms/ui/complains/model/submit_complain_response.dart';
+import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ComplainsAndSuggestionScreen extends StatefulWidget {
   // final GetEmployeeByIdResponse? employeeResponse;
@@ -12,10 +18,11 @@ class ComplainsAndSuggestionScreen extends StatefulWidget {
 }
 
 class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScreen> {
-  TextEditingController jobTitleController = TextEditingController();
-  TextEditingController blockNoController = TextEditingController();
-  TextEditingController robotNoController = TextEditingController();
-  TextEditingController inverterNoController = TextEditingController();
+  TextEditingController complaintNoteController = TextEditingController();
+  TextEditingController aadhaarCardTextController = TextEditingController();
+
+  String? fileImageString;
+  String? filePathString;
 
   List<GetEmployeeByIdResponse?> presentEmployees = [];
 
@@ -33,28 +40,32 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
       body: SafeArea(
         child: Column(
           children: [
-            Header(headerText: "Mark Attendance"),
+            Header(headerText: "Add Complain"),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   verticalSpace(20.0),
-                  HrmInputField(textController: jobTitleController, headingText: "Enter job title", text: "Job Title"),
+                  HrmInputField(textController: complaintNoteController, headingText: "Complain Note", text: "enter complaint note"),
                   verticalSpace(20.0),
-                  HrmInputField(textController: blockNoController, headingText: "Select Block No.", text: "Block Number"),
-                  verticalSpace(20.0),
-                  HrmInputField(textController: robotNoController, headingText: "Select Robot No.", text: "Robot Number"),
-                  verticalSpace(20.0),
-                  HrmInputField(
-                    textController: inverterNoController,
-                    headingText: "Select Inverter No.",
-                    text: "Inverter Number",
-                  ),
-                  verticalSpace(20.0),
-                  line(),
-                  verticalSpace(20.0),
-                  Text("Present Employee", style: textStyle14px500w),
+                  HrmInputFieldDummy(
+                    textController: aadhaarCardTextController,
+                    headingText: fileImageString,
+                    text: "Attach image",
+                    leftWidget: Icon(Icons.attach_file),
+                    inputTypeNumber: true,
+                    inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(12)],
+                  ).onClick(() async {
+                    final ImagePicker _picker = ImagePicker();
+                    final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+                    fileImageString = image?.name;
+                    if (image != null) {
+                      final File imageFile = File(image.path);
+                      filePathString = imageFile.path;
+                    }
+                    setState(() {});
+                  }),
                 ],
               ),
             ),
@@ -80,17 +91,10 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
               ),
             ),
             verticalSpace(10.0),
-            // if (!employeeAdded)
-            //   HrmGradientButton(text: "Add", margin: EdgeInsets.symmetric(horizontal: 20.0)).onClick(() {
-            //     presentEmployees.add(widget.employeeResponse);
-            //     setState(() {});
-            //   }),
-
-            HrmGradientButton(text: "Submit", margin: EdgeInsets.symmetric(horizontal: 20.0))
-                .onClick(() async {
-                        String? empId = await Navigator.pushNamed(context, Screens.MULTI_QR_SCANNER_SCREEN) as String;
-                       // getEmployeeDataById(empId);
-                   }),
+            HrmGradientButton(text: "Submit", margin: EdgeInsets.symmetric(horizontal: 20.0)).onClick(() async {
+              addComplaint();
+              // getEmployeeDataById(empId);
+            }),
             verticalSpace(10.0),
           ],
         ),
@@ -98,51 +102,29 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
     );
   }
 
-  Future<void> markAttendance() async {
+  Future<void> addComplaint() async {
     // await Future.delayed(Duration(milliseconds: 200));
     FocusScope.of(context).unfocus();
 
-    if (jobTitleController.text.toString().isEmpty) {
-      FlutterToastX.showErrorToastBottom(context, "Please enter job title");
+    if (complaintNoteController.text.toString().isEmpty) {
+      FlutterToastX.showErrorToastBottom(context, "Please enter complain note");
       return;
     }
-
-    if (blockNoController.text.toString().isEmpty) {
-      FlutterToastX.showErrorToastBottom(context, "Please enter block number");
-      return;
-    }
-
-    if (robotNoController.text.toString().isEmpty) {
-      FlutterToastX.showErrorToastBottom(context, "Please enter robot no");
-      return;
-    }
-
-    if (inverterNoController.text.toString().isEmpty) {
-      FlutterToastX.showErrorToastBottom(context, "Please enter inverter no");
-      return;
-    }
-
-    String userId = presentEmployees.map((e) => e?.data?.first.id).toList().join(",");
 
     Map<String, dynamic> map = {
-      "user_id": userId,
-      "business_id": "12",
-      // "project_id": widget./employeeResponse?.data?.first.projectId,
-      "clock_in_note": "test",
-      "blockno": blockNoController.text.toString(),
-      "robotno": robotNoController.text.toString(),
-      "inverterno": inverterNoController.text.toString(),
-      "type": "2",
-      "Login": "login",
-      "job_title": jobTitleController.text.toString(),
-      "status": "IN"
+      "Register": "Register",
+      "Add": "Add",
+      "user_id": "26", //todo change this
+      "msg": complaintNoteController.text.toString(),
+      // "file": "1",
+      "file": filePathString == null ? "" : await MultipartFile.fromFile(filePathString ?? "", filename: "aadharImage.jpg"),
     };
     var formData = FormData.fromMap(map);
     print(map);
 
-    Dialogs.showLoader(context, "Marking attendance please wait ...");
-    MarkAttendanceTypeTwoResponse markAttendanceTypeTwoResponse = await apiController.post<MarkAttendanceTypeTwoResponse>(
-      EndPoints.ATTENDANCE_TYPE_TWO,
+    Dialogs.showLoader(context, "Creating complain ...");
+    SubmitComplainResponse markAttendanceTypeTwoResponse = await apiController.post<SubmitComplainResponse>(
+      EndPoints.SUBMIT_COMPLAINTS,
       body: formData,
     );
     Dialogs.hideLoader(context);
@@ -150,7 +132,7 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
       FlutterToastX.showSuccessToastBottom(context, markAttendanceTypeTwoResponse.message ?? "Attendance marked!");
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
       Navigator.pop(context);
-      Navigator.pop(context);
+      // Navigator.pop(context);
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${markAttendanceTypeTwoResponse.message ?? ""}");
     }

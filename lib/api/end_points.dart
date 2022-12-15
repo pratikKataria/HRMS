@@ -19,4 +19,6 @@ class EndPoints {
   static final String ATTENDANCE_REPORT = BASE_URL + "Attendance_Report.php";
   static final String GET_ALL_WORK_ORDER = BASE_URL + "Get_all_workorders.php";
   static final String GET_ALL_ACCOUNT = BASE_URL + "Accounts_management.php";
+  static final String SUBMIT_COMPLAINTS = BASE_URL + "Submit_Compliance.php";
+
 }
