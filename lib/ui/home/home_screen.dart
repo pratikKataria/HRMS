@@ -1,5 +1,6 @@
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:hrms/res/keys.dart';
+import 'package:hrms/ui/complains/complain_options_screen.dart';
 import 'package:hrms/ui/home/model/get_all_projects_response.dart';
 import 'package:hrms/ui/manageAccount/manage_account_options_screen.dart';
 import 'package:hrms/util/shared_manager.dart';
@@ -156,8 +157,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Row(
                           children: [
-                            Flexible(child: categoryCard("Complains/\nSuggestion", Assets.imagesIcViewReports, "View")
-                            .onClick(() => {Navigator.pushNamed(context, Screens.COMPLAINS)})),
+                            Flexible(
+                                child: categoryCard("Complains/\nSuggestion", Assets.imagesIcViewReports, "View").onClick(() =>
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => ComplainsOptionsScreen(selectedProjectId))))),
                             horizontalSpace(20.0),
                             Flexible(child: Container()),
                           ],

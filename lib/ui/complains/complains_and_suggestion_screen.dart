@@ -91,11 +91,10 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
               ),
             ),
             verticalSpace(10.0),
-            HrmGradientButton(text: "Submit", margin: EdgeInsets.symmetric(horizontal: 20.0)).onClick(() async {
+            HrmGradientButton(text: "Submit", radius: 0.0).onClick(() async {
               addComplaint();
               // getEmployeeDataById(empId);
             }),
-            verticalSpace(10.0),
           ],
         ),
       ),
