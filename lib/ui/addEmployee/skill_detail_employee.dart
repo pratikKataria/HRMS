@@ -64,7 +64,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: ListView(
                   children: [
-                    if (isSkilled) ...[
+                    /*if (isSkilled)*/ ...[
                       verticalSpace(10.0),
                       HrmInputField(
                         textController: skillsTextController,
@@ -276,7 +276,6 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
               if (isSkilled) {
                 bool isValidationFailed = !validateInputFields();
                 if (isValidationFailed) return;
-
               }
 
               addEmployeeRequest.skills = skillsTextController.text.toString();

@@ -32,6 +32,7 @@ class _AllAccountScreenState extends State<AllAccountScreen> {
       backgroundColor: AppColors.backgroundScreenColor,
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
         onPressed: () async {
           await Navigator.push(context, MaterialPageRoute(builder: (context) => AddAccountScreen()));
           getAllAccounts();

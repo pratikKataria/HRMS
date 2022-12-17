@@ -109,11 +109,10 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
                       textController: panCardTextController,
                       headingText: "Pan Card",
                       text: "Enter pancard",
-                      inputTypeNumber: true,
                       inputFilters: [
                         FilteringTextInputFormatter.allow(RegExp("^[A-Za-z0-9_.-]*")),
                         LengthLimitingTextInputFormatter(10)
-                      ],
+                      ]
                     ),
                     HrmInputFieldDummy(
                       textController: aadhaarCardTextController,

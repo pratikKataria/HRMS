@@ -85,7 +85,7 @@ class _MarkAttendanceTypeOneV2State extends State<MarkAttendanceTypeOneV2> {
               ),
             ),
 
-            verticalSpace(50.0),
+            verticalSpace(20.0),
             HrmGradientButton(text: "Approve", radius: 0,).onClick(() => markAttendance()),
           ],
         ),
@@ -182,7 +182,7 @@ class _MarkAttendanceTypeOneV2State extends State<MarkAttendanceTypeOneV2> {
     );
     Dialogs.hideLoader(context);
     if (attendanceTypeOneResponse.status?.isApiSuccessful ?? false) {
-      // FlutterToastX.showSuccessToastBottom(context, attendanceTypeOneResponse.message ?? "Attendance marked!");
+      FlutterToastX.showSuccessToastBottom(context, attendanceTypeOneResponse.message ?? "Attendance marked!");
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
       Navigator.pop(context);
       Navigator.pop(context);

@@ -54,6 +54,22 @@ class AadhaarVerificationScreen extends StatelessWidget {
                     Navigator.pushNamed(context, Screens.EMPLOYEE_BASIC_DETAIL);
                   }),
                   verticalSpace(20.0),
+
+                  HrmGradientButton(text: "Continue without Aadhaar").onClick(() {
+                    addEmployeeRequest.aadharNumber = "";
+
+                    // if (aadhaarTextController.text.isEmpty) {
+                    //   FlutterToastX.showErrorToastBottom(context, "Please enter aadhaar card");
+                    //   return;
+                    // }
+                    //
+                    // if (aadhaarTextController.text.length < 12) {
+                    //   FlutterToastX.showErrorToastBottom(context, "Please enter valid aadhar card");
+                    //   return;
+                    // }
+
+                    Navigator.pushNamed(context, Screens.EMPLOYEE_BASIC_DETAIL);
+                  }),
                 ],
               ),
             ),

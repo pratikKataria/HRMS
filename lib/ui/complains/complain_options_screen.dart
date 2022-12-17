@@ -1,7 +1,6 @@
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/complains/complains_and_suggestion_screen.dart';
 import 'package:hrms/ui/complains/model/get_all_complains_response.dart';
-import 'package:hrms/ui/manageAccount/add_account_screen.dart';
 import 'package:hrms/util/utility.dart';
 
 class ComplainsOptionsScreen extends StatefulWidget {
@@ -31,6 +30,7 @@ class _ComplainsOptionsScreenState extends State<ComplainsOptionsScreen> {
       backgroundColor: AppColors.backgroundScreenColor,
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
         onPressed: () async {
           await Navigator.push(context, MaterialPageRoute(builder: (context) => ComplainsAndSuggestionScreen()));
           getAllComplains();

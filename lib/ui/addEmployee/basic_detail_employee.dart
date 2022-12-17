@@ -87,8 +87,8 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
                     HrmInputField(
                         textController: emailTextController,
                         headingText: "Email Address",
-                        text: "Enter email address",
-                        mandate: true),
+                        text: "Enter email address"/*,
+                        mandate: true*/),
                     verticalSpace(20.0),
                     HrmInputFieldDummy(
                             textController: dobTextController,
@@ -238,6 +238,7 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
       showErrorToast("Please enter valid emergency contact number");
       return false;
     }
+/*
 
     if (emailTextController.text.toString().isEmpty) {
       showErrorToast("Please enter email id");
@@ -248,6 +249,8 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
       showErrorToast("Please enter valid email id");
       return false;
     }
+    
+*/
 
     if (dobTextController.text.toString().isEmpty) {
       showErrorToast("Please enter dob");

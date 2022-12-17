@@ -34,6 +34,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
       floatingActionButton: Container(
         margin: EdgeInsets.only(bottom: 60),
         child: FloatingActionButton(
+          child: Icon(Icons.add),
           onPressed: () async {
             await Navigator.push(context, MaterialPageRoute(builder: (context) => AddAccountTypeScreen()));
             getAccountTypes();

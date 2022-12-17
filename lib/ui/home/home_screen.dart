@@ -135,15 +135,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Flexible(child: Container()),
                             horizontalSpace(20.0),
-                            Flexible(child: categoryCard("Payment&\nInvoices", Assets.imagesIcPaymentInvoice, "View")),
-                          ],
-                        ),
-                        Row(
-                          children: [
+                            // Flexible(child: categoryCard("Payment&\nInvoices", Assets.imagesIcPaymentInvoice, "View")),
                             Flexible(
                               child: categoryCard("Manage\nAccount", Assets.imagesIcManageExpenses, "View")
                                   .onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => ManageAccountOptionsScreen(selectedProjectId)))),
                             ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            // Flexible(
+                            //   child: categoryCard("Manage\nAccount", Assets.imagesIcManageExpenses, "View")
+                            //       .onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => ManageAccountOptionsScreen(selectedProjectId)))),
+                            // ),
+                            Flexible(
+                                child: categoryCard("Complains/\nSuggestion", Assets.imagesIcViewReports, "View").onClick(() =>
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => ComplainsOptionsScreen(selectedProjectId))))),
                             horizontalSpace(20.0),
                             Flexible(child: Container()),
                           ],
@@ -157,10 +165,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Row(
                           children: [
-                            Flexible(
-                                child: categoryCard("Complains/\nSuggestion", Assets.imagesIcViewReports, "View").onClick(() =>
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => ComplainsOptionsScreen(selectedProjectId))))),
+                            // Flexible(
+                            //     child: categoryCard("Complains/\nSuggestion", Assets.imagesIcViewReports, "View").onClick(() =>
+                            //         Navigator.push(context,
+                            //             MaterialPageRoute(builder: (context) => ComplainsOptionsScreen(selectedProjectId))))),
+                            Flexible(child: categoryCard("Payment&\nInvoices", Assets.imagesIcPaymentInvoice, "View")),
                             horizontalSpace(20.0),
                             Flexible(child: Container()),
                           ],

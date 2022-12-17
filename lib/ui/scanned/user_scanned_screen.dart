@@ -55,8 +55,7 @@ class _UserScannedScreenState extends State<UserScannedScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Name: ${response?.data?.first.firstName?? ""} ${response?.data?.first.lastName??""}",
-                            style: textStyle14px500w),
+                        Text("Name: ${response?.data?.first.firstName?? ""} ${response?.data?.first.lastName??""}", style: textStyle14px500w),
                         Text("Employee Id: ${response?.data?.first.id??""}", style: textStyle14px500w),
                         verticalSpace(4.0),
                         Text("${response?.data?.first.designation??""}", style: textStyleGreen14px500w),

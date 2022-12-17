@@ -40,17 +40,20 @@ class _MarkAttendanceTypeTwoState extends State<MarkAttendanceTypeTwo> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   verticalSpace(20.0),
-                  HrmInputField(textController: jobTitleController, headingText: "Enter job title", text: "Job Title"),
-                  verticalSpace(20.0),
-                  HrmInputField(textController: blockNoController, headingText: "Select Block No.", text: "Block Number"),
-                  verticalSpace(20.0),
-                  HrmInputField(textController: robotNoController, headingText: "Select Robot No.", text: "Robot Number"),
+                  HrmInputField(
+                      textController: jobTitleController, headingText: "Enter job title", text: "Job Title", mandate: true),
                   verticalSpace(20.0),
                   HrmInputField(
-                    textController: inverterNoController,
-                    headingText: "Select Inverter No.",
-                    text: "Inverter Number",
-                  ),
+                      textController: blockNoController, headingText: "Select Block No.", text: "Block Number", mandate: true),
+                  verticalSpace(20.0),
+                  HrmInputField(
+                      textController: robotNoController, headingText: "Select Robot No.", text: "Robot Number", mandate: true),
+                  verticalSpace(20.0),
+                  HrmInputField(
+                      textController: inverterNoController,
+                      headingText: "Select Inverter No.",
+                      text: "Inverter Number",
+                      mandate: true),
                   verticalSpace(20.0),
                   line(),
                   verticalSpace(20.0),
