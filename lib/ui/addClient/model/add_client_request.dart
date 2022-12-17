@@ -19,6 +19,7 @@
 /// pan_img : "1"
 
 class AddClientRequest {
+  String? state;
   AddClientRequest({
     String? register,
     String? clientName,
@@ -185,6 +186,7 @@ class AddClientRequest {
     map['aadhar_image'] = _aadharImage;
     map['pan'] = _pan;
     map['pan_img'] = _panImg;
+    map['state'] = state;
     return map;
   }
 

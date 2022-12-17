@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
+import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
 
 import 'aadhaar_verification_screen.dart';
 
@@ -15,6 +16,8 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
   TextEditingController pincodeTextController = TextEditingController();
   TextEditingController landmarkTextController = TextEditingController();
   TextEditingController cityTextController = TextEditingController();
+
+  String? stateName;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +77,15 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
                       ],
                     ),
                     verticalSpace(20.0),
+                    HrmInputFieldDummy(
+                      headingText: "State",
+                      text: stateName ?? "Select state",
+                      mandate: true,
+                    ).onClick(() {
+                      FocusScope.of(context).unfocus();
+                      showStateDialog();
+                    }),
+                    verticalSpace(20.0),
                     HrmGradientButton(text: "Next").onClick(() {
                       bool isValidationFailed = !validateInputFields();
                       if (isValidationFailed) return;
@@ -82,6 +94,7 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
                       addEmployeeRequest.pincode = pincodeTextController.text.toString();
                       addEmployeeRequest.landmark = landmarkTextController.text.toString();
                       addEmployeeRequest.city = cityTextController.text.toString();
+                      addEmployeeRequest.state = stateName;
 
                       Navigator.pushNamed(context, Screens.EMPLOYEE_SKILL_DETAIL);
                     }),
@@ -94,6 +107,62 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
         ),
       ),
     );
+  }
+
+  void showStateDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: Container(
+              color: AppColors.white,
+              padding: EdgeInsets.all(20.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Select State", style: textStyle14px600w),
+                    verticalSpace(10.0),
+                    ...listOfStates.map((e) {
+                      return Container(
+                        color: AppColors.inputFieldBackgroundColor,
+                        padding: EdgeInsets.all(20.0),
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(child: Text(e, style: textStyleSubText14px500w)),
+                                horizontalSpace(10.0),
+                                Icon(
+                                  Icons.check_circle_outline,
+                                  color: AppColors.textColorSubText,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ).onClick(() {
+                        Navigator.pop(context, e);
+                      });
+                    }).toList(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      setState(() {
+        stateName = value;
+      });
+    });
   }
 
   bool validateInputFields() {
@@ -122,6 +191,11 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
       return false;
     }
 
+    if (stateName == null || stateName!.isEmpty) {
+      showErrorToast("Please enter state");
+      return false;
+    }
+
     return true;
   }
 
@@ -129,3 +203,42 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
     FlutterToastX.showErrorToastBottom(context, message);
   }
 }
+
+List<String> listOfStates = [
+  "Andaman and Nicobar Islands",
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chandigarh",
+  "Chhattisgarh",
+  "Dadra and Nagar Haveli",
+  "Daman and Diu",
+  "Delhi",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jammu and Kashmir",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Lakshadweep",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Orissa",
+  "Pondicherry",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttaranchal",
+  "Uttar Pradesh",
+  "West Bengal"
+];

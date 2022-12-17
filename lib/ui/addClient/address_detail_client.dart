@@ -5,11 +5,13 @@ import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/Fonts.dart';
 import 'package:hrms/route/screens.dart';
 import 'package:hrms/ui/addClient/basic_detail_client.dart';
+import 'package:hrms/ui/addEmployee/address_detail_employee.dart';
 import 'package:hrms/util/extension.dart';
 import 'package:hrms/widgets/flutter_toast.dart';
 import 'package:hrms/widgets/header.dart';
 import 'package:hrms/widgets/hrm_gradient_button.dart';
 import 'package:hrms/widgets/hrm_input_fields.dart';
+import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
 import 'package:hrms/widgets/widget_util.dart';
 
 class AddressDetailClient extends StatefulWidget {
@@ -24,6 +26,7 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
   TextEditingController pincodeTextController = TextEditingController();
   TextEditingController landmarkTextController = TextEditingController();
   TextEditingController cityTextController = TextEditingController();
+  String? stateName;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +89,15 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
                       ],
                     ),
                     verticalSpace(20.0),
+                    HrmInputFieldDummy(
+                      headingText: "State",
+                      text: stateName ?? "Select state",
+                      mandate: true,
+                    ).onClick(() {
+                      FocusScope.of(context).unfocus();
+                      showStateDialog();
+                    }),
+                    verticalSpace(20.0),
                     HrmGradientButton(text: "Next").onClick(() {
                       bool isValidationFailed = !validateInputFields();
                       if (isValidationFailed) return;
@@ -94,6 +106,7 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
                       addClientRequest.pincode = pincodeTextController.text.toString();
                       addClientRequest.landmark = landmarkTextController.text.toString();
                       addClientRequest.city = cityTextController.text.toString();
+                      addClientRequest.state = stateName;
 
                       Navigator.pushNamed(context, Screens.CLIENT_SKILL_DETAIL);
                     }),
@@ -107,6 +120,63 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
       ),
     );
   }
+
+  void showStateDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: Container(
+              color: AppColors.white,
+              padding: EdgeInsets.all(20.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Select State", style: textStyle14px600w),
+                    verticalSpace(10.0),
+                    ...listOfStates.map((e) {
+                      return Container(
+                        color: AppColors.inputFieldBackgroundColor,
+                        padding: EdgeInsets.all(20.0),
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(child: Text(e, style: textStyleSubText14px500w)),
+                                horizontalSpace(10.0),
+                                Icon(
+                                  Icons.check_circle_outline,
+                                  color: AppColors.textColorSubText,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ).onClick(() {
+                        Navigator.pop(context, e);
+                      });
+                    }).toList(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      setState(() {
+        stateName = value;
+      });
+    });
+  }
+
 
   bool validateInputFields() {
     if (fullAddressTextController.text.toString().isEmpty) {
@@ -131,6 +201,12 @@ class _AddressDetailClientState extends State<AddressDetailClient> {
 
     if (cityTextController.text.toString().isEmpty) {
       showErrorToast("Please enter city");
+      return false;
+    }
+
+
+    if (stateName == null || stateName!.isEmpty) {
+      showErrorToast("Please enter state");
       return false;
     }
 

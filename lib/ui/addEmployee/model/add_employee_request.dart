@@ -41,6 +41,8 @@ import 'package:dio/dio.dart';
 /// Register : "Register"
 
 class AddEmployeeRequest {
+  String? state;
+
   AddEmployeeRequest({
       String? firstName,
       String? lastName,
@@ -369,6 +371,7 @@ AddEmployeeRequest copyWith({  String? firstName,
     map['signature_img'] = "1";
     map['business_id'] = "12";
     map['Register'] = "Register";
+    map['state'] = state ?? "";
     return map;
   }
 
