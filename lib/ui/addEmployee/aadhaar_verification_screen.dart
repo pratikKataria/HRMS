@@ -17,7 +17,7 @@ class AadhaarVerificationScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Header(headerText: "Employee Basic Detail"),
+            Header(headerText: "Aadhaar Detail"),
             Container(
               color: AppColors.alert,
               padding: EdgeInsets.symmetric(vertical: 6.0),

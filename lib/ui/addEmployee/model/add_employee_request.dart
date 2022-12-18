@@ -360,12 +360,12 @@ AddEmployeeRequest copyWith({  String? firstName,
     map['ifsc'] = _ifsc;
     map['aadhar_number'] = _aadharNumber;
     map['pan_number'] = panNumber;
-    // map['aadhar_img'] = await MultipartFile.fromFile(aadharImg??"", filename:"aadharImage.jpg");
-    // map['pan_img'] =  await MultipartFile.fromFile(panImg??"", filename:"pan_img.jpg");
-    // map['signature_img'] =   await MultipartFile.fromFile(signatureImg??"", filename:"signature_img.jpg");
-    map['aadhar_img'] = "img.jpg";
-    map['pan_img'] = "img.jpg";
-    map['signature_img'] = "img.jpg";
+    map['aadhar_img'] = aadharImg == null ? "" : await MultipartFile.fromFile(aadharImg??"", filename:"aadharImage.jpg");
+    map['pan_img'] =  panImg == null ? "" :await MultipartFile.fromFile(panImg??"", filename:"pan_img.jpg");
+    map['signature_img'] =  signatureImg == null ? "" : await MultipartFile.fromFile(signatureImg??"", filename:"signature_img.jpg");
+    // map['aadhar_img'] = "img.jpg";
+    // map['pan_img'] = "img.jpg";
+    // map['signature_img'] = "img.jpg";
     map['aadhar_img'] = "1";
     map['pan_img'] = "1";
     map['signature_img'] = "1";

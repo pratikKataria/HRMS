@@ -33,24 +33,39 @@ class _ViewAttendanceScreenState extends State<ViewAttendanceScreen> {
           children: [
             Header(headerText: "View Attendance"),
             line(width: Utility.screenWidth(context)),
-            verticalSpace(6.0),
+            verticalSpace(20.0),
             Row(
               children: [
                 horizontalSpace(20.0),
-                fromDate().onClick(() async {
-                  fromDateString = await _selectDate();
-                  setState(() {});
-                  getAllUsers();
-                }),
+                Expanded(
+                  child: fromDate().onClick(() async {
+                    fromDateString = await _selectDate();
+                    if (fromDateString.isNotEmpty) FlutterToastX.showSuccessToastBottom(context, "Please select to date");
+                    setState(() {});
+                  }),
+                ),
                 horizontalSpace(20.0),
-                toDate().onClick(() async {
-                  toDateString = await _selectDate();
-                  setState(() {});
-                  getAllUsers();
-                }),
+                Expanded(
+                  child: toDate().onClick(() async {
+                    toDateString = await _selectDate();
+                    setState(() {});
+                    if (fromDateString.isEmpty) {
+                      FlutterToastX.showErrorToast(context, "Please select form date");
+                      return;
+                    }
+
+                    if (toDateString.isEmpty) {
+                      FlutterToastX.showErrorToast(context, "Please select to date");
+                      return;
+                    }
+
+                    getAttendanceByProject();
+                  }),
+                ),
                 horizontalSpace(20.0),
               ],
             ),
+            verticalSpace(20.0),
             Expanded(
               child: ListView(
                 children: [
@@ -147,8 +162,10 @@ class _ViewAttendanceScreenState extends State<ViewAttendanceScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Present: ${e.present}", style: textStyle14px500w),
-          Text("Halfday: ${e.halfday}", style: textStyle14px500w),
-          Text("user_id: ${e.userId} ", style: textStyle14px500w),
+          verticalSpace(4.0),
+          Text("Half Day: ${e.halfday}", style: textStyle14px500w),
+          verticalSpace(4.0),
+          Text("User Id: ${e.userId} ", style: textStyle14px500w),
         ],
       ),
     );
@@ -163,17 +180,19 @@ class _ViewAttendanceScreenState extends State<ViewAttendanceScreen> {
       lastDate: DateTime.now(),
     );
 
-    return "${picked?.year ?? "YY"}-${picked?.month ?? "MM"}-${picked?.day ?? "DD"} 09:24:00";
+    if (picked == null) return "";
+
+    return "${picked?.year ?? "YY"}-${picked?.month ?? "MM"}-${picked?.day ?? "DD"}";
   }
 
-  Future<void> getAllUsers() async {
+  Future<void> getAttendanceByProject() async {
     await Future.delayed(Duration(milliseconds: 200));
 
     Dialogs.showLoader(context, "Getting attendance ...");
-      Map<String, String> data = {
+    Map<String, String> data = {
       "GET": "GET",
-      "date_from": fromDateString,
-      "date_till": toDateString,
+      "date_from": "$fromDateString 09:24:00",
+      "date_till": "$toDateString 09:24:00",
       "project_id": widget.projectId,
     };
 
