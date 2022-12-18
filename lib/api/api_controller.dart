@@ -12,6 +12,7 @@ import 'package:hrms/ui/complains/model/submit_complain_response.dart';
 import 'package:hrms/ui/home/model/get_all_projects_response.dart';
 import 'package:hrms/ui/login/login_response.dart';
 import 'package:hrms/ui/manageAccount/model/get_all_account_response.dart';
+import 'package:hrms/ui/manageAccount/model/get_all_transactions.dart';
 import 'package:hrms/ui/manageAccount/model/get_all_types.dart';
 import 'package:hrms/ui/manageAccount/model/get_balance_response.dart';
 import 'package:hrms/ui/manageEmployee/model/add_employee_in_project_response.dart';
@@ -106,6 +107,7 @@ class JsonConverter {
     if (T == SubmitComplainResponse) return SubmitComplainResponse.fromJson(value) as T;
     if (T == GetAllComplainsResponse) return GetAllComplainsResponse.fromJson(value) as T;
     if (T == AddEmployeeInProjectResponse) return AddEmployeeInProjectResponse.fromJson(value) as T;
+    if (T == GetAllTransactions) return GetAllTransactions.fromJson(value) as T;
     return throw Exception("Unknown class");
   }
 }

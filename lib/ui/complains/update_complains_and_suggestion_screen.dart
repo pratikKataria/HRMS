@@ -1,6 +1,7 @@
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/attendance/typeOne/model/GetEmployeeByIdResponse.dart';
 import 'package:hrms/ui/complains/model/submit_complain_response.dart';
+import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
 
 class UpdateComplainsAndSuggestionScreen extends StatefulWidget {
   final String? complaintId;
@@ -19,8 +20,10 @@ class _UpdateComplainsAndSuggestionScreenState extends State<UpdateComplainsAndS
 
   String? fileImageString;
   String? filePathString;
+  String selectedType = "Open";
 
   List<GetEmployeeByIdResponse?> presentEmployees = [];
+  List<String> listOfTypes = ["Open", "Close", "Under-Review"];
 
   @override
   void initState() {
@@ -43,25 +46,20 @@ class _UpdateComplainsAndSuggestionScreenState extends State<UpdateComplainsAndS
                 children: <Widget>[
                   verticalSpace(20.0),
                   HrmInputField(
-                      textController: complaintNoteController, headingText: "Admin Comments", text: "enter complaint note"),
+                    textController: complaintNoteController,
+                    headingText: "Admin Comments",
+                    text: "enter complaint note",
+                    mandate: true,
+                  ),
                   verticalSpace(20.0),
-                  /*  HrmInputFieldDummy(
-                    textController: aadhaarCardTextController,
-                    headingText: fileImageString,
-                    text: "Attach image",
-                    leftWidget: Icon(Icons.attach_file),
-                    inputTypeNumber: true,
-                    inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(12)],
-                  ).onClick(() async {
-                    final ImagePicker _picker = ImagePicker();
-                    final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
-                    fileImageString = image?.name;
-                    if (image != null) {
-                      final File imageFile = File(image.path);
-                      filePathString = imageFile.path;
-                    }
-                    setState(() {});
-                  }),*/
+                  HrmInputFieldDummy(
+                    headingText: "Select Status",
+                    text: selectedType,
+                    mandate: true,
+                  ).onClick(() {
+                    FocusScope.of(context).unfocus();
+                    showComplaintStatusDialog();
+                  }),
                 ],
               ),
             ),
@@ -87,7 +85,7 @@ class _UpdateComplainsAndSuggestionScreenState extends State<UpdateComplainsAndS
               ),
             ),
             verticalSpace(10.0),
-            HrmGradientButton(text: "Close Complaint", radius: 0.0).onClick(() async {
+            HrmGradientButton(text: "Update", radius: 0.0).onClick(() async {
               addComplaint();
               // getEmployeeDataById(empId);
             }),
@@ -95,6 +93,64 @@ class _UpdateComplainsAndSuggestionScreenState extends State<UpdateComplainsAndS
         ),
       ),
     );
+  }
+
+  void showComplaintStatusDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: Wrap(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Container(
+                  color: AppColors.white,
+                  padding: EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Select From", style: textStyle14px600w),
+                      verticalSpace(10.0),
+                      ...listOfTypes.map((e) {
+                        return Container(
+                          color: AppColors.inputFieldBackgroundColor,
+                          padding: EdgeInsets.all(20.0),
+                          margin: EdgeInsets.only(bottom: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(child: Text(e ?? "", style: textStyleSubText14px500w)),
+                                  horizontalSpace(10.0),
+                                  Icon(
+                                    Icons.check_circle_outline,
+                                    color: AppColors.textColorSubText,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ).onClick(() {
+                          Navigator.pop(context, e);
+                        });
+                      }).toList(),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    ).then((value) {
+      setState(() {
+        selectedType = value ?? selectedType;
+      });
+    });
   }
 
   Future<void> addComplaint() async {
@@ -111,7 +167,7 @@ class _UpdateComplainsAndSuggestionScreenState extends State<UpdateComplainsAndS
       "admin_note": complaintNoteController.text.toString(),
       "com_id": widget.complaintId,
       "update": "update",
-      "status": "close",
+      "status": selectedType,
     };
     var formData = FormData.fromMap(map);
     print(map);

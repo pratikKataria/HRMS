@@ -106,7 +106,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("Select Gender", style: textStyle14px600w),
+                                        Text("Select Account type", style: textStyle14px600w),
                                         verticalSpace(10.0),
                                         ...listOfAccountTypes.map((e) {
                                           return Container(

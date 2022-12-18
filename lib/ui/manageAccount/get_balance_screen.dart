@@ -1,4 +1,5 @@
 import 'package:hrms/export.dart';
+import 'package:hrms/ui/manageAccount/model/get_all_transactions.dart';
 import "package:hrms/ui/manageAccount/model/get_all_types.dart";
 import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
 
@@ -13,7 +14,9 @@ class GetBalanceScreen extends StatefulWidget {
 
 class _GetBalanceScreenState extends State<GetBalanceScreen> {
   List<Data> listOfAccounts = [];
+  List<TransactionData> listOfTransactions = [];
   String? selectedTransferFromAccountString;
+  String? selectedAccountId;
   num? amountString;
 
   @override
@@ -50,12 +53,41 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
                     verticalSpace(20.0),
                     Center(child: Text("${amountString ?? "0.0"}", style: textStyleBlue28px600w)),
                     Center(child: Text("Available balance", style: textStyleRegular16px600w)),
+                    verticalSpace(20.0),
+                    Text("Transaction history", style: textStyle14px600w),
+                    ...listOfTransactions.map((e) => cardViewAccounts(e)).toList(),
                   ],
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Container cardViewAccounts(TransactionData e) {
+    return Container(
+      color: AppColors.inputFieldBackgroundColor,
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      margin: EdgeInsets.symmetric(vertical: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Type: ${e.type?? "N/A"}", style: textStyle14px500w),
+          verticalSpace(4.0),
+          Text("Amount: ${e.amount?? "N/A"}", style: textStyle14px500w),
+          verticalSpace(4.0),
+          Text("Reff no: ${e.reffNo?? "N/A"}", style: textStyle14px500w),
+          verticalSpace(4.0),
+          Text("Transaction Id: ${e.transactionId ?? "N/A"}", style: textStyle14px500w),
+          verticalSpace(4.0),
+          Text("Transaction Payment Id: ${e.transactionPaymentId?? "N/A"}", style: textStyle14px500w),
+          verticalSpace(4.0),
+          Text("Transfer Transaction Id: ${e.transactionId?? "N/A"}", style: textStyle14px500w),
+          verticalSpace(4.0),
+          Text("Note: ${e.note ?? "N/A"}", style: textStyle14px500w),
+        ],
       ),
     );
   }
@@ -113,7 +145,8 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
       },
     ).then((Data? value) {
       setState(() {
-        selectedTransferFromAccountString = value?.name ?? "";
+        selectedTransferFromAccountString = value?.name ?? selectedTransferFromAccountString;
+        selectedAccountId = value?.id ?? selectedAccountId;
         getBalanceByAccount();
       });
     });
@@ -152,6 +185,30 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
     }
   }
 
+  Future<void> getTransactions() async {
+    await Future.delayed(Duration(milliseconds: 200));
+
+    // Dialogs.showLoader(context, "Getting all accounts...");
+
+    Map<String, String> map = {
+      "GET": "GET",
+      "account_id": "4",
+      "date_from": "2022-11-01",
+      "date_till": "2022-12-30",
+    };
+
+
+    GetAllTransactions response = await apiController.get<GetAllTransactions>(EndPoints.TRANSACTIONS, payload: map);
+    // await Dialogs.hideLoader(context);
+    if (response.status!.isApiSuccessful) {
+      listOfTransactions.clear();
+      listOfTransactions.addAll(response.transactionData!);
+      setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+    }
+  }
+
   Future<void> getBalanceByAccount() async {
     String fromIdString = listOfAccounts.where((element) => (element.name == selectedTransferFromAccountString)).first.id ?? "";
     Dialogs.showLoader(context, "Checking account balance...");
@@ -168,6 +225,7 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
     await Future.delayed(Duration(milliseconds: 200));
     if (response.status!.isApiSuccessful) {
       amountString = response.balance;
+      getTransactions();
       setState(() {});
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
