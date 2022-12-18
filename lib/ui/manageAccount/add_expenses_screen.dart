@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import "package:hrms/ui/manageAccount/model/get_all_types.dart";
 import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddExpensesScreen extends StatefulWidget {
   const AddExpensesScreen({Key? key}) : super(key: key);
@@ -13,6 +16,7 @@ class AddExpensesScreen extends StatefulWidget {
 class _AddExpensesScreenState extends State<AddExpensesScreen> {
   TextEditingController amountTextController = TextEditingController();
   TextEditingController noteTextController = TextEditingController();
+  TextEditingController aadhaarCardTextController = TextEditingController();
 
   Data? selectedGender;
 
@@ -22,6 +26,8 @@ class _AddExpensesScreenState extends State<AddExpensesScreen> {
   String? selectedTransferFromAccountString;
   String? selectedTransferToAccountString;
   String? selectedTransferTypeString;
+  String? fileImageString;
+  String? filePathString;
 
   @override
   void initState() {
@@ -58,6 +64,7 @@ class _AddExpensesScreenState extends State<AddExpensesScreen> {
                       textController: amountTextController,
                       headingText: "Amount",
                       text: "Enter amount",
+                      inputTypeNumber: true,
                       inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(20)],
                       mandate: true,
                     ),
@@ -69,6 +76,24 @@ class _AddExpensesScreenState extends State<AddExpensesScreen> {
                       inputFilters: [LengthLimitingTextInputFormatter(120)],
                       mandate: true,
                     ),
+                    verticalSpace(20.0),
+                    HrmInputFieldDummy(
+                      textController: aadhaarCardTextController,
+                      headingText: fileImageString,
+                      text: "Attach image",
+                      leftWidget: Icon(Icons.attach_file),
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(12)],
+                    ).onClick(() async {
+                      final ImagePicker _picker = ImagePicker();
+                      final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+                      fileImageString = image?.name;
+                      if (image != null) {
+                        final File imageFile = File(image.path);
+                        filePathString = imageFile.path;
+                      }
+                      setState(() {});
+                    }),
                   ],
                 ),
               ),
@@ -171,6 +196,8 @@ class _AddExpensesScreenState extends State<AddExpensesScreen> {
     Dialogs.showLoader(context, "Adding expenses...");
     String fromIdString = listOfAccounts.where((element) => (element.name == selectedTransferFromAccountString)).first.id ?? "";
 
+
+
     var formData = FormData.fromMap({
       "Register": "register",
       "Add_Expances": "Add_Expances",
@@ -179,6 +206,7 @@ class _AddExpensesScreenState extends State<AddExpensesScreen> {
       "amount": amountTextController.text.toString(),
       "user_id": "12", //todo change this
       "note": noteTextController.text.toString(),
+      "file": filePathString == null ? "" : await MultipartFile.fromFile(filePathString ?? "", filename: "aadharImage.jpg"),
     });
 
     GetAllTypes response = await apiController.post<GetAllTypes>(EndPoints.GET_ALL_ACCOUNT, body: formData);
