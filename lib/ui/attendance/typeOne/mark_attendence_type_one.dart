@@ -111,7 +111,7 @@ class _MarkAttendanceTypeOneState extends State<MarkAttendanceTypeOne> {
       EndPoints.ATTENDANCE_TYPE_ONE,
       body: formData,
     );
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (attendanceTypeOneResponse.status?.isApiSuccessful ?? false) {
       FlutterToastX.showSuccessToastBottom(context, attendanceTypeOneResponse.message ?? "Attendance marked!");
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);

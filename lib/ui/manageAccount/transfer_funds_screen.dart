@@ -332,7 +332,7 @@ class _TransferFundsScreenState extends State<TransferFundsScreen> {
     });
 
     GetAllTypes response = await apiController.post<GetAllTypes>(EndPoints.GET_ALL_ACCOUNT, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "Amount transfer successfully");
       Navigator.pop(context);
@@ -352,7 +352,7 @@ class _TransferFundsScreenState extends State<TransferFundsScreen> {
     });
 
     GetAllTypes response = await apiController.post<GetAllTypes>(EndPoints.GET_ALL_ACCOUNT, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       listOfAccounts.clear();
       listOfAccounts.addAll(response.data!);

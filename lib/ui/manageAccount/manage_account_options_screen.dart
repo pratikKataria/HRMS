@@ -162,7 +162,7 @@ class _ManageAccountOptionsScreenState extends State<ManageAccountOptionsScreen>
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       // FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
 
@@ -200,7 +200,7 @@ class _ManageAccountOptionsScreenState extends State<ManageAccountOptionsScreen>
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.DELETE_USER, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "User deleted successfully");
       getAllUsersWithoutDialog();
@@ -223,7 +223,7 @@ class _ManageAccountOptionsScreenState extends State<ManageAccountOptionsScreen>
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.DELETE_USER, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "User deleted successfully");
       getAllUsersWithoutDialog();

@@ -24,7 +24,7 @@ class _UserScannedScreenState extends State<UserScannedScreen> {
     Map<String, String> payload = {"GET": "get", "user_id": userId};
     Dialogs.showLoader(context, "Getting employee details ...");
     response = await apiController.get<GetEmployeeByIdResponse>(EndPoints.GET_USER_PROFILE, payload: payload);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response?.status?.isApiSuccessful  ?? false) {
       FlutterToastX.showSuccessToastBottom(context, "Mark Attendance one or two");
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);

@@ -182,7 +182,7 @@ class _AddExpensesScreenState extends State<AddExpensesScreen> {
     });
 
     GetAllTypes response = await apiController.post<GetAllTypes>(EndPoints.GET_ALL_ACCOUNT, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "Expenses added successfully");
       Navigator.pop(context);
@@ -202,7 +202,7 @@ class _AddExpensesScreenState extends State<AddExpensesScreen> {
     });
 
     GetAllTypes response = await apiController.post<GetAllTypes>(EndPoints.GET_ALL_ACCOUNT, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       listOfAccounts.clear();
       listOfAccounts.addAll(response.data!);

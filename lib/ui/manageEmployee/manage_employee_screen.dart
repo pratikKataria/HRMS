@@ -74,19 +74,6 @@ class _ManageEmployeeScreenState extends State<ManageEmployeeScreen> {
             ),
 
             verticalSpace(6.0),
-
-            verticalSpace(10.0),
-            HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Add New").onClick(() {
-              // if (selectedEmployees.isEmpty) {
-              //   FlutterToastX.showErrorToastBottom(context, "Please select at least one employee");
-              //   return;
-              // }
-
-              // String selectedEmployeeStringCommaSeparated = selectedEmployees.map((e) => e.id).toList().join(",");
-              // addClientRequest.employees = selectedEmployeeStringCommaSeparated;
-              Navigator.pushNamed(context, Screens.AADHAAR_CARD_VERIFICATION_SCREEN);
-            }),
-            verticalSpace(10.0),
           ],
         ),
       ),
@@ -169,7 +156,7 @@ class _ManageEmployeeScreenState extends State<ManageEmployeeScreen> {
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER_V2, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       // FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
 
@@ -202,7 +189,7 @@ class _ManageEmployeeScreenState extends State<ManageEmployeeScreen> {
   Future<void> deleteEmployee(String userId) async {
     await Future.delayed(Duration(milliseconds: 200));
 
-    Dialogs.showLoader(context, "Deleting user ...");
+    Dialogs.showLoader(context, "Removing employee ...");
     var formData = FormData.fromMap({
       'Register': "Register",
       'manage': userId,
@@ -212,7 +199,7 @@ class _ManageEmployeeScreenState extends State<ManageEmployeeScreen> {
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.DELETE_USER, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "User deleted successfully");
       getAllUsersWithoutDialog();
@@ -235,7 +222,7 @@ class _ManageEmployeeScreenState extends State<ManageEmployeeScreen> {
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.DELETE_USER, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "User deleted successfully");
       getAllUsersWithoutDialog();

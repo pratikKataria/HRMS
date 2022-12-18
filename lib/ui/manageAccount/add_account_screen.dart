@@ -34,7 +34,11 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
       floatingActionButton: Container(
         margin: EdgeInsets.only(bottom: 60),
         child: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Icon(Icons.add), Text("Type", style: textStyleWhite8px500w)],
+          ),
           onPressed: () async {
             await Navigator.push(context, MaterialPageRoute(builder: (context) => AddAccountTypeScreen()));
             getAccountTypes();
@@ -198,7 +202,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
     });
 
     GetAllTypes response = await apiController.post<GetAllTypes>(EndPoints.GET_ALL_ACCOUNT, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "Account created successfully");
       Navigator.pop(context);
@@ -219,7 +223,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
     });
 
     GetAllTypes response = await apiController.post<GetAllTypes>(EndPoints.GET_ALL_ACCOUNT, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       listOfAccountTypes.clear();
       listOfAccountTypes.addAll(response.data!);

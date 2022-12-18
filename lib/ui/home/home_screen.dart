@@ -310,7 +310,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await Future.delayed(Duration(milliseconds: 200));
     Dialogs.showLoader(context, "Getting projects ...");
     GetAllProjectsResponse response = await apiController.get<GetAllProjectsResponse>(EndPoints.GET_ALL_PROJECTS);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status?.isApiSuccessful ?? false) {
       listOfProjects.clear();
       listOfProjects.addAll(response.data!);
@@ -327,7 +327,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await Future.delayed(Duration(milliseconds: 200));
     // Dialogs.showLoader(context, "Getting projects ...");
     GetAllProjectsResponse response = await apiController.get<GetAllProjectsResponse>(EndPoints.GET_ALL_PROJECTS);
-    // Dialogs.hideLoader(context);
+    // await Dialogs.hideLoader(context);
     if (response.status?.isApiSuccessful ?? false) {
       listOfProjects.clear();
       listOfProjects.addAll(response.data!);

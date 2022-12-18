@@ -125,12 +125,10 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
       EndPoints.ADD_EMPLOYEE_IN_PROJECT,
       body: formData,
     );
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (markAttendanceTypeTwoResponse.status?.isApiSuccessful ?? false) {
       FlutterToastX.showSuccessToastBottom(context, markAttendanceTypeTwoResponse.message ?? "Attendance marked!");
-      // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
       Navigator.pop(context);
-      // Navigator.pop(context);
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${markAttendanceTypeTwoResponse.message ?? ""}");
     }
@@ -141,7 +139,7 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
     // Map<String, String> payload = {"GET": "get", "user_id": userId};
     Dialogs.showLoader(context, "Getting employee details ...");
     GetEmployeeByIdResponse response = await apiController.get<GetEmployeeByIdResponse>(EndPoints.COMPLAINS);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status?.isApiSuccessful ?? false) {
       presentEmployees.add(response);
       setState(() {});

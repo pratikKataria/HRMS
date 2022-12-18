@@ -181,7 +181,7 @@ class _GetAllWorkOrderScreenState extends State<GetAllWorkOrderScreen> {
 
     GetAllWorkOrderResponse response =
         await apiController.get<GetAllWorkOrderResponse>(EndPoints.GET_ALL_WORK_ORDER, payload: data);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       listOfData.clear();
       listOfData.addAll(response.data!);

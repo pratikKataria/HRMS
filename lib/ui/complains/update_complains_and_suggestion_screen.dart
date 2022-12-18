@@ -121,7 +121,7 @@ class _UpdateComplainsAndSuggestionScreenState extends State<UpdateComplainsAndS
       EndPoints.ADD_EMPLOYEE_IN_PROJECT,
       body: formData,
     );
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (markAttendanceTypeTwoResponse.status?.isApiSuccessful ?? false) {
       FlutterToastX.showSuccessToastBottom(context, markAttendanceTypeTwoResponse.message ?? "Attendance marked!");
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);

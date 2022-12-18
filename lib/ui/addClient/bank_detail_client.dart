@@ -119,7 +119,7 @@ class _BankDetailClientState extends State<BankDetailClient> {
       EndPoints.REGISTER_CLIENT,
       body: formData,
     );
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (addEmployeeResponse.status?.isApiSuccessful ?? false) {
       FlutterToastX.showSuccessToastBottom(context, addEmployeeResponse.message ?? "Attendance marked!");
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);

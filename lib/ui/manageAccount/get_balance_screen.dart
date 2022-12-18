@@ -142,7 +142,7 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
     });
 
     GetAllTypes response = await apiController.post<GetAllTypes>(EndPoints.GET_ALL_ACCOUNT, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       listOfAccounts.clear();
       listOfAccounts.addAll(response.data!);
@@ -164,7 +164,7 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
 
     GetBalanceResponse response = await apiController.post<GetBalanceResponse>(EndPoints.GET_ALL_ACCOUNT, body: formData);
     await Future.delayed(Duration(milliseconds: 200));
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     await Future.delayed(Duration(milliseconds: 200));
     if (response.status!.isApiSuccessful) {
       amountString = response.balance;

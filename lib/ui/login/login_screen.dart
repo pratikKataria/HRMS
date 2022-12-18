@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
       'Login': "Login"
     });
     LoginResponse response = await apiController.post<LoginResponse>(EndPoints.LOGIN, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "Login successful");
       SharedManager.setBooleanPreference(SharedPrefsKeys.kLoggedIn, true);

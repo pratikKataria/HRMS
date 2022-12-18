@@ -164,7 +164,7 @@ class _AddEmployeesToProjectState extends State<AddEmployeesToProject> {
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
 
@@ -187,9 +187,8 @@ class _AddEmployeesToProjectState extends State<AddEmployeesToProject> {
       'user_id': selectedEmployeeStringCommaSeparated,
     });
 
-    AddEmployeeInProjectResponse response =
-        await apiController.post<AddEmployeeInProjectResponse>(EndPoints.ADD_EMPLOYEE_IN_PROJECT, body: formData);
-    Dialogs.hideLoader(context);
+    AddEmployeeInProjectResponse response = await apiController.post<AddEmployeeInProjectResponse>(EndPoints.ADD_EMPLOYEE_IN_PROJECT, body: formData);
+     await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "${response.message ?? "Employees Added Successfully"}");
       Navigator.pop(context);

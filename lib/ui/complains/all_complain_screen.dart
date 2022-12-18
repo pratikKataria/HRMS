@@ -31,7 +31,11 @@ class _AllComplainsScreenState extends State<AllComplainsScreen> {
       backgroundColor: AppColors.backgroundScreenColor,
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Icon(Icons.add), Text("Complain", style: textStyleWhite8px500w)],
+        ),
         onPressed: () async {
           await Navigator.push(context, MaterialPageRoute(builder: (context) => ComplainsAndSuggestionScreen()));
           getAllComplains();
@@ -100,9 +104,9 @@ class _AllComplainsScreenState extends State<AllComplainsScreen> {
       "All": "All",
     });
 
-    GetAllComplainsResponse response = await apiController.post<GetAllComplainsResponse>(EndPoints.ADD_EMPLOYEE_IN_PROJECT, body: formData);
+    GetAllComplainsResponse response = await apiController.post<GetAllComplainsResponse>(EndPoints.SUBMIT_COMPLAINTS, body: formData);
     await Future.delayed(Duration(milliseconds: 200));
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     await Future.delayed(Duration(milliseconds: 200));
     if (response.status!.isApiSuccessful) {
       // FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
@@ -124,7 +128,7 @@ class _AllComplainsScreenState extends State<AllComplainsScreen> {
     });
 
     GetAllComplainsResponse response =
-        await apiController.post<GetAllComplainsResponse>(EndPoints.ADD_EMPLOYEE_IN_PROJECT, body: formData);
+        await apiController.post<GetAllComplainsResponse>(EndPoints.SUBMIT_COMPLAINTS, body: formData);
     if (response.status!.isApiSuccessful) {
       // FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
       listOfAllComplaints.addAll(response.data!);

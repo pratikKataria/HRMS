@@ -158,7 +158,7 @@ class _MarkAttendanceTypeTwoState extends State<MarkAttendanceTypeTwo> {
       EndPoints.ATTENDANCE_TYPE_TWO,
       body: formData,
     );
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (markAttendanceTypeTwoResponse.status?.isApiSuccessful ?? false) {
       FlutterToastX.showSuccessToastBottom(context, markAttendanceTypeTwoResponse.message ?? "Attendance marked!");
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
@@ -176,7 +176,7 @@ class _MarkAttendanceTypeTwoState extends State<MarkAttendanceTypeTwo> {
     Dialogs.showLoader(context, "Getting employee details ...");
     GetEmployeeByIdResponse response =
         await apiController.get<GetEmployeeByIdResponse>(EndPoints.GET_USER_PROFILE, payload: payload);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status?.isApiSuccessful ?? false) {
       presentEmployees.add(response);
       setState(() {});

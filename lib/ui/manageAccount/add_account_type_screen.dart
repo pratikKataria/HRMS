@@ -77,7 +77,7 @@ class _AddAccountTypeScreenState extends State<AddAccountTypeScreen> {
     });
 
     GetAllAccountResponse response = await apiController.post<GetAllAccountResponse>(EndPoints.GET_ALL_ACCOUNT, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "Account type added successfully");
       Navigator.pop(context);

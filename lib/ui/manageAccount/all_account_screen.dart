@@ -32,7 +32,11 @@ class _AllAccountScreenState extends State<AllAccountScreen> {
       backgroundColor: AppColors.backgroundScreenColor,
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Icon(Icons.add), Text("Account", style: textStyleWhite8px500w)],
+        ),
         onPressed: () async {
           await Navigator.push(context, MaterialPageRoute(builder: (context) => AddAccountScreen()));
           getAllAccounts();
@@ -105,7 +109,7 @@ class _AllAccountScreenState extends State<AllAccountScreen> {
     });
 
     GetAllAccountResponse response = await apiController.post<GetAllAccountResponse>(EndPoints.GET_ALL_ACCOUNT, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       // FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
       allEmployeesList.addAll(response.data!);
@@ -124,7 +128,6 @@ class _AllAccountScreenState extends State<AllAccountScreen> {
     if (response.status!.isApiSuccessful) {
       // FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
       allEmployeesList.clear();
-
       if (response.data?.isNotEmpty ?? false) allEmployeesList.addAll(response.data!);
       setState(() {});
     } else {

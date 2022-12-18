@@ -181,7 +181,7 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
       EndPoints.REGISTER_EMPLOYEE,
       body: formData,
     );
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (addEmployeeResponse.status?.isApiSuccessful ?? false) {
       FlutterToastX.showSuccessToastBottom(context, addEmployeeResponse.message ?? "Attendance marked!");
       Navigator.of(context).popUntil((route) => route.isFirst);

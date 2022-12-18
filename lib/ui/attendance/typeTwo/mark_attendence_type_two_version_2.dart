@@ -123,7 +123,7 @@ class _MarkAttendanceTypeTwoV2State extends State<MarkAttendanceTypeTwoV2> {
               ],
               verticalSpace(10.0),
               HrmGradientButton(
-                      margin: EdgeInsets.symmetric(horizontal: 40.0), text: !addEmployeeToggle ? "Add Employee" : "Close")
+                      margin: EdgeInsets.symmetric(horizontal: 40.0), text: !addEmployeeToggle ? "Add Employee" : "Add")
                   .onClick(() => setState(() => addEmployeeToggle = !addEmployeeToggle)),
               verticalSpace(20.0),
               if (addEmployeeToggle == false) HrmGradientButton(text: "Approve", radius: 0).onClick(() => markAttendance()),
@@ -267,7 +267,7 @@ class _MarkAttendanceTypeTwoV2State extends State<MarkAttendanceTypeTwoV2> {
       EndPoints.ATTENDANCE_TYPE_TWO,
       body: formData,
     );
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (markAttendanceTypeTwoResponse.status?.isApiSuccessful ?? false) {
       FlutterToastX.showSuccessToastBottom(context, markAttendanceTypeTwoResponse.message ?? "Attendance marked!");
       // Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
@@ -285,7 +285,7 @@ class _MarkAttendanceTypeTwoV2State extends State<MarkAttendanceTypeTwoV2> {
   //   Dialogs.showLoader(context, "Getting employee details ...");
   //   GetEmployeeByIdResponse response =
   //       await apiController.get<GetEmployeeByIdResponse>(EndPoints.GET_USER_PROFILE, payload: payload);
-  //   Dialogs.hideLoader(context);
+  //   await Dialogs.hideLoader(context);
   //   if (response.status?.isApiSuccessful ?? false) {
   //     presentEmployees.add(response);
   //     setState(() {});
@@ -306,7 +306,7 @@ class _MarkAttendanceTypeTwoV2State extends State<MarkAttendanceTypeTwoV2> {
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER_V2, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
 

@@ -56,7 +56,7 @@ class _ManageEmployeeOptionsScreenState extends State<ManageEmployeeOptionsScree
               margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
-              child: Text("Add / Remove / Edit Employee", style: textStyle12px600w),
+              child: Text("Edit / Remove Employee", style: textStyle12px600w),
             ).onClick(() => Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE, arguments: widget.projectId)),
 
             Container(
@@ -166,7 +166,7 @@ class _ManageEmployeeOptionsScreenState extends State<ManageEmployeeOptionsScree
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       // FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
 
@@ -204,7 +204,7 @@ class _ManageEmployeeOptionsScreenState extends State<ManageEmployeeOptionsScree
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.DELETE_USER, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "User deleted successfully");
       getAllUsersWithoutDialog();
@@ -227,7 +227,7 @@ class _ManageEmployeeOptionsScreenState extends State<ManageEmployeeOptionsScree
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.DELETE_USER, body: formData);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "User deleted successfully");
       getAllUsersWithoutDialog();

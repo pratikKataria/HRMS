@@ -38,16 +38,18 @@ class Dialogs {
     // });
   }
 
-  static void hideLoader(BuildContext context) {
+  static Future<Object?>? hideLoader(BuildContext context) async {
     // Navigator.pop(context);
+    await Future.delayed(Duration(milliseconds: 200));
     if (_dialog != null)
-      _dialog?.hide().then((value) {
-        print("Hide Loader $value");
-        print("Hide Loader ${_dialog?.isShowing()}");
+      return await _dialog?.hide().then((value) async {
         if (_dialog?.isShowing() ?? false) {
-          _dialog?.hide();
+          return await _dialog?.hide();
         }
       });
+    await Future.delayed(Duration(milliseconds: 200));
+    return Future(() => true);
   }
-
+// print("Hide Loader $value");
+// print("Hide Loader ${_dialog?.isShowing()}");
 }

@@ -185,7 +185,7 @@ class _ViewAttendanceScreenState extends State<ViewAttendanceScreen> {
     // };
 
     ViewAttendanceResponse response = await apiController.get<ViewAttendanceResponse>(EndPoints.ATTENDANCE_REPORT, payload: data);
-    Dialogs.hideLoader(context);
+    await Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       listOfData.clear();
       listOfData.addAll(response.data!);
