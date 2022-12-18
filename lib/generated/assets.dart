@@ -10,7 +10,9 @@ class Assets {
   static const String fontsMontserratRegular = 'assets/fonts/montserrat_regular.otf';
   static const String fontsMontserratSemiBold = 'assets/fonts/montserrat_semi_bold.otf';
   static const String fontsMontserratThin = 'assets/fonts/montserrat_thin.otf';
-  static const String imagesIcBannerPlaceholder = 'assets/images/ic_banner_placeholder.png';
+  static const String imagesBannerThree = 'assets/images/banner_three.jpeg';
+  static const String imagesBannerTwo = 'assets/images/banner_two.jpeg';
+  static const String imagesIcBannerPlaceholder = 'assets/images/ic_banner_placeholder.jpeg';
   static const String imagesIcDetailProcessFour = 'assets/images/ic_detail_process_four.png';
   static const String imagesIcDetailProcessThree = 'assets/images/ic_detail_process_three.png';
   static const String imagesIcDetailProcessTwo = 'assets/images/ic_detail_process_two.png';

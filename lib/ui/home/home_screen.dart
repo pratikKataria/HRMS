@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<String> images = [Assets.imagesIcBannerPlaceholder, Assets.imagesImgLogin];
+  List<String> images = [Assets.imagesIcBannerPlaceholder, Assets.imagesBannerTwo, Assets.imagesBannerThree];
   List<Data?> listOfProjects = [];
   String selectedProject = "";
   String selectedProjectId = "";
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   verticalSpace(20.0),
 
                   Container(
-                    height: 160.0,
+                    height: 180.0,
                     child: Swiper(
                       scale: 0.9,
                       viewportFraction: 0.8,
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         );
                       },
-                      itemCount: 2,
+                      itemCount: 3,
                     ),
                   ),
 
