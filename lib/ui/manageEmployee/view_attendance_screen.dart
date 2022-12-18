@@ -31,7 +31,7 @@ class _ViewAttendanceScreenState extends State<ViewAttendanceScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Header(headerText: "Manage Employee"),
+            Header(headerText: "View Attendance"),
             line(width: Utility.screenWidth(context)),
             verticalSpace(6.0),
             Row(
