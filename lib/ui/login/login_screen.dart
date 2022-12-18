@@ -2,6 +2,7 @@ import 'package:hrms/export.dart';
 import 'package:hrms/res/keys.dart';
 import 'package:hrms/ui/login/login_response.dart';
 import 'package:hrms/util/shared_manager.dart';
+import 'package:hrms/util/utility.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -31,7 +32,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextSpan(text: "Go ", style: textStyleRegular16px500w),
                   TextSpan(text: "Beyond\n", style: textStyle14px500wF2),
                   TextSpan(text: "with\n", style: textStyleRegular16px500w),
-                  TextSpan(text: "HRMS", style: textStyleDark16px600wh2),
+                  WidgetSpan(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 6.0),
+                      child: Image.asset(Assets.imagesVipuLogo, width: 110.0),
+                    ),
+                  )
                 ],
               ),
               textAlign: TextAlign.center,
@@ -62,11 +68,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     Column(
                       children: <Widget>[
                         verticalSpace(20.0),
-                        Text("Forgot Password?", style: textStyle14px500w),
+                        Text("Forgot Password?", style: textStyle14px500w)
+                            .onClick(() => Utility.urlLauncher(context, "mailto:info@digitaltaken.in")),
                         verticalSpace(20.0),
                         FittedBox(child: Text("By clicking on login button you are accepting our", style: textStyle12px500w)),
                         verticalSpace(4.0),
-                        Text("Terms and Conditions", style: textStylePrimary12px500wUnderline),
+                        Text("Terms and Conditions", style: textStylePrimary12px500wUnderline)
+                            .onClick(() => Utility.urlLauncher(context, "http://vipugroup.com/tnc")),
                       ],
                     ),
                   ],

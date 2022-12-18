@@ -3,7 +3,8 @@ import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
 import 'package:hrms/util/utility.dart';
 
 class ManageEmployeeScreen extends StatefulWidget {
-  const ManageEmployeeScreen({Key? key}) : super(key: key);
+  final String? projectId;
+  const ManageEmployeeScreen(this.projectId, {Key? key}) : super(key: key);
 
   @override
   State<ManageEmployeeScreen> createState() => _ManageEmployeeScreenState();
@@ -164,9 +165,10 @@ class _ManageEmployeeScreenState extends State<ManageEmployeeScreen> {
     Dialogs.showLoader(context, "Getting all user list ...");
     var formData = FormData.fromMap({
       'Register': "Register",
+      'project_id': widget.projectId??"",
     });
 
-    GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER, body: formData);
+    GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER_V2, body: formData);
     Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       // FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
@@ -181,8 +183,12 @@ class _ManageEmployeeScreenState extends State<ManageEmployeeScreen> {
 
   Future<void> getAllUsersWithoutDialog() async {
     await Future.delayed(Duration(milliseconds: 200));
-    var formData = FormData.fromMap({'Register': "Register"});
-    GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER, body: formData);
+    var formData = FormData.fromMap({
+      'Register': "Register",
+      'project_id': widget.projectId??"",
+    });
+
+    GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER_V2, body: formData);
     if (response.status!.isApiSuccessful) {
       // FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
       allEmployeesList.clear();
@@ -200,8 +206,9 @@ class _ManageEmployeeScreenState extends State<ManageEmployeeScreen> {
     var formData = FormData.fromMap({
       'Register': "Register",
       'manage': userId,
-      'Delete': "1",
+      'Remove': "1",
       'user_id': userId,
+      'project_id': widget?.projectId??"",
     });
 
     GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.DELETE_USER, body: formData);

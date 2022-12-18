@@ -25,5 +25,7 @@ class Assets {
   static const String imagesIcViewReports = 'assets/images/ic_view_reports.png';
   static const String imagesImgDetailProcessOne = 'assets/images/img_detail_process_one.png';
   static const String imagesImgLogin = 'assets/images/img_login.png';
+  static const String imagesVipuGroupHalfLogo = 'assets/images/vipu_group_half_logo.png';
+  static const String imagesVipuLogo = 'assets/images/vipu_logo.png';
 
 }

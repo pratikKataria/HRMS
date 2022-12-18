@@ -1,5 +1,6 @@
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
+import 'package:hrms/ui/manageEmployee/add_employee_to_project.dart';
 import 'package:hrms/util/utility.dart';
 
 class ManageEmployeeOptionsScreen extends StatefulWidget {
@@ -57,6 +58,13 @@ class _ManageEmployeeOptionsScreenState extends State<ManageEmployeeOptionsScree
               decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
               child: Text("Add / Remove / Edit Employee", style: textStyle12px600w),
             ).onClick(() => Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE, arguments: widget.projectId)),
+
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+              child: Text("Add Employee in Project", style: textStyle12px600w),
+            ).onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) =>  AddEmployeesToProject(widget.projectId)))),
 
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),

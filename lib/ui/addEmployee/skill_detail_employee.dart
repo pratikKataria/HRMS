@@ -90,6 +90,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                         textController: joiningDateTextController,
                         headingText: "Joining Date",
                         text: doj ?? "DD/MM/YYYY",
+                        mandate: true,
                       ).onClick(() {
                         FocusScope.of(context).unfocus();
                         _selectDate(context);
@@ -99,6 +100,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                           textController: workingdaysTextController,
                           headingText: "Working days",
                           text: "Enter working days",
+                          mandate: true,
                           inputTypeNumber: true,
                           inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(2)],
                           inputLength: 10),
@@ -107,6 +109,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                       HrmInputFieldDummy(
                         textController: shiftsTimingTextController,
                         headingText: "Shifts Timing",
+                        mandate: true,
                         text: selectedShift,
                       ).onClick(() {
                         FocusScope.of(context).unfocus();
@@ -172,6 +175,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                         textController: departmentTextController,
                         headingText: "Department",
                         text: "Enter department",
+                        mandate: true,
                         inputFilters: [
                           FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
                           LengthLimitingTextInputFormatter(64)
@@ -326,21 +330,12 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
   }
 
   bool validateInputFields() {
-    if (skillsTextController.text.isEmpty) {
-      showErrorToast("Please enter skill");
-      return false;
-    }
-    if (companyTextController.text.isEmpty) {
-      showErrorToast("Please enter company name");
-      return false;
-    }
-    if (joiningDateTextController.text.isEmpty) {
-      showErrorToast("Please enter joining date");
-      return false;
-    }
-    //if (workingdaysTextController.text.isEmpty){ showErrorToast("Please enter working days"); return false;}
-    //if (shiftsTimingTextController.text.isEmpty){ showErrorToast("Please enter shift timing"); return false;}
-    //if (departmentTextController.text.isEmpty){ showErrorToast("Please enter department"); return false;}
+    if (skillsTextController.text.isEmpty) { showErrorToast("Please enter skill"); return false;}
+    if (companyTextController.text.isEmpty) { showErrorToast("Please enter company name"); return false; }
+    if (joiningDateTextController.text.isEmpty) { showErrorToast("Please enter joining date"); return false;}
+    if (workingdaysTextController.text.isEmpty){ showErrorToast("Please enter working days"); return false;}
+    // if (shiftsTimingTextController.text.isEmpty){ showErrorToast("Please enter shift timing"); return false;}
+    if (departmentTextController.text.isEmpty){ showErrorToast("Please enter department"); return false;}
     //if (uanTextController.text.isEmpty){ showErrorToast("Please enter uan"); return false;}
     //if (pfEmpContributionTextController.text.isEmpty){ showErrorToast("Please enter pf employee contribution "); return false;}
     //if (pfEmperContributionTextController.text.isEmpty){ showErrorToast("Please enter pf employer contribution"); return false;}

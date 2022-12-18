@@ -58,7 +58,7 @@ class RouteTransition extends PageRouteBuilder {
               case Screens.ATTENDANCE_TYPE_ONE_V2: return MarkAttendanceTypeOneV2(arguments as String);
               case Screens.ATTENDANCE_TYPE_TWO_V2: return MarkAttendanceTypeTwoV2(arguments as String);
               case Screens.AADHAAR_CARD_VERIFICATION_SCREEN: return AadhaarVerificationScreen();
-              case Screens.MANAGE_EMPLOYEE: return  ManageEmployeeScreen();
+              case Screens.MANAGE_EMPLOYEE: return  ManageEmployeeScreen(arguments as String);
               case Screens.MANAGE_EMPLOYEE_OPTIONS: return  ManageEmployeeOptionsScreen(arguments as String);
               case Screens.COMPLAINS: return  ComplainsAndSuggestionScreen();
               case Screens.VIEW_ATTENDANCE: return  ViewAttendanceScreen(arguments as String);

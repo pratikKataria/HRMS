@@ -7,6 +7,7 @@ import 'package:hrms/ui/addClient/bank_detail_client.dart';
 import 'package:hrms/ui/addClient/skill_detail_client.dart';
 import 'package:hrms/ui/addEmployee/address_detail_employee.dart';
 import 'package:hrms/ui/addEmployee/bank_detail_employee.dart';
+import 'package:hrms/ui/addEmployee/skill_detail_employee.dart';
 import 'package:hrms/ui/attendance/typeTwo/mark_attendence_type_two_version_2.dart';
 import 'package:hrms/ui/home/home_screen.dart';
 import 'package:hrms/ui/login/login_screen.dart';

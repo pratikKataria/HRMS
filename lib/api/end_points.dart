@@ -13,6 +13,7 @@ class EndPoints {
   static final String REGISTER_EMPLOYEE = BASE_URL + "Register_User.php";
   static final String REGISTER_CLIENT = BASE_URL + "Register_Project.php";
   static final String GET_ALL_USER = BASE_URL + "Get_All_Users.php";
+  static final String GET_ALL_USER_V2 = BASE_URL + "Get_All_Users2.php";
   static final String DELETE_USER = BASE_URL + "Manage_Employees.php";
   static final String COMPLAINS = BASE_URL + "Manage_Employees.php";
   static final String GET_ALL_PROJECTS = BASE_URL + "Get_All_Projects.php?GET=GET";
@@ -20,5 +21,6 @@ class EndPoints {
   static final String GET_ALL_WORK_ORDER = BASE_URL + "Get_all_workorders.php";
   static final String GET_ALL_ACCOUNT = BASE_URL + "Accounts_management.php";
   static final String SUBMIT_COMPLAINTS = BASE_URL + "Submit_Compliance.php";
+  static final String ADD_EMPLOYEE_IN_PROJECT = BASE_URL + "Add_Users_In_Project.php";
 
 }

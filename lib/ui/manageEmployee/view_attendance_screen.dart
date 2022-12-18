@@ -170,7 +170,7 @@ class _ViewAttendanceScreenState extends State<ViewAttendanceScreen> {
     await Future.delayed(Duration(milliseconds: 200));
 
     Dialogs.showLoader(context, "Getting attendance ...");
-      Map data = {
+      Map<String, String> data = {
       "GET": "GET",
       "date_from": fromDateString,
       "date_till": toDateString,

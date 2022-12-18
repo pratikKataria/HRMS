@@ -1,6 +1,6 @@
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:hrms/res/keys.dart';
-import 'package:hrms/ui/complains/complain_options_screen.dart';
+import 'package:hrms/ui/complains/all_complain_screen.dart';
 import 'package:hrms/ui/home/model/get_all_projects_response.dart';
 import 'package:hrms/ui/manageAccount/manage_account_options_screen.dart';
 import 'package:hrms/util/shared_manager.dart';
@@ -47,7 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.pop(context);
                       Navigator.pushNamed(context, Screens.LOGIN_SCREEN);
                     }),
-                    Text("HRM", style: textStyleRegular16px600w),
+                    // Text("HRM", style: textStyleRegular16px600w),
+                    Image.asset(Assets.imagesVipuGroupHalfLogo, width: 28.0),
                     Image.asset(Assets.imagesIcScanner, height: 28.0)
                         .onClick(() => Navigator.pushNamed(context, Screens.QR_SCANNER_SCREEN)),
                   ],
@@ -100,7 +101,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             horizontalSpace(20.0),
                             Flexible(
                                 child: categoryCard("Register\nDepartment", Assets.imagesIcRegisterClient, "Add")
-                                    .onClick(() => Navigator.pushNamed(context, Screens.CLIENT_BASIC_DETAIL))),
+                                    .onClick(() async {
+                                        await Navigator.pushNamed(context, Screens.CLIENT_BASIC_DETAIL);
+                                        getAllProjectsWithoutLoader();
+                                    })),
                           ],
                         ),
                       ],
@@ -151,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Flexible(
                                 child: categoryCard("Complains/\nSuggestion", Assets.imagesIcViewReports, "View").onClick(() =>
                                     Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => ComplainsOptionsScreen(selectedProjectId))))),
+                                        MaterialPageRoute(builder: (context) => AllComplainsScreen(selectedProjectId))))),
                             horizontalSpace(20.0),
                             Flexible(child: Container()),
                           ],
@@ -296,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     ).then((value) {
       setState(() {
-        selectedProject = value ?? "";
+        selectedProject = value ?? selectedProject;
       });
     });
     ;
@@ -307,6 +311,23 @@ class _HomeScreenState extends State<HomeScreen> {
     Dialogs.showLoader(context, "Getting projects ...");
     GetAllProjectsResponse response = await apiController.get<GetAllProjectsResponse>(EndPoints.GET_ALL_PROJECTS);
     Dialogs.hideLoader(context);
+    if (response.status?.isApiSuccessful ?? false) {
+      listOfProjects.clear();
+      listOfProjects.addAll(response.data!);
+      if (listOfProjects.isNotEmpty) selectedProject = listOfProjects?.first?.clientName ?? "";
+      if (listOfProjects.isNotEmpty) selectedProjectId = listOfProjects?.first?.projectId ?? "";
+      setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+    }
+    setState(() {});
+  }
+
+  Future<void> getAllProjectsWithoutLoader() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    // Dialogs.showLoader(context, "Getting projects ...");
+    GetAllProjectsResponse response = await apiController.get<GetAllProjectsResponse>(EndPoints.GET_ALL_PROJECTS);
+    // Dialogs.hideLoader(context);
     if (response.status?.isApiSuccessful ?? false) {
       listOfProjects.clear();
       listOfProjects.addAll(response.data!);

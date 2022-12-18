@@ -1,22 +1,19 @@
-import 'dart:io';
-
-import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/attendance/typeOne/model/GetEmployeeByIdResponse.dart';
 import 'package:hrms/ui/complains/model/submit_complain_response.dart';
-import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
-import 'package:image_picker/image_picker.dart';
 
-class ComplainsAndSuggestionScreen extends StatefulWidget {
+class UpdateComplainsAndSuggestionScreen extends StatefulWidget {
+  final String? complaintId;
+
   // final GetEmployeeByIdResponse? employeeResponse;
 
-  const ComplainsAndSuggestionScreen(/*this.employeeResponse,*/ {Key? key}) : super(key: key);
+  const UpdateComplainsAndSuggestionScreen(this.complaintId, {Key? key}) : super(key: key);
 
   @override
-  State<ComplainsAndSuggestionScreen> createState() => _ComplainsAndSuggestionScreenState();
+  State<UpdateComplainsAndSuggestionScreen> createState() => _UpdateComplainsAndSuggestionScreenState();
 }
 
-class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScreen> {
+class _UpdateComplainsAndSuggestionScreenState extends State<UpdateComplainsAndSuggestionScreen> {
   TextEditingController complaintNoteController = TextEditingController();
   TextEditingController aadhaarCardTextController = TextEditingController();
 
@@ -35,20 +32,20 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundScreenColor,
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
-            Header(headerText: "Add Complaint"),
+            Header(headerText: "Update Complain"),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   verticalSpace(20.0),
-                  HrmInputField(textController: complaintNoteController, headingText: "Complain Note", text: "enter complaint note"),
+                  HrmInputField(
+                      textController: complaintNoteController, headingText: "Admin Comments", text: "enter complaint note"),
                   verticalSpace(20.0),
-                  HrmInputFieldDummy(
+                  /*  HrmInputFieldDummy(
                     textController: aadhaarCardTextController,
                     headingText: fileImageString,
                     text: "Attach image",
@@ -64,7 +61,7 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
                       filePathString = imageFile.path;
                     }
                     setState(() {});
-                  }),
+                  }),*/
                 ],
               ),
             ),
@@ -90,7 +87,7 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
               ),
             ),
             verticalSpace(10.0),
-            HrmGradientButton(text: "Submit", radius: 0.0).onClick(() async {
+            HrmGradientButton(text: "Close Complaint", radius: 0.0).onClick(() async {
               addComplaint();
               // getEmployeeDataById(empId);
             }),
@@ -105,17 +102,16 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
     FocusScope.of(context).unfocus();
 
     if (complaintNoteController.text.toString().isEmpty) {
-      FlutterToastX.showErrorToastBottom(context, "Please enter complaint note");
+      FlutterToastX.showErrorToastBottom(context, "Please enter complain note");
       return;
     }
 
     Map<String, dynamic> map = {
       "Register": "Register",
-      "Add": "Add",
-      "user_id": "26", //todo change this
-      "msg": complaintNoteController.text.toString(),
-      // "file": "1",
-      "file": filePathString == null ? "" : await MultipartFile.fromFile(filePathString ?? "", filename: "aadharImage.jpg"),
+      "admin_note": complaintNoteController.text.toString(),
+      "com_id": widget.complaintId,
+      "update": "update",
+      "status": "close",
     };
     var formData = FormData.fromMap(map);
     print(map);
@@ -134,21 +130,5 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${markAttendanceTypeTwoResponse.message ?? ""}");
     }
-  }
-
-  Future<void> submitComplains() async {
-    await Future.delayed(Duration(milliseconds: 200));
-    // Map<String, String> payload = {"GET": "get", "user_id": userId};
-    Dialogs.showLoader(context, "Getting employee details ...");
-    GetEmployeeByIdResponse response = await apiController.get<GetEmployeeByIdResponse>(EndPoints.COMPLAINS);
-    Dialogs.hideLoader(context);
-    if (response.status?.isApiSuccessful ?? false) {
-      presentEmployees.add(response);
-      setState(() {});
-    } else {
-      FlutterToastX.showErrorToastBottom(context, "Failed: ${response?.message ?? ""}");
-      Navigator.pop(context);
-    }
-    setState(() {});
   }
 }

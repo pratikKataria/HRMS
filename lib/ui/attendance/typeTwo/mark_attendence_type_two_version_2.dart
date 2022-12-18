@@ -302,9 +302,10 @@ class _MarkAttendanceTypeTwoV2State extends State<MarkAttendanceTypeTwoV2> {
     Dialogs.showLoader(context, "Getting all user list ...");
     var formData = FormData.fromMap({
       'Register': "Register",
+      'project_id': widget.projectId??"",
     });
 
-    GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER, body: formData);
+    GetAllUserResponse response = await apiController.post<GetAllUserResponse>(EndPoints.GET_ALL_USER_V2, body: formData);
     Dialogs.hideLoader(context);
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");

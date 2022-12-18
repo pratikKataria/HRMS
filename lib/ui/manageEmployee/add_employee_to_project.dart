@@ -1,19 +1,18 @@
 import 'package:hrms/export.dart';
-import 'package:hrms/ui/addClient/basic_detail_client.dart';
 import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
-import 'package:hrms/ui/addEmployee/model/add_employee_request.dart';
+import 'package:hrms/ui/manageEmployee/model/add_employee_in_project_response.dart';
 import 'package:hrms/util/utility.dart';
 
-AddEmployeeRequest addEmployeeRequest = AddEmployeeRequest();
+class AddEmployeesToProject extends StatefulWidget {
+  final String? projectId;
 
-class SkillDetailClient extends StatefulWidget {
-  const SkillDetailClient({Key? key}) : super(key: key);
+  const AddEmployeesToProject(this.projectId, {Key? key}) : super(key: key);
 
   @override
-  State<SkillDetailClient> createState() => _SkillDetailClientState();
+  State<AddEmployeesToProject> createState() => _AddEmployeesToProjectState();
 }
 
-class _SkillDetailClientState extends State<SkillDetailClient> {
+class _AddEmployeesToProjectState extends State<AddEmployeesToProject> {
   Set<Data> allEmployeesList = Set();
   Set<Data> selectedEmployees = Set();
   TextEditingController searchTextController = TextEditingController();
@@ -24,9 +23,9 @@ class _SkillDetailClientState extends State<SkillDetailClient> {
   @override
   void initState() {
     super.initState();
-    getAllUsers();
+    getAllUser();
     searchTextController.addListener(() => setState(() {}));
-   }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,35 +86,15 @@ class _SkillDetailClientState extends State<SkillDetailClient> {
             ),
 
             verticalSpace(10.0),
-            Row(
-              children: [
-                Expanded(
-                  child: HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 10.0), text: "Skip").onClick(() {
-                    // if (selectedEmployees.isEmpty) {
-                    //   FlutterToastX.showErrorToastBottom(context, "Please select at least one employee");
-                    //   return;
-                    // }
-                    //
-                    // String selectedEmployeeStringCommaSeparated = selectedEmployees.map((e) => e.id).toList().join(",");
-                    addClientRequest.employees = ""; /*selectedEmployeeStringCommaSeparated*/;
-                    Navigator.pushNamed(context, Screens.CLIENT_BANK_DETAIL);
-                  }),
-                ),
-                Expanded(
-                  child: HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 10.0), text: "Next").onClick(() {
-                    if (selectedEmployees.isEmpty) {
-                      FlutterToastX.showErrorToastBottom(context, "Please select at least one employee");
-                      return;
-                    }
+            HrmGradientButton(text: "Add", radius: 0.0).onClick(() {
+              if (selectedEmployees.isEmpty) {
+                FlutterToastX.showErrorToastBottom(context, "Please select at least one employee");
+                return;
+              }
 
-                    String selectedEmployeeStringCommaSeparated = selectedEmployees.map((e) => e.id).toList().join(",");
-                    addClientRequest.employees = selectedEmployeeStringCommaSeparated;
-                    Navigator.pushNamed(context, Screens.CLIENT_BANK_DETAIL);
-                  }),
-                ),
-              ],
-            ),
-            verticalSpace(10.0),
+              String selectedEmployeeStringCommaSeparated = selectedEmployees.map((e) => e.id).toList().join(",");
+              addEmployeeInProject(selectedEmployeeStringCommaSeparated);
+            }),
           ],
         ),
       ),
@@ -176,7 +155,7 @@ class _SkillDetailClientState extends State<SkillDetailClient> {
     );
   }
 
-  Future<void> getAllUsers() async {
+  Future<void> getAllUser() async {
     await Future.delayed(Duration(milliseconds: 200));
 
     Dialogs.showLoader(context, "Getting all user list ...");
@@ -192,6 +171,28 @@ class _SkillDetailClientState extends State<SkillDetailClient> {
       allEmployeesList.clear();
       if (response.data?.isNotEmpty ?? false) allEmployeesList.addAll(response.data!);
       setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+    }
+  }
+
+  Future<void> addEmployeeInProject(String selectedEmployeeStringCommaSeparated) async {
+    await Future.delayed(Duration(milliseconds: 200));
+
+    Dialogs.showLoader(context, "Adding employee to project ...");
+    var formData = FormData.fromMap({
+      'Register': "Register",
+      'project_id': widget.projectId ?? "",
+      'skilled': "1", //todo change this
+      'user_id': selectedEmployeeStringCommaSeparated,
+    });
+
+    AddEmployeeInProjectResponse response =
+        await apiController.post<AddEmployeeInProjectResponse>(EndPoints.ADD_EMPLOYEE_IN_PROJECT, body: formData);
+    Dialogs.hideLoader(context);
+    if (response.status!.isApiSuccessful) {
+      FlutterToastX.showSuccessToastBottom(context, "${response.message ?? "Employees Added Successfully"}");
+      Navigator.pop(context);
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
     }

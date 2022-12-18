@@ -1,19 +1,20 @@
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/complains/complains_and_suggestion_screen.dart';
 import 'package:hrms/ui/complains/model/get_all_complains_response.dart';
+import 'package:hrms/ui/complains/update_complains_and_suggestion_screen.dart';
 import 'package:hrms/util/utility.dart';
 
-class ComplainsOptionsScreen extends StatefulWidget {
+class AllComplainsScreen extends StatefulWidget {
   final String projectId;
 
-  const ComplainsOptionsScreen(this.projectId, {Key? key}) : super(key: key);
+  const AllComplainsScreen(this.projectId, {Key? key}) : super(key: key);
 
   @override
-  State<ComplainsOptionsScreen> createState() => _ComplainsOptionsScreenState();
+  State<AllComplainsScreen> createState() => _AllComplainsScreenState();
 }
 
-class _ComplainsOptionsScreenState extends State<ComplainsOptionsScreen> {
-  Set<Data> allEmployeesList = Set();
+class _AllComplainsScreenState extends State<AllComplainsScreen> {
+  Set<Data> listOfAllComplaints = Set();
 
   bool addNew = false;
   String? dob;
@@ -44,7 +45,14 @@ class _ComplainsOptionsScreenState extends State<ComplainsOptionsScreen> {
             line(width: Utility.screenWidth(context)),
             verticalSpace(6.0),
 
-            Expanded(child: ListView(children: allEmployeesList.map((e) => cardViewAccounts(e)).toList())),
+            Expanded(
+                child: ListView(
+                    children: listOfAllComplaints
+                        .map((e) => cardViewComplain(e).onClick(() async {
+                              await Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateComplainsAndSuggestionScreen(e.cid)));
+                              getAllComplainsWithoutLoader();
+                            }))
+                        .toList())),
 
             verticalSpace(10.0),
             // HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Add New").onClick(() {
@@ -64,7 +72,7 @@ class _ComplainsOptionsScreenState extends State<ComplainsOptionsScreen> {
     );
   }
 
-  Container cardViewAccounts(Data e) {
+  Container cardViewComplain(Data e) {
     return Container(
       color: AppColors.inputFieldBackgroundColor,
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -76,6 +84,8 @@ class _ComplainsOptionsScreenState extends State<ComplainsOptionsScreen> {
           Text("user_id: ${e.userId}", style: textStyle14px500w),
           Text("Title: ${e.msg}", style: textStyle14px500w),
           Text("Status: ${e.status}", style: textStyle14px500w),
+          verticalSpace(8.0),
+          Center(child: Text("click to update", style: textStyleSubText10px400w)),
         ],
       ),
     );
@@ -90,15 +100,36 @@ class _ComplainsOptionsScreenState extends State<ComplainsOptionsScreen> {
       "All": "All",
     });
 
-    GetAllComplainsResponse response = await apiController.post<GetAllComplainsResponse>(EndPoints.SUBMIT_COMPLAINTS, body: formData);
+    GetAllComplainsResponse response = await apiController.post<GetAllComplainsResponse>(EndPoints.ADD_EMPLOYEE_IN_PROJECT, body: formData);
     await Future.delayed(Duration(milliseconds: 200));
     Dialogs.hideLoader(context);
     await Future.delayed(Duration(milliseconds: 200));
     if (response.status!.isApiSuccessful) {
       // FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
-      allEmployeesList.addAll(response.data!);
-      allEmployeesList.clear();
-      if (response.data?.isNotEmpty ?? false) allEmployeesList.addAll(response.data!);
+      listOfAllComplaints.addAll(response.data!);
+      listOfAllComplaints.clear();
+      if (response.data?.isNotEmpty ?? false) listOfAllComplaints.addAll(response.data!);
+      setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+    }
+  }
+
+  Future<void> getAllComplainsWithoutLoader() async {
+    await Future.delayed(Duration(milliseconds: 200));
+
+    var formData = FormData.fromMap({
+      'Register': "Register",
+      "All": "All",
+    });
+
+    GetAllComplainsResponse response =
+        await apiController.post<GetAllComplainsResponse>(EndPoints.ADD_EMPLOYEE_IN_PROJECT, body: formData);
+    if (response.status!.isApiSuccessful) {
+      // FlutterToastX.showSuccessToastBottom(context, "Add employee using add button");
+      listOfAllComplaints.addAll(response.data!);
+      listOfAllComplaints.clear();
+      if (response.data?.isNotEmpty ?? false) listOfAllComplaints.addAll(response.data!);
       setState(() {});
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
