@@ -195,8 +195,7 @@ class _AddExpensesScreenState extends State<AddExpensesScreen> {
 
     Dialogs.showLoader(context, "Adding expenses...");
     String fromIdString = listOfAccounts.where((element) => (element.name == selectedTransferFromAccountString)).first.id ?? "";
-
-
+    String userId = await SharedManager.getStringPreference(SharedPrefsKeys.kUserId);
 
     var formData = FormData.fromMap({
       "Register": "register",
@@ -204,9 +203,10 @@ class _AddExpensesScreenState extends State<AddExpensesScreen> {
       "account_id": fromIdString,
       "business_id": "12",
       "amount": amountTextController.text.toString(),
-      "user_id": "12", //todo change this
+      "user_id": userId,
       "note": noteTextController.text.toString(),
-      "file": filePathString == null ? "" : await MultipartFile.fromFile(filePathString ?? "", filename: "aadharImage.jpg"),
+      "Exp_img": "1",
+      "Exp_image": filePathString == null ? "" : await MultipartFile.fromFile(filePathString ?? "", filename: "expenses.jpg"),
     });
 
     GetAllTypes response = await apiController.post<GetAllTypes>(EndPoints.GET_ALL_ACCOUNT, body: formData);

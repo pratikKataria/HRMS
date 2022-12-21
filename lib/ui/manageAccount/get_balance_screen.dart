@@ -403,9 +403,11 @@ class _GetBalanceScreenState extends State<GetBalanceScreen> {
   Future<void> getBalanceByAccount() async {
     String fromIdString = listOfAccounts.where((element) => (element.name == selectedTransferFromAccountString)).first.id ?? "";
     Dialogs.showLoader(context, "Checking account balance...");
+    // String userId = await SharedManager.getStringPreference(SharedPrefsKeys.kUserId);
+
     var formData = FormData.fromMap({
-      "Register": "register", // todo change this
-      "account_id": fromIdString, // todo change this
+      "Register": "register",
+      "account_id": fromIdString,
       "business_id": "12",
       "Get_Balance": "Get_Balance",
     });

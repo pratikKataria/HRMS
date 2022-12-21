@@ -319,11 +319,12 @@ class _TransferFundsScreenState extends State<TransferFundsScreen> {
     Dialogs.showLoader(context, "Getting all accounts...");
     String fromIdString = listOfAccounts.where((element) => (element.name == selectedTransferFromAccountString)).first.id??"";
     String toIdString = listOfAccounts.where((element) => (element.name == selectedTransferToAccountString)).first.id??"";
+    String userId = await SharedManager.getStringPreference(SharedPrefsKeys.kUserId);
 
     var formData = FormData.fromMap({
       'Register': "Register",
       "Transfer_Fund": "active",
-      "user_id": "12", //todo change this
+      "user_id": userId,
       "type": selectedTransferTypeString,
       "amount": amountTextController.text.toString(),
       "note": noteTextController.text.toString(),

@@ -3,6 +3,7 @@
 class SharedPrefsKeys {
   static const kLoggedIn = 'loggedIn';
   static const kUserName = 'usrName';
+  static const kUserId = 'usrId';
   static const kUserEmail = 'usrEmail';
   static const kUserModel = 'UserModel';
 }

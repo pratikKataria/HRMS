@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addEmployee/aadhaar_verification_screen.dart';
@@ -22,6 +23,22 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
   String selectedGender = "M";
 
   List<String> genderList = ["M", "F"];
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (kDebugMode) testData();
+  }
+
+  testData() {
+    firstNameTextController.text = "pratik";
+    lastNameTextController.text = "kataria";
+    mobileNumberTextController.text = "8717805155";
+    emContactNumberTextController.text = "8717805155";
+    emailTextController.text = "prasdfatikasdf@gmail.com";
+    dobTextController.text = "25/05/1999";
+  }
 
   @override
   Widget build(BuildContext context) {

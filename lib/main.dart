@@ -11,6 +11,7 @@ import 'package:hrms/ui/addEmployee/skill_detail_employee.dart';
 import 'package:hrms/ui/attendance/typeTwo/mark_attendence_type_two_version_2.dart';
 import 'package:hrms/ui/home/home_screen.dart';
 import 'package:hrms/ui/login/login_screen.dart';
+import 'package:hrms/ui/manageEmployee/user_attendance_detail_screen.dart';
 import 'package:hrms/ui/workorder/get_all_workorder.dart';
 import 'package:hrms/util/shared_manager.dart';
 
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         return RouteTransition(routeName: settings.name ?? "/", arguments: settings.arguments);
       },
-      home: login ? HomeScreen(): LoginScreen(),
+      home: login ? HomeScreen(): HomeScreen(),
     );
   }
 }

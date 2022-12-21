@@ -1,6 +1,6 @@
 /// Status : "200"
-/// Message : " Getting All Data. Weldone !!"
-/// Data : [{"cid":"1","user_id":"26","msg":"Test complaince by it team","file":"uploads/51838bv6.jpeg","status":"close"}]
+/// Message : " Getting All Data. Well done !!"
+/// Data : [{"cid":"20","user_id":"22","msg":"pratik 2020","admin_note":"Test 2020","file":"uploads/19345","status":"Close"}]
 
 class GetAllComplainsResponse {
   GetAllComplainsResponse({
@@ -48,22 +48,25 @@ GetAllComplainsResponse copyWith({  String? status,
 
 }
 
-/// cid : "1"
-/// user_id : "26"
-/// msg : "Test complaince by it team"
-/// file : "uploads/51838bv6.jpeg"
-/// status : "close"
+/// cid : "20"
+/// user_id : "22"
+/// msg : "pratik 2020"
+/// admin_note : "Test 2020"
+/// file : "uploads/19345"
+/// status : "Close"
 
 class Data {
   Data({
       String? cid, 
       String? userId, 
       String? msg, 
+      String? adminNote, 
       String? file, 
       String? status,}){
     _cid = cid;
     _userId = userId;
     _msg = msg;
+    _adminNote = adminNote;
     _file = file;
     _status = status;
 }
@@ -72,28 +75,33 @@ class Data {
     _cid = json['cid'];
     _userId = json['user_id'];
     _msg = json['msg'];
+    _adminNote = json['admin_note'];
     _file = json['file'];
     _status = json['status'];
   }
   String? _cid;
   String? _userId;
   String? _msg;
+  String? _adminNote;
   String? _file;
   String? _status;
 Data copyWith({  String? cid,
   String? userId,
   String? msg,
+  String? adminNote,
   String? file,
   String? status,
 }) => Data(  cid: cid ?? _cid,
   userId: userId ?? _userId,
   msg: msg ?? _msg,
+  adminNote: adminNote ?? _adminNote,
   file: file ?? _file,
   status: status ?? _status,
 );
   String? get cid => _cid;
   String? get userId => _userId;
   String? get msg => _msg;
+  String? get adminNote => _adminNote;
   String? get file => _file;
   String? get status => _status;
 
@@ -102,6 +110,7 @@ Data copyWith({  String? cid,
     map['cid'] = _cid;
     map['user_id'] = _userId;
     map['msg'] = _msg;
+    map['admin_note'] = _adminNote;
     map['file'] = _file;
     map['status'] = _status;
     return map;

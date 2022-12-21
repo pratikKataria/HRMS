@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -106,13 +107,13 @@ class _BankDetailEmployeeState extends State<BankDetailEmployee> {
                     }),
                     verticalSpace(20.0),
                     HrmInputField(
-                      textController: panCardTextController,
-                      headingText: "Pan Card",
-                      text: "Enter pancard",
-                      inputFilters: [
-                        FilteringTextInputFormatter.allow(RegExp("^[A-Za-z0-9_.-]*")),
-                        LengthLimitingTextInputFormatter(10)
-                      ]
+                        textController: panCardTextController,
+                        headingText: "Pan Card",
+                        text: "Enter pancard",
+                        inputFilters: [
+                          FilteringTextInputFormatter.allow(RegExp("^[A-Za-z0-9_.-]*")),
+                          LengthLimitingTextInputFormatter(10)
+                        ]
                     ),
                     HrmInputFieldDummy(
                       textController: aadhaarCardTextController,

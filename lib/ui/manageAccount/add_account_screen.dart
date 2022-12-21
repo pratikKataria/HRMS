@@ -188,6 +188,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
 
   Future<void> createAccount() async {
     await Future.delayed(Duration(milliseconds: 200));
+    String userId = await SharedManager.getStringPreference(SharedPrefsKeys.kUserId);
 
     Dialogs.showLoader(context, "Getting all accounts...");
     var formData = FormData.fromMap({
@@ -198,7 +199,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
       "account_number": accountNumberTextController.text.toString(),
       "account_type_id": dobTextController.text.toString(),
       "note": accountNoteTextController.text.toString(),
-      "created_by": "12", //todo change this
+      "created_by": userId,
     });
 
     GetAllTypes response = await apiController.post<GetAllTypes>(EndPoints.GET_ALL_ACCOUNT, body: formData);

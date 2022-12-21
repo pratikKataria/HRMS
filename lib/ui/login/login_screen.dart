@@ -23,21 +23,21 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Container(
               height: 210.0,
-              decoration: BoxDecoration(image: DecorationImage(image: AssetImage(Assets.imagesImgLogin), fit: BoxFit.fill)),
+              decoration: BoxDecoration(image: DecorationImage(image: AssetImage(Assets.imagesIcBannerPlaceholder), fit: BoxFit.fill)),
             ),
-            verticalSpace(10.0),
+            verticalSpace(20.0),
             Text.rich(
               TextSpan(
                 children: [
-                  TextSpan(text: "Go ", style: textStyleRegular16px500w),
-                  TextSpan(text: "Beyond\n", style: textStyle14px500wF2),
-                  TextSpan(text: "with\n", style: textStyleRegular16px500w),
-                  WidgetSpan(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 6.0),
-                      child: Image.asset(Assets.imagesVipuLogo, width: 110.0),
-                    ),
-                  )
+                  TextSpan(text: "Go ", style: textStyleRegular20pxW600),
+                  TextSpan(text: "Beyond", style: textStyle32px500wF2),
+                  // TextSpan(text: "with\n", style: textStyleRegular16px500w),
+                  // WidgetSpan(
+                  //   child: Container(
+                  //     margin: EdgeInsets.only(top: 6.0),
+                  //     child: Image.asset(Assets.imagesVipuLogo, width: 110.0),
+                  //   ),
+                  // )
                 ],
               ),
               textAlign: TextAlign.center,
@@ -121,6 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response.status!.isApiSuccessful) {
       FlutterToastX.showSuccessToastBottom(context, "Login successful");
       SharedManager.setBooleanPreference(SharedPrefsKeys.kLoggedIn, true);
+      SharedManager.setStringPreference(SharedPrefsKeys.kUserId, response.data!.first.id ?? "");
       Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
     } else {
       showErrorToast("Failed to Login ${response.message ?? ""}");

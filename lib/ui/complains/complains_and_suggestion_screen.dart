@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
+import 'package:hrms/res/keys.dart';
 import 'package:hrms/ui/attendance/typeOne/model/GetEmployeeByIdResponse.dart';
 import 'package:hrms/ui/complains/model/submit_complain_response.dart';
 import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
@@ -46,7 +47,7 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   verticalSpace(20.0),
-                  HrmInputField(textController: complaintNoteController, headingText: "Complain Note", text: "enter complaint note"),
+                  HrmInputField(textController: complaintNoteController, headingText: "Complain Note", text: "Enter complaint note"),
                   verticalSpace(20.0),
                   HrmInputFieldDummy(
                     textController: aadhaarCardTextController,
@@ -109,12 +110,14 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
       return;
     }
 
+    String userId = await SharedManager.getStringPreference(SharedPrefsKeys.kUserId);
+
     Map<String, dynamic> map = {
       "Register": "Register",
       "Add": "Add",
-      "user_id": "26", //todo change this
+      "user_id": userId,
       "msg": complaintNoteController.text.toString(),
-      // "file": "1",
+      "file": "1",
       "file": filePathString == null ? "" : await MultipartFile.fromFile(filePathString ?? "", filename: "aadharImage.jpg"),
     };
     var formData = FormData.fromMap(map);
@@ -122,7 +125,7 @@ class _ComplainsAndSuggestionScreenState extends State<ComplainsAndSuggestionScr
 
     Dialogs.showLoader(context, "Creating complaint ...");
     SubmitComplainResponse markAttendanceTypeTwoResponse = await apiController.post<SubmitComplainResponse>(
-      EndPoints.ADD_EMPLOYEE_IN_PROJECT,
+      EndPoints.SUBMIT_COMPLAINTS,
       body: formData,
     );
     await Dialogs.hideLoader(context);

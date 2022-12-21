@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
-import 'package:hrms/ui/addClient/skill_detail_client.dart';
+import 'package:hrms/ui/addEmployee/aadhaar_verification_screen.dart';
 import 'package:hrms/util/utility.dart';
 import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
-
-// late AddEmployeeRequest addEmployeeRequest = AddEmployeeRequest();
 
 class SkillDetailEmployee extends StatefulWidget {
   const SkillDetailEmployee({Key? key}) : super(key: key);
@@ -34,6 +33,23 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
   String? doj;
   String selectedShift = "Day";
   List<String> shiftList = ["Day", "Night"];
+
+  @override
+  void initState() {
+    super.initState();
+    if (kDebugMode) testData();
+  }
+
+  testData() {
+    skillsTextController.text = "Android";
+    companyTextController.text = "TCS";
+    joiningDateTextController.text = "25/05/1999";
+    workingdaysTextController.text = "25";
+    shiftsTimingTextController.text = "Day";
+    esicEmpContributionTextController.text = "4";
+    esicEmperContributionTextController.text = "5";
+    doj = "25/05/1999";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -282,6 +298,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                 if (isValidationFailed) return;
               }
 
+              addEmployeeRequest.skilled = isSkilled ? "1" : "0";
               addEmployeeRequest.skills = skillsTextController.text.toString();
               addEmployeeRequest.company = companyTextController.text.toString();
               addEmployeeRequest.doj = joiningDateTextController.text.toString();

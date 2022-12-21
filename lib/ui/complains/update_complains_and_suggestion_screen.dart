@@ -48,7 +48,7 @@ class _UpdateComplainsAndSuggestionScreenState extends State<UpdateComplainsAndS
                   HrmInputField(
                     textController: complaintNoteController,
                     headingText: "Admin Comments",
-                    text: "enter complaint note",
+                    text: "Enter complaint note",
                     mandate: true,
                   ),
                   verticalSpace(20.0),
@@ -174,7 +174,7 @@ class _UpdateComplainsAndSuggestionScreenState extends State<UpdateComplainsAndS
 
     Dialogs.showLoader(context, "Creating complaint ...");
     SubmitComplainResponse markAttendanceTypeTwoResponse = await apiController.post<SubmitComplainResponse>(
-      EndPoints.ADD_EMPLOYEE_IN_PROJECT,
+      EndPoints.SUBMIT_COMPLAINTS,
       body: formData,
     );
     await Dialogs.hideLoader(context);

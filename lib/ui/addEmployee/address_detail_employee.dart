@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
@@ -18,6 +19,20 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
   TextEditingController cityTextController = TextEditingController();
 
   String? stateName;
+
+  @override
+  void initState() {
+    super.initState();
+    if (kDebugMode) testData();
+  }
+
+  testData() {
+    fullAddressTextController.text = "Address test test address";
+    pincodeTextController.text = "451115";
+    landmarkTextController.text = "landmark";
+    cityTextController.text = "8717805155";
+    stateName = "MP";
+  }
 
   @override
   Widget build(BuildContext context) {

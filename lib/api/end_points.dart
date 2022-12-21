@@ -23,5 +23,4 @@ class EndPoints {
   static final String SUBMIT_COMPLAINTS = BASE_URL + "Submit_Compliance.php";
   static final String ADD_EMPLOYEE_IN_PROJECT = BASE_URL + "Add_Users_In_Project.php";
   static final String TRANSACTIONS = BASE_URL + "Get_transection_by_type.php";
-
 }

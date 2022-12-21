@@ -1,5 +1,6 @@
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/manageEmployee/model/view_attendance_response.dart';
+import 'package:hrms/ui/manageEmployee/user_attendance_detail_screen.dart';
 import 'package:hrms/util/utility.dart';
 
 class ViewAttendanceScreen extends StatefulWidget {
@@ -69,7 +70,11 @@ class _ViewAttendanceScreenState extends State<ViewAttendanceScreen> {
             Expanded(
               child: ListView(
                 children: [
-                  ...listOfData.map((e) => cardViewAddEmployee(e)),
+                  ...listOfData.map((e) => cardViewAddEmployee(e).onClick(() => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              UserAttendanceDetailScreen(e.projectId ?? "", e.userId ?? "", fromDateString, toDateString))))),
                 ],
               ),
             )

@@ -88,6 +88,7 @@ class _AllComplainsScreenState extends State<AllComplainsScreen> {
           Text("user_id: ${e.userId}", style: textStyle14px500w),
           Text("Title: ${e.msg}", style: textStyle14px500w),
           Text("Status: ${e.status}", style: textStyle14px500w),
+          Text("Admin Note: ${e.adminNote??"N/A"}", style: textStyle14px500w),
           verticalSpace(8.0),
           Center(child: Text("click to update", style: textStyleSubText10px400w)),
         ],

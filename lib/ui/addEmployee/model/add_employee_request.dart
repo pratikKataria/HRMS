@@ -363,12 +363,11 @@ AddEmployeeRequest copyWith({  String? firstName,
     map['aadhar_img'] = aadharImg == null ? "" : await MultipartFile.fromFile(aadharImg??"", filename:"aadharImage.jpg");
     map['pan_img'] =  panImg == null ? "" :await MultipartFile.fromFile(panImg??"", filename:"pan_img.jpg");
     map['signature_img'] =  signatureImg == null ? "" : await MultipartFile.fromFile(signatureImg??"", filename:"signature_img.jpg");
-    // map['aadhar_img'] = "img.jpg";
-    // map['pan_img'] = "img.jpg";
-    // map['signature_img'] = "img.jpg";
-    map['aadhar_img'] = "1";
-    map['pan_img'] = "1";
-    map['signature_img'] = "1";
+
+    map['aadhar_img_act'] = "1";
+    map['aadhar_img_act'] = "1";
+    map['aadhar_img_act'] = "1";
+
     map['business_id'] = "12";
     map['Register'] = "Register";
     map['state'] = state ?? "";

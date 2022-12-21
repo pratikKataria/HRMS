@@ -13,5 +13,5 @@ export 'package:hrms/widgets/widget_util.dart';
 export 'package:hrms/widgets/header.dart';
 export 'package:hrms/res/AppColors.dart';
 export 'package:hrms/widgets/progress_dialog.dart';
-
-
+export 'package:hrms/util/shared_manager.dart';
+export 'package:hrms/res/keys.dart';

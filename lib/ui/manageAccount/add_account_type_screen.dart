@@ -66,12 +66,13 @@ class _AddAccountTypeScreenState extends State<AddAccountTypeScreen> {
 
   Future<void> addType() async {
     await Future.delayed(Duration(milliseconds: 200));
+    String userId = await SharedManager.getStringPreference(SharedPrefsKeys.kUserId);
 
     Dialogs.showLoader(context, "Getting all accounts...");
     var formData = FormData.fromMap({
       "Register": "register",
       "Add_Type": accountTypeNameController.text.toString(),
-      "user_id": "12", //todo change this
+      "user_id": userId,
       "business_id": "12",
       "name": accountTypeNameController.text.toString(),
     });

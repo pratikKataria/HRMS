@@ -44,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text("Logout", style: textStyleRegular16px600w).onClick(() {
                       SharedManager.setBooleanPreference(SharedPrefsKeys.kLoggedIn, false);
+                      SharedManager.setStringPreference(SharedPrefsKeys.kUserId, "");
                       Navigator.pop(context);
                       Navigator.pushNamed(context, Screens.LOGIN_SCREEN);
                     }),
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   verticalSpace(20.0),
 
                   Container(
-                    height: 180.0,
+                    height: 175.0,
                     child: Swiper(
                       scale: 0.9,
                       viewportFraction: 0.8,

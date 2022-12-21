@@ -86,8 +86,14 @@ const textStyleRegular18px = TextStyle(
 const textStyleRegular18pxW600 = TextStyle(
     color: AppColors.textColorBlack,
     fontFamily: kFontFamily,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w500,
     fontSize: fontH3);
+
+const textStyleRegular20pxW600 = TextStyle(
+    color: AppColors.textColorBlack,
+    fontFamily: kFontFamily,
+    fontWeight: FontWeight.w600,
+    fontSize: 20);
 
 const textStyleRegular18pxW500 = TextStyle(
     color: AppColors.textColorBlack,
@@ -441,6 +447,12 @@ const textStyle14px500wF2 = TextStyle(
     fontFamily: kFontFamily2,
     fontWeight: FontWeight.w500,
     fontSize: 28);
+
+const textStyle32px500wF2 = TextStyle(
+    color: AppColors.textColor,
+    fontFamily: kFontFamily2,
+    fontWeight: FontWeight.w500,
+    fontSize: 32);
 
 
 const textStyle14px500w20H = TextStyle(
