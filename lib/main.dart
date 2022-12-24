@@ -37,7 +37,8 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         return RouteTransition(routeName: settings.name ?? "/", arguments: settings.arguments);
       },
-      home: login ? HomeScreen(): HomeScreen(),
+      // home: login ? HomeScreen(): HomeScreen(),
+      home: AddressDetailEmployee(),
     );
   }
 }
