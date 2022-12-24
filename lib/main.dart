@@ -9,6 +9,9 @@ import 'package:hrms/ui/addClient/skill_detail_client.dart';
 import 'package:hrms/ui/addEmployee/address_detail_employee.dart';
 import 'package:hrms/ui/addEmployee/bank_detail_employee.dart';
 import 'package:hrms/ui/addEmployee/skill_detail_employee.dart';
+import 'package:hrms/ui/attendance/typeOne/mark_attendence_type_one.dart';
+import 'package:hrms/ui/attendance/typeOne/mark_attendence_type_one_version_2.dart';
+import 'package:hrms/ui/attendance/typeTwo/mark_attendence_type_two.dart';
 import 'package:hrms/ui/attendance/typeTwo/mark_attendence_type_two_version_2.dart';
 import 'package:hrms/ui/home/home_screen.dart';
 import 'package:hrms/ui/login/login_screen.dart';
@@ -38,8 +41,8 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         return RouteTransition(routeName: settings.name ?? "/", arguments: settings.arguments);
       },
-      // home: login ? HomeScreen(): HomeScreen(),
-      home: BasicDetailClient(),
+      home: login ? HomeScreen(): LoginScreen(),
+      // home: BasicDetailClient(),
     );
   }
 }

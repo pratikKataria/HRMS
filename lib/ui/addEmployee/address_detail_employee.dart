@@ -16,6 +16,7 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
   TextEditingController fullAddressTextController = TextEditingController();
   TextEditingController pincodeTextController = TextEditingController();
   TextEditingController landmarkTextController = TextEditingController();
+  TextEditingController cityTextController = TextEditingController();
 
   String? stateName;
   String? selectedCityNameString;
@@ -93,8 +94,9 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
                     Row(
                       children: [
                         Expanded(
-                            child: HrmInputFieldDummy(
+                            child: HrmInputField(
                           headingText: "City",
+                          textController: cityTextController,
                           text: selectedCityNameString ?? "Select city",
                           mandate: true,
                         )),
@@ -241,6 +243,7 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
     ).then((value) {
       setState(() {
         selectedCityNameString = value;
+        cityTextController.text = selectedCityNameString??"";
       });
     });
   }

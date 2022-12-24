@@ -365,8 +365,8 @@ AddEmployeeRequest copyWith({  String? firstName,
     map['signature_img'] =  signatureImg == null ? "" : await MultipartFile.fromFile(signatureImg??"", filename:"signature_img.jpg");
 
     map['aadhar_img_act'] = "1";
-    map['aadhar_img_act'] = "1";
-    map['aadhar_img_act'] = "1";
+    map['pan_img_act'] = "1";
+    map['signature_img_act'] = "1";
 
     map['business_id'] = "12";
     map['Register'] = "Register";

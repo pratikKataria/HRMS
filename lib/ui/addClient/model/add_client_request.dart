@@ -20,6 +20,7 @@
 
 class AddClientRequest {
   String? state;
+  String? company;
   AddClientRequest({
     String? register,
     String? clientName,
@@ -81,6 +82,7 @@ class AddClientRequest {
     _aadhar = json['aadhar'];
     _aadharImage = json['aadhar_image'];
     _pan = json['pan'];
+    _panImg = json['pan_img'];
     _panImg = json['pan_img'];
   }
   String? _register;
@@ -187,6 +189,7 @@ class AddClientRequest {
     map['pan'] = _pan;
     map['pan_img'] = _panImg;
     map['state'] = state;
+    map['company'] = company;
     return map;
   }
 

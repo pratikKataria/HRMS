@@ -457,7 +457,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Align(alignment: Alignment.centerLeft, child: Text("Skilled", style: textStyleSubText14px500w)),
+          Align(alignment: Alignment.centerLeft, child: Text(isSkilled ? "Skilled" : "Un-Skilled", style: textStyleSubText14px500w)),
           CupertinoSwitch(
             value: isSkilled,
             activeColor: AppColors.colorPrimary,

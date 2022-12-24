@@ -1,6 +1,8 @@
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
+import 'package:hrms/ui/attendance/typeOne/model/job_title_response.dart';
 import 'package:hrms/ui/attendance/typeTwo/mark_attendance_type_two_response.dart';
+import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
 
 class MarkAttendanceTypeTwoV2 extends StatefulWidget {
   final String? projectId;
@@ -23,11 +25,15 @@ class _MarkAttendanceTypeTwoV2State extends State<MarkAttendanceTypeTwoV2> {
 
   bool addEmployeeToggle = false;
 
+  String? selectedJob;
+  List<JobTitleList> listOfJobs = [];
+
   @override
   void initState() {
     super.initState();
 
     getAllUsers();
+    getJobTitle();
     searchTextController.addListener(() => setState(() {}));
   }
 
@@ -52,12 +58,14 @@ class _MarkAttendanceTypeTwoV2State extends State<MarkAttendanceTypeTwoV2> {
             children: [
               Header(headerText: "Mark Attendance"),
               if (!addEmployeeToggle) ...[
-                HrmInputField(
-                    margin: EdgeInsets.symmetric(horizontal: 20.0),
-                    textController: jobTitleController,
-                    headingText: "Enter job title",
-                    text: "Job Title",
-                    mandate: true),
+                HrmInputFieldDummy(
+                  headingText: "Title",
+                  text: selectedJob ?? "Select Title",
+                  margin: EdgeInsets.symmetric(horizontal: 20.0),
+                  mandate: true,
+                ).onClick(() {
+                  showJobDialog();
+                }),
                 verticalSpace(14.0),
                 HrmInputField(
                     margin: EdgeInsets.symmetric(horizontal: 20.0),
@@ -315,6 +323,79 @@ class _MarkAttendanceTypeTwoV2State extends State<MarkAttendanceTypeTwoV2> {
       setState(() {});
     } else {
       FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+    }
+  }
+
+  void showJobDialog() {
+    showDialog<JobTitleList>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: Container(
+              color: AppColors.white,
+              padding: EdgeInsets.all(20.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Select Job", style: textStyle14px600w),
+                    verticalSpace(10.0),
+                    ...listOfJobs.map((e) {
+                      return Container(
+                        color: AppColors.inputFieldBackgroundColor,
+                        padding: EdgeInsets.all(20.0),
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(child: Text("${e.jobTitle}", style: textStyleSubText14px500w)),
+                                horizontalSpace(10.0),
+                                Icon(
+                                  Icons.check_circle_outline,
+                                  color: AppColors.textColorSubText,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ).onClick(() {
+                        Navigator.pop(context, e);
+                      });
+                    }).toList(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      setState(() {
+        selectedJob = value?.jobTitle;
+        jobTitleController.text = selectedJob??"";
+        // print("index of $stateName is ${listOfStates.indexOf(stateName!)}");
+      });
+    });
+  }
+
+  Future<void> getJobTitle() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    // Dialogs.showLoader(context, "Getting job list ...");
+    JobTitleResponse addEmployeeResponse = await apiController.get<JobTitleResponse>(
+      "https://vipugroup.com/final/Get_Job_list.php?project_id=12&business_id=12&GET=GET",
+    );
+    // await Dialogs.hideLoader(context);
+    if (addEmployeeResponse.status?.isApiSuccessful ?? false) {
+      listOfJobs.addAll(addEmployeeResponse.jobTitleList!);
+      setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${addEmployeeResponse.message ?? ""}");
     }
   }
 }

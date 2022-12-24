@@ -170,6 +170,7 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
               addClientRequest.contactPerson = contactPersonTextController.text.toString();
               addClientRequest.contactPersonMobile = contactPersonMobileNumberTextController.text.toString();
               addClientRequest.contactPersonEmail = contactPersonEmailIdTextController.text.toString();
+              addClientRequest.company = selectedCompany;
 
               Navigator.pushNamed(context, Screens.CLIENT_ADDRESS_DETAIL);
             }),
@@ -181,6 +182,11 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
   }
 
   bool validateInputFields() {
+    if (selectedCompany == null) {
+      showErrorToast("Please select company");
+      return false;
+    }
+
     if (clientNameTextController.text.isEmpty) {
       showErrorToast("Please enter client Name");
       return false;
@@ -223,6 +229,8 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
       showErrorToast("Please enter valid email id");
       return false;
     }
+
+
 
     return true;
   }
