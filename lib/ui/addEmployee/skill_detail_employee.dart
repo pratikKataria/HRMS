@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addEmployee/aadhaar_verification_screen.dart';
+import 'package:hrms/ui/addEmployee/model/company_list_response.dart';
+import 'package:hrms/ui/addEmployee/model/skill_list_response.dart';
 import 'package:hrms/util/utility.dart';
 import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
 
@@ -32,11 +34,17 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
 
   String? doj;
   String selectedShift = "Day";
-  List<String> shiftList = ["Day", "Night"];
+  String? selectedCompany;
+  String? selectedSkill;
+  List<String> shiftList = ["A", "B", "C"];
+  List<ListOfParentCompanies> listOfCompanies = [];
+  List<ListOfSkills> listOfSkills = [];
 
   @override
   void initState() {
     super.initState();
+    getAllCompanyNames();
+    getAllSkillList();
     if (kDebugMode) testData();
   }
 
@@ -82,24 +90,28 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                   children: [
                     /*if (isSkilled)*/ ...[
                       verticalSpace(10.0),
-                      HrmInputField(
+                      HrmInputFieldDummy(
                         textController: skillsTextController,
-                        headingText: "Select Skill",
-                        text: "Enter skill (ex: Carpenter, Painter)",
+                        headingText:  "Select Skill",
+                        text: selectedSkill ?? "Enter skill (ex: Carpenter, Painter)",
                         mandate: true,
                         inputFilters: [LengthLimitingTextInputFormatter(256)],
-                      ),
+                      ).onClick(() {
+                        showSkillDialog();
+                      }),
                       verticalSpace(20.0),
-                      HrmInputField(
+                      HrmInputFieldDummy(
                         textController: companyTextController,
                         headingText: "Company",
-                        text: "Enter company name",
+                        text: selectedCompany ?? "Enter company name",
                         mandate: true,
                         inputFilters: [
                           FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
                           LengthLimitingTextInputFormatter(64)
                         ],
-                      ),
+                      ).onClick(() {
+                        showCompanyDialog();
+                      }),
                       verticalSpace(20.0),
 
                       HrmInputFieldDummy(
@@ -216,10 +228,10 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                       Row(
                         children: [
                           Expanded(
-                            child: HrmInputField(
+                            child: HrmInputFieldDummy(
                               textController: pfEmpContributionTextController,
                               headingText: "Employee Contribution",
-                              text: "ex. 4.5%",
+                              text: "12% Fixed",
                               inputTypeNumber: true,
                               inputFilters: [
                                 FilteringTextInputFormatter.allow(RegExp("^[+-]?(([1-9][0-9]*)?[0-9](\.[0-9]*)?|\.[0-9]+)")),
@@ -229,10 +241,10 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                           ),
                           horizontalSpace(20.0),
                           Expanded(
-                            child: HrmInputField(
+                            child: HrmInputFieldDummy(
                               textController: pfEmperContributionTextController,
                               headingText: "Employer Contribution",
-                              text: "ex. 4.5%",
+                              text: "13% Fixed",
                               inputTypeNumber: true,
                               inputFilters: [
                                 FilteringTextInputFormatter.allow(RegExp("^[+-]?(([1-9][0-9]*)?[0-9](\.[0-9]*)?|\.[0-9]+)")),
@@ -258,10 +270,10 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                       Row(
                         children: [
                           Expanded(
-                            child: HrmInputField(
+                            child: HrmInputFieldDummy(
                               textController: esicEmpContributionTextController,
                               headingText: "Employee Contribution",
-                              text: "ex. 4.5%",
+                              text: "0.75% Fixed",
                               inputTypeNumber: true,
                               inputFilters: [
                                 FilteringTextInputFormatter.allow(RegExp("^[+-]?(([1-9][0-9]*)?[0-9](\.[0-9]*)?|\.[0-9]+)")),
@@ -271,10 +283,10 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                           ),
                           horizontalSpace(20.0),
                           Expanded(
-                            child: HrmInputField(
+                            child: HrmInputFieldDummy(
                               textController: esicEmperContributionTextController,
                               headingText: "Employer Contribution",
-                              text: "ex. 4.5%",
+                              text: "3.25% Fixed",
                               inputTypeNumber: true,
                               inputFilters: [
                                 FilteringTextInputFormatter.allow(RegExp("^[+-]?(([1-9][0-9]*)?[0-9](\.[0-9]*)?|\.[0-9]+)")),
@@ -299,18 +311,18 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
               }
 
               addEmployeeRequest.skilled = isSkilled ? "1" : "0";
-              addEmployeeRequest.skills = skillsTextController.text.toString();
-              addEmployeeRequest.company = companyTextController.text.toString();
+              addEmployeeRequest.skills = selectedSkill;
+              addEmployeeRequest.company = selectedCompany;
               addEmployeeRequest.doj = joiningDateTextController.text.toString();
               addEmployeeRequest.workingdays = workingdaysTextController.text.toString();
               addEmployeeRequest.shiftTime = selectedShift;
               addEmployeeRequest.department = departmentTextController.text.toString();
               // addEmployeeRequest.pf = departmentTextController.text.toString();
               addEmployeeRequest.uan = uanTextController.text.toString();
-              addEmployeeRequest.pfemployeecontribution = pfEmpContributionTextController.text.toString();
-              addEmployeeRequest.pfemployercontribution = pfEmperContributionTextController.text.toString();
-              addEmployeeRequest.esicemployeecontribution = esicEmpContributionTextController.text.toString();
-              addEmployeeRequest.esicemployercontribution = esicEmperContributionTextController.text.toString();
+              addEmployeeRequest.pfemployeecontribution = "12%";
+              addEmployeeRequest.pfemployercontribution = "13%";
+              addEmployeeRequest.esicemployeecontribution = "0.75%";
+              addEmployeeRequest.esicemployercontribution = "3.25%";
               // addEmployeeRequest.joiningDate = landmarkTextController.text.toString();
 
               Navigator.pushNamed(context, Screens.EMPLOYEE_BANK_DETAIL);
@@ -320,6 +332,120 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
         ),
       ),
     );
+  }
+
+  void showCompanyDialog() {
+    showDialog<ListOfParentCompanies>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: Container(
+              color: AppColors.white,
+              padding: EdgeInsets.all(20.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Select company", style: textStyle14px600w),
+                    verticalSpace(10.0),
+                    ...listOfCompanies.map((e) {
+                      return Container(
+                        color: AppColors.inputFieldBackgroundColor,
+                        padding: EdgeInsets.all(20.0),
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(child: Text("${e.companyName}", style: textStyleSubText14px500w)),
+                                horizontalSpace(10.0),
+                                Icon(
+                                  Icons.check_circle_outline,
+                                  color: AppColors.textColorSubText,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ).onClick(() {
+                        Navigator.pop(context, e);
+                      });
+                    }).toList(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      setState(() {
+        selectedCompany = value?.companyName;
+        // print("index of $stateName is ${listOfStates.indexOf(stateName!)}");
+      });
+    });
+  }
+
+  void showSkillDialog() {
+    showDialog<ListOfSkills>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: Container(
+              color: AppColors.white,
+              padding: EdgeInsets.all(20.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Select skill", style: textStyle14px600w),
+                    verticalSpace(10.0),
+                    ...listOfSkills.map((e) {
+                      return Container(
+                        color: AppColors.inputFieldBackgroundColor,
+                        padding: EdgeInsets.all(20.0),
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(child: Text("${e.skills}", style: textStyleSubText14px500w)),
+                                horizontalSpace(10.0),
+                                Icon(
+                                  Icons.check_circle_outline,
+                                  color: AppColors.textColorSubText,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ).onClick(() {
+                        Navigator.pop(context, e);
+                      });
+                    }).toList(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      setState(() {
+        selectedSkill = value?.skills;
+        // print("index of $stateName is ${listOfStates.indexOf(stateName!)}");
+      });
+    });
   }
 
   Container skillSwitch() {
@@ -383,5 +509,35 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
 
   void showErrorToast(String message) {
     FlutterToastX.showErrorToastBottom(context, message);
+  }
+
+  Future<void> getAllCompanyNames() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    Dialogs.showLoader(context, "Getting company list ...");
+    CompanyListResponse addEmployeeResponse = await apiController.get<CompanyListResponse>(
+      "https://vipugroup.com/final/Get_Company_List.php?project_id=12&business_id=12&GET=GET",
+    );
+    await Dialogs.hideLoader(context);
+    if (addEmployeeResponse.status?.isApiSuccessful ?? false) {
+      listOfCompanies.addAll(addEmployeeResponse.listOfParentCompanies!);
+      setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${addEmployeeResponse.message ?? ""}");
+    }
+  }
+
+  Future<void> getAllSkillList() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    // Dialogs.showLoader(context, "Getting company list ...");
+    SkillListResponse addEmployeeResponse = await apiController.get<SkillListResponse>(
+      "https://vipugroup.com/final/Get_skills_list.php?project_id=12&business_id=12&GET=GET",
+    );
+    // await Dialogs.hideLoader(context);
+    if (addEmployeeResponse.status?.isApiSuccessful ?? false) {
+      listOfSkills.addAll(addEmployeeResponse.listOfSkills!);
+      setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${addEmployeeResponse.message ?? ""}");
+    }
   }
 }

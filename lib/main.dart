@@ -4,6 +4,7 @@ import 'package:hrms/res/keys.dart';
 import 'package:hrms/route/route_transition.dart';
 import 'package:hrms/ui/addClient/address_detail_client.dart';
 import 'package:hrms/ui/addClient/bank_detail_client.dart';
+import 'package:hrms/ui/addClient/basic_detail_client.dart';
 import 'package:hrms/ui/addClient/skill_detail_client.dart';
 import 'package:hrms/ui/addEmployee/address_detail_employee.dart';
 import 'package:hrms/ui/addEmployee/bank_detail_employee.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         return RouteTransition(routeName: settings.name ?? "/", arguments: settings.arguments);
       },
       // home: login ? HomeScreen(): HomeScreen(),
-      home: AddressDetailEmployee(),
+      home: BasicDetailClient(),
     );
   }
 }

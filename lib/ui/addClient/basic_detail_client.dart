@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hrms/api/api_controller_expo.dart';
 import 'package:hrms/generated/assets.dart';
 import 'package:hrms/res/AppColors.dart';
 import 'package:hrms/res/Fonts.dart';
 import 'package:hrms/route/screens.dart';
 import 'package:hrms/ui/addClient/model/add_client_request.dart';
+import 'package:hrms/ui/addEmployee/model/company_list_response.dart';
 import 'package:hrms/util/extension.dart';
 import 'package:hrms/widgets/flutter_toast.dart';
 import 'package:hrms/widgets/header.dart';
 import 'package:hrms/widgets/hrm_gradient_button.dart';
 import 'package:hrms/widgets/hrm_input_fields.dart';
 import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
+import 'package:hrms/widgets/progress_dialog.dart';
 import 'package:hrms/widgets/widget_util.dart';
 
 late AddClientRequest addClientRequest;
@@ -32,9 +35,13 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
   TextEditingController contactPersonEmailIdTextController = TextEditingController();
   String? dob;
 
+  String? selectedCompany;
+  List<ListOfParentCompanies> listOfCompanies = [];
+
   @override
   void initState() {
     addClientRequest = AddClientRequest();
+    getAllCompanyNames();
     super.initState();
   }
 
@@ -63,6 +70,18 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: ListView(
                   children: [
+                    verticalSpace(20.0),
+                    HrmInputFieldDummy(
+                      headingText: "Company",
+                      text: selectedCompany ?? "Enter company name",
+                      mandate: true,
+                      inputFilters: [
+                        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                        LengthLimitingTextInputFormatter(64)
+                      ],
+                    ).onClick(() {
+                      showCompanyDialog();
+                    }),
                     verticalSpace(20.0),
                     HrmInputField(
                       textController: clientNameTextController,
@@ -231,4 +250,75 @@ class _BasicDetailClientState extends State<BasicDetailClient> {
     registrationDateTextController.text = dob ?? "";
   }
 
+  void showCompanyDialog() {
+    showDialog<ListOfParentCompanies>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: Container(
+              color: AppColors.white,
+              padding: EdgeInsets.all(20.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Select company", style: textStyle14px600w),
+                    verticalSpace(10.0),
+                    ...listOfCompanies.map((e) {
+                      return Container(
+                        color: AppColors.inputFieldBackgroundColor,
+                        padding: EdgeInsets.all(20.0),
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(child: Text("${e.companyName}", style: textStyleSubText14px500w)),
+                                horizontalSpace(10.0),
+                                Icon(
+                                  Icons.check_circle_outline,
+                                  color: AppColors.textColorSubText,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ).onClick(() {
+                        Navigator.pop(context, e);
+                      });
+                    }).toList(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      setState(() {
+        selectedCompany = value?.companyName;
+        // print("index of $stateName is ${listOfStates.indexOf(stateName!)}");
+      });
+    });
+  }
+
+  Future<void> getAllCompanyNames() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    Dialogs.showLoader(context, "Getting company list ...");
+    CompanyListResponse addEmployeeResponse = await apiController.get<CompanyListResponse>(
+      "https://vipugroup.com/final/Get_Company_List.php?project_id=12&business_id=12&GET=GET",
+    );
+    await Dialogs.hideLoader(context);
+    if (addEmployeeResponse.status?.isApiSuccessful ?? false) {
+      listOfCompanies.addAll(addEmployeeResponse.listOfParentCompanies!);
+      setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${addEmployeeResponse.message ?? ""}");
+    }
+  }
 }
