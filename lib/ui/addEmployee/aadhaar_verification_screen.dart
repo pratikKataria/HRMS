@@ -1,16 +1,24 @@
- import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addEmployee/model/add_employee_request.dart';
+import 'package:hrms/ui/addEmployee/model/adhaar_card_send_otp_response.dart';
+import 'package:hrms/ui/addEmployee/model/verify_aadhar_response.dart';
 
 late AddEmployeeRequest addEmployeeRequest;
 
-class AadhaarVerificationScreen extends StatelessWidget {
-  TextEditingController aadhaarTextController = TextEditingController();
-
+class AadhaarVerificationScreen extends StatefulWidget {
   AadhaarVerificationScreen({Key? key}) : super(key: key) {
     addEmployeeRequest = AddEmployeeRequest();
   }
 
+  @override
+  State<AadhaarVerificationScreen> createState() => _AadhaarVerificationScreenState();
+}
+
+class _AadhaarVerificationScreenState extends State<AadhaarVerificationScreen> {
+  TextEditingController aadhaarTextController = TextEditingController();
+  TextEditingController otpTextController = TextEditingController();
+  String? refId;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +46,16 @@ class AadhaarVerificationScreen extends StatelessWidget {
                     mandate: true,
                   ),
                   verticalSpace(20.0),
+                  if (refId != null)
+                    HrmInputField(
+                      textController: otpTextController,
+                      headingText: "OTP",
+                      text: "Enter otp",
+                      inputTypeNumber: true,
+                      inputFilters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(6)],
+                      mandate: true,
+                    ),
+                  if (refId != null) verticalSpace(20.0),
                   verticalSpace(20.0),
                   HrmGradientButton(text: "Verify").onClick(() {
                     addEmployeeRequest.aadharNumber = aadhaarTextController.text.toString();
@@ -52,10 +70,14 @@ class AadhaarVerificationScreen extends StatelessWidget {
                       return;
                     }
 
-                    Navigator.pushNamed(context, Screens.EMPLOYEE_BASIC_DETAIL);
+                    if (refId == null)
+                      sendAadhaarOtp(aadhaarTextController.text.toString());
+                    else
+                      verifyAadharOtp(otpTextController.text.toString(), refId ?? "");
+
+                    // Navigator.pushNamed(context, Screens.EMPLOYEE_BASIC_DETAIL);
                   }),
                   verticalSpace(20.0),
-
                   HrmGradientButton(text: "Continue without OTP").onClick(() {
                     addEmployeeRequest.aadharNumber = "";
 
@@ -78,5 +100,65 @@ class AadhaarVerificationScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> sendAadhaarOtp(String aadhaarNo) async {
+    await Future.delayed(Duration(milliseconds: 200));
+    Dialogs.showLoader(context, "Sending otp to register mobile number ...");
+    Map<String, String> body = {"aadhar": "445935418492"};
+    var formData = FormData.fromMap(body);
+    AdhaarCardSendOtpResponse response = await apiController.post<AdhaarCardSendOtpResponse>(EndPoints.AADHAAR_VERIFICATION, body: formData);
+    await Dialogs.hideLoader(context);
+
+    if (response.status == "SUCCESS") {
+      refId = response.refId;
+      // listOfProjects.clear();
+      // listOfProjects.addAll(response.data!);
+      // if (listOfProjects.isNotEmpty) selectedProject = listOfProjects?.first?.clientName ?? "";
+      // if (listOfProjects.isNotEmpty) selectedProjectId = listOfProjects?.first?.projectId ?? "";
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+    }
+    setState(() {});
+  }
+
+  Future<void> verifyAadharOtp(String otp, String refId) async {
+    await Future.delayed(Duration(milliseconds: 200));
+
+    if (otp.isEmpty) {
+      FlutterToastX.showErrorToastCenter(context, "Please enter otp");
+      return;
+    }
+
+    if (otp.length < 6) {
+      FlutterToastX.showErrorToastCenter(context, "Please enter valid otp");
+      return;
+    }
+
+    Map<String, String> body = {
+      "otp": otp,
+      "ref_id": refId,
+    };
+    var formData = FormData.fromMap(body);
+    Dialogs.showLoader(context, "Verifying aadhaar otp ...");
+    VerifyAadharResponse response = await apiController.post<VerifyAadharResponse>(EndPoints.AADHAAR_VERIFY_OTP, body: formData);
+    await Dialogs.hideLoader(context);
+
+    if (response.status == "VALID") {
+      addEmployeeRequest.permanentAddress = response.address;
+      addEmployeeRequest.dob = response.dob;
+      addEmployeeRequest.gender = response.gender;
+      addEmployeeRequest.firstName = response.name;
+      addEmployeeRequest.pincode = response.splitAddress?.pincode;
+      addEmployeeRequest.city = response.splitAddress?.po;
+      addEmployeeRequest.state = response.splitAddress?.state;
+
+      Navigator.pushNamed(context, Screens.EMPLOYEE_BASIC_DETAIL);
+    } else {
+      FlutterToastX.showErrorToastCenter(context, "Failed: ${response.message ?? "some error occured"}");
+    }
+    this.refId = null;
+    otpTextController.clear();
+    setState(() {});
   }
 }

@@ -90,7 +90,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                   children: [
                     /*if (isSkilled)*/ ...[
                       verticalSpace(10.0),
-                      HrmInputFieldDummy(
+                      if (isSkilled) HrmInputFieldDummy(
                         textController: skillsTextController,
                         headingText:  "Select Skill",
                         text: selectedSkill ?? "Enter skill (ex: Carpenter, Painter)",
@@ -99,7 +99,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
                       ).onClick(() {
                         showSkillDialog();
                       }),
-                      verticalSpace(20.0),
+                      if (isSkilled) verticalSpace(20.0),
                       HrmInputFieldDummy(
                         textController: companyTextController,
                         headingText: "Company",
@@ -386,6 +386,8 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
     ).then((value) {
       setState(() {
         selectedCompany = value?.companyName;
+        companyTextController.text = selectedCompany??"";
+
         // print("index of $stateName is ${listOfStates.indexOf(stateName!)}");
       });
     });
@@ -443,6 +445,7 @@ class _SkillDetailEmployeeState extends State<SkillDetailEmployee> {
     ).then((value) {
       setState(() {
         selectedSkill = value?.skills;
+        skillsTextController.text = selectedSkill??"";
         // print("index of $stateName is ${listOfStates.indexOf(stateName!)}");
       });
     });

@@ -25,5 +25,6 @@ class Screens {
   static const String COMPLAINS = "COMPLAINS";
   static const String VIEW_ATTENDANCE = "VIEW_ATTENDANCE";
   static const String VIEW_WORKORDER_SCREEN = "VIEW_WORKORDER_SCREEN";
+  static const String VIEW_WORKORDER_SCREEN2 = "VIEW_WORKORDER_SCREEN2";
 
 }

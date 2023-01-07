@@ -18,6 +18,7 @@ import 'package:hrms/ui/attendance/typeTwo/mark_attendence_type_two_version_2.da
 import 'package:hrms/ui/complains/complains_and_suggestion_screen.dart';
 import 'package:hrms/ui/home/home_screen.dart';
 import 'package:hrms/ui/login/login_screen.dart';
+import 'package:hrms/ui/manageEmployee/get_all_workorder2.dart';
 import 'package:hrms/ui/manageEmployee/manage_employe_options_screen.dart';
 import 'package:hrms/ui/manageEmployee/manage_employee_screen.dart';
 import 'package:hrms/ui/manageEmployee/view_attendance_screen.dart';
@@ -63,6 +64,7 @@ class RouteTransition extends PageRouteBuilder {
               case Screens.COMPLAINS: return  ComplainsAndSuggestionScreen();
               case Screens.VIEW_ATTENDANCE: return  ViewAttendanceScreen(arguments as String);
               case Screens.VIEW_WORKORDER_SCREEN: return  GetAllWorkOrderScreen(arguments as String);
+              case Screens.VIEW_WORKORDER_SCREEN2: return  GetAllWorkOrderScreen2(arguments as String);
             }
             return LoginScreen();
           },

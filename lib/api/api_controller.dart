@@ -4,8 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:hrms/logging/simple_log.dart';
 import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
 import 'package:hrms/ui/addEmployee/model/add_employee_response.dart';
+import 'package:hrms/ui/addEmployee/model/adhaar_card_send_otp_response.dart';
 import 'package:hrms/ui/addEmployee/model/company_list_response.dart';
 import 'package:hrms/ui/addEmployee/model/skill_list_response.dart';
+import 'package:hrms/ui/addEmployee/model/verify_aadhar_response.dart';
 import 'package:hrms/ui/attendance/typeOne/model/GetEmployeeByIdResponse.dart';
 import 'package:hrms/ui/attendance/typeOne/model/job_title_response.dart';
 import 'package:hrms/ui/attendance/typeOne/model/mark_attendance_type_one_response.dart';
@@ -116,6 +118,8 @@ class JsonConverter {
     if (T == CompanyListResponse) return CompanyListResponse.fromJson(value) as T;
     if (T == SkillListResponse) return SkillListResponse.fromJson(value) as T;
     if (T == JobTitleResponse) return JobTitleResponse.fromJson(value) as T;
+    if (T == AdhaarCardSendOtpResponse) return AdhaarCardSendOtpResponse.fromJson(value) as T;
+    if (T == VerifyAadharResponse) return VerifyAadharResponse.fromJson(value) as T;
     return throw Exception("Unknown class");
   }
 }

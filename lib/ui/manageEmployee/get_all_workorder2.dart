@@ -2,23 +2,25 @@ import 'package:hrms/export.dart';
 import 'package:hrms/ui/workorder/model/get_all_work_order.dart';
 import 'package:hrms/util/utility.dart';
 
-class GetAllWorkOrderScreen extends StatefulWidget {
+class GetAllWorkOrderScreen2 extends StatefulWidget {
   final String projectId;
 
-  const GetAllWorkOrderScreen(this.projectId, {Key? key}) : super(key: key);
+  const GetAllWorkOrderScreen2(this.projectId, {Key? key}) : super(key: key);
 
   @override
-  State<GetAllWorkOrderScreen> createState() => _GetAllWorkOrderScreenState();
+  State<GetAllWorkOrderScreen2> createState() => _GetAllWorkOrderScreen2State();
 }
 
-class _GetAllWorkOrderScreenState extends State<GetAllWorkOrderScreen> {
+class _GetAllWorkOrderScreen2State extends State<GetAllWorkOrderScreen2> {
   String fromDateString = "";
-  String toDateString = "";
 
   List<Data> listOfData = [];
 
   @override
   void initState() {
+    DateTime now = DateTime.now();
+
+    fromDateString =  "${now.year }-${now.month}-${now.day}";
     getAllWorkOrder();
     super.initState();
   }
@@ -34,6 +36,17 @@ class _GetAllWorkOrderScreenState extends State<GetAllWorkOrderScreen> {
           children: [
             Header(headerText: "Manage Employee"),
             line(width: Utility.screenWidth(context)),
+            fromDate().onClick(() async {
+              fromDateString = await _selectDate();
+              if (fromDateString.isEmpty) {
+                FlutterToastX.showErrorToast(context, "Please select till date");
+                return;
+              }
+
+              getAllWorkOrder();
+
+              setState(() {});
+            }),
             verticalSpace(6.0),
             Expanded(
               child: ListView(
@@ -73,7 +86,7 @@ class _GetAllWorkOrderScreenState extends State<GetAllWorkOrderScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("From Date", style: textStyleWhite14px500w),
+              Text("Till Date", style: textStyleWhite14px500w),
               horizontalSpace(20.0),
               Icon(Icons.filter_list_sharp, size: 20.0, color: AppColors.white),
             ],
@@ -81,43 +94,6 @@ class _GetAllWorkOrderScreenState extends State<GetAllWorkOrderScreen> {
         ),
         verticalSpace(4.0),
         Text(fromDateString ?? "", style: textStyle14px500w)
-      ],
-    );
-  }
-
-  Column toDate() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          height: 30.0,
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [AppColors.buttonStartGradient, AppColors.buttonEndGradient],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.background,
-                spreadRadius: 2.0,
-                blurRadius: 8.0,
-                offset: Offset(2, 5),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("To Date", style: textStyleWhite14px500w),
-              horizontalSpace(20.0),
-              Icon(Icons.filter_list_sharp, size: 20.0, color: AppColors.white),
-            ],
-          ),
-        ),
-        verticalSpace(4.0),
-        Text(toDateString ?? "", style: textStyle14px500w)
       ],
     );
   }
@@ -140,10 +116,8 @@ class _GetAllWorkOrderScreenState extends State<GetAllWorkOrderScreen> {
             ),
           ),
           Icon(Icons.download, color: AppColors.textColorSubText).onClick(() {
-            DateTime now = DateTime.now();
-            String date = "${now.year }-${now.month}-${now.day}";
-            Utility.urlLauncher(context,
-                "https://vipugroup.com/final/Download_workorder_pdf.php?genrate=&blockno=${e.blocno}&robotno=${e.roboNo}&inverterno=${e.inverterNo}&date=${date}");
+
+            Utility.urlLauncher(context, "https://vipugroup.com/final/Download_workorder_pdf.php?genrate=&blockno=${e.blocno}&robotno=${e.roboNo}&inverterno=${e.inverterNo}&date=$fromDateString");
             setState(() {});
           }),
         ],
@@ -160,7 +134,7 @@ class _GetAllWorkOrderScreenState extends State<GetAllWorkOrderScreen> {
       lastDate: DateTime.now(),
     );
 
-    return "${picked?.year ?? "YY"}-${picked?.month ?? "MM"}-${picked?.day ?? "DD"} 09:24:00";
+    return "${picked?.year ?? "YY"}-${picked?.month ?? "MM"}-${picked?.day ?? "DD"}";
   }
 
   Future<void> getAllWorkOrder() async {
@@ -176,7 +150,7 @@ class _GetAllWorkOrderScreenState extends State<GetAllWorkOrderScreen> {
 
     Map<String, String> data = {
       "GET": "GET",
-      // "date": "2022-12-01",
+      "date": fromDateString,
       "project_id": widget.projectId,
       "business_id": "12",
     };

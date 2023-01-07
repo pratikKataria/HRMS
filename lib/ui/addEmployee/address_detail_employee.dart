@@ -24,14 +24,23 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
   @override
   void initState() {
     super.initState();
-    if (kDebugMode) testData();
+    populateFieldData();
+    // if (kDebugMode) testData();
+  }
+
+  void populateFieldData() {
+    fullAddressTextController.text = addEmployeeRequest.permanentAddress ?? "";
+    pincodeTextController.text = addEmployeeRequest.pincode ?? "";
+    cityTextController.text = addEmployeeRequest.city ?? "";
+    selectedCityNameString = cityTextController.text.toString();
+    stateName = addEmployeeRequest.state ?? "";
   }
 
   testData() {
     fullAddressTextController.text = "Address test test address";
     pincodeTextController.text = "451115";
     landmarkTextController.text = "landmark";
-   selectedCityNameString = "Amba";
+    selectedCityNameString = "Amba";
     stateName = "MP";
   }
 
@@ -274,7 +283,7 @@ class _AddressDetailEmployeeState extends State<AddressDetailEmployee> {
       return false;
     }
 
-    if (selectedCityNameString == null) {
+    if (cityTextController.text.toString().isEmpty) {
       showErrorToast("Please enter/select city");
       return false;
     }

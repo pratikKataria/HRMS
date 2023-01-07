@@ -55,6 +55,8 @@ GetAllWorkOrderResponse copyWith({  String? status,
 /// project_id : "12"
 
 class Data {
+  String roboNo = "";
+  String inverterNo = "";
   Data({
       String? userIdCount, 
       String? createdAt, 
@@ -73,7 +75,9 @@ class Data {
     _createdAt = json['created_at'];
     _blocno = json['blocno'];
     _businessId = json['business_id'];
-    _projectId = json['project_id'];
+    _projectId =  json['project_id'];
+    roboNo =  json['robotno'];
+    inverterNo = json['inverterno'];
   }
   String? _userIdCount;
   String? _createdAt;

@@ -64,7 +64,7 @@ class _ManageEmployeeOptionsScreenState extends State<ManageEmployeeOptionsScree
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
               child: Text("Add Employee in Project", style: textStyle12px600w),
-            ).onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) =>  AddEmployeesToProject(widget.projectId)))),
+            ).onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployeesToProject(widget.projectId)))),
 
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -72,6 +72,13 @@ class _ManageEmployeeOptionsScreenState extends State<ManageEmployeeOptionsScree
               decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
               child: Text("View Attendance", style: textStyle12px600w),
             ).onClick(() => Navigator.pushNamed(context, Screens.VIEW_ATTENDANCE, arguments: widget.projectId)),
+
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+              child: Text("View Workorder", style: textStyle12px600w),
+            ).onClick(() => Navigator.pushNamed(context, Screens.VIEW_WORKORDER_SCREEN2, arguments: widget.projectId)),
             Spacer(),
             verticalSpace(10.0),
             // HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Add New").onClick(() {
