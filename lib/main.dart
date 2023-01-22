@@ -19,6 +19,7 @@ import 'package:hrms/ui/manageEmployee/user_attendance_detail_screen.dart';
 import 'package:hrms/ui/workorder/get_all_workorder.dart';
 import 'package:hrms/util/shared_manager.dart';
 
+//build 1.0+12
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
