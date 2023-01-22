@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hrms/export.dart';
 import 'package:hrms/ui/addEmployee/aadhaar_verification_screen.dart';
+import 'package:hrms/ui/addEmployee/model/roles_response.dart';
 import 'package:hrms/widgets/hrm_input_fields_dummy.dart';
 
 class BasicDetailEmployee extends StatefulWidget {
@@ -20,20 +21,24 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
   TextEditingController dobTextController = TextEditingController();
 
   String? dob;
+  String? role;
   String selectedGender = "M";
 
   List<String> genderList = ["M", "F"];
+  List<Data> listOfSkills = [];
 
   @override
   void initState() {
     super.initState();
 
+    getRolesList();
     populateFieldData();
     // if (kDebugMode) testData();
   }
 
   void populateFieldData() {
     firstNameTextController.text = addEmployeeRequest.firstName ?? "";
+    lastNameTextController.text = addEmployeeRequest.lastName ?? "";
     dobTextController.text = addEmployeeRequest.dob ?? "";
     dob = addEmployeeRequest.dob;
   }
@@ -43,7 +48,7 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
     lastNameTextController.text = "kataria";
     mobileNumberTextController.text = "8717805155";
     emContactNumberTextController.text = "8717805155";
-    emailTextController.text = "prasdfatikasdf@gmail.com";
+    emailTextController.text = "1234asdcve@gmail.com";
     dobTextController.text = "25/05/1999";
   }
 
@@ -73,6 +78,11 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: ListView(
                   children: [
+                    verticalSpace(20.0),
+                    HrmInputFieldDummy(headingText: "Role", text: role ?? "Select role", mandate: true).onClick(() {
+                      FocusScope.of(context).unfocus();
+                      roleDialog();
+                    }),
                     verticalSpace(20.0),
                     HrmInputField(
                       textController: firstNameTextController,
@@ -201,6 +211,7 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
               addEmployeeRequest.email = emailTextController.text.toString();
               addEmployeeRequest.dob = dobTextController.text.toString();
               addEmployeeRequest.gender = selectedGender;
+              addEmployeeRequest.role = role;
               print(addEmployeeRequest.toJson());
 
               Navigator.pushNamed(context, Screens.EMPLOYEE_ADDRESS_DETAIL);
@@ -212,6 +223,63 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
     );
   }
 
+  void roleDialog() {
+    showDialog<Data>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: Wrap(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Container(
+                  color: AppColors.white,
+                  padding: EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Select skills", style: textStyle14px600w),
+                      verticalSpace(10.0),
+                      ...listOfSkills.map((e) {
+                        return Container(
+                          color: AppColors.inputFieldBackgroundColor,
+                          padding: EdgeInsets.all(20.0),
+                          margin: EdgeInsets.only(bottom: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(child: Text(e.name??"", style: textStyleSubText14px500w)),
+                                  horizontalSpace(10.0),
+                                  Icon(
+                                    Icons.check_circle_outline,
+                                    color: AppColors.textColorSubText,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ).onClick(() {
+                          Navigator.pop(context, e);
+                        });
+                      }).toList(),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    ).then((value) {
+      setState(() {
+        role = value?.name ??"";
+      });
+    });
+  }
 
   void _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -279,10 +347,32 @@ class _BasicDetailEmployeeState extends State<BasicDetailEmployee> {
       return false;
     }
 
+    if (role == null) {
+      showErrorToast("Please select role");
+      return false;
+    }
+
     return true;
   }
 
   void showErrorToast(String message) {
     FlutterToastX.showErrorToastBottom(context, message);
+  }
+
+
+  Future<void> getRolesList() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    Dialogs.showLoader(context, "Getting roles ...");
+    RolesResponse response = await apiController.get<RolesResponse>(EndPoints.ALL_ROLES);
+    await Dialogs.hideLoader(context);
+    if (response.status?.isApiSuccessful ?? false) {
+      listOfSkills.clear();
+      listOfSkills.addAll(response.data!);
+      if (listOfSkills.isNotEmpty) role = listOfSkills.first.name ?? "";
+      setState(() {});
+    } else {
+      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+    }
+    setState(() {});
   }
 }

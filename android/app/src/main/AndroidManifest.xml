@@ -4,8 +4,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="HRMs"
+        android:label="VIPU Group"
         android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"

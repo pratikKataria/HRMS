@@ -6,6 +6,7 @@ import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
 import 'package:hrms/ui/addEmployee/model/add_employee_response.dart';
 import 'package:hrms/ui/addEmployee/model/adhaar_card_send_otp_response.dart';
 import 'package:hrms/ui/addEmployee/model/company_list_response.dart';
+import 'package:hrms/ui/addEmployee/model/roles_response.dart';
 import 'package:hrms/ui/addEmployee/model/skill_list_response.dart';
 import 'package:hrms/ui/addEmployee/model/verify_aadhar_response.dart';
 import 'package:hrms/ui/attendance/typeOne/model/GetEmployeeByIdResponse.dart';
@@ -120,6 +121,7 @@ class JsonConverter {
     if (T == JobTitleResponse) return JobTitleResponse.fromJson(value) as T;
     if (T == AdhaarCardSendOtpResponse) return AdhaarCardSendOtpResponse.fromJson(value) as T;
     if (T == VerifyAadharResponse) return VerifyAadharResponse.fromJson(value) as T;
+    if (T == RolesResponse) return RolesResponse.fromJson(value) as T;
     return throw Exception("Unknown class");
   }
 }

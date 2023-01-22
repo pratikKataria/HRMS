@@ -1,5 +1,6 @@
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:hrms/res/keys.dart';
+import 'package:hrms/res/strings.dart';
 import 'package:hrms/ui/complains/all_complain_screen.dart';
 import 'package:hrms/ui/home/model/get_all_projects_response.dart';
 import 'package:hrms/ui/manageAccount/manage_account_options_screen.dart';
@@ -19,173 +20,184 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Data?> listOfProjects = [];
   String selectedProject = "";
   String selectedProjectId = "";
+  String? role;
 
   @override
   void initState() {
     super.initState();
-    getAllProjects();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getAllProjects();
+      getRole();
+    });
+  }
+
+  getRole() async {
+    role = await SharedManager.getStringPreference(SharedPrefsKeys.kRole);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            //header
-            Container(
-              height: 55.0,
-              color: AppColors.backgroundColor,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              //header
+              Container(
+                height: 55.0,
+                color: AppColors.backgroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Logout", style: textStyleRegular16px600w).onClick(() {
+                        SharedManager.setBooleanPreference(SharedPrefsKeys.kLoggedIn, false);
+                        SharedManager.setStringPreference(SharedPrefsKeys.kUserId, "");
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, Screens.LOGIN_SCREEN);
+                      }),
+                      // Text("HRM", style: textStyleRegular16px600w),
+                      Image.asset(Assets.imagesVipuGroupHalfLogo, width: 28.0),
+                      Image.asset(Assets.imagesIcScanner, height: 28.0).onClick(() => Navigator.pushNamed(context, Screens.QR_SCANNER_SCREEN)),
+                    ],
+                  ),
+                ),
+              ),
+              verticalSpace(20.0),
+
+              Container(
+                height: 175.0,
+                child: Swiper(
+                  scale: 0.9,
+                  viewportFraction: 0.8,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      width: 150.0,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(
+                        color: AppColors.baseLightColor,
+                        image: DecorationImage(image: AssetImage(images[index]), fit: BoxFit.fill),
+                      ),
+                    );
+                  },
+                  itemCount: 3,
+                ),
+              ),
+
+              verticalSpace(20.0),
+              line(),
+
+              //other
+              if (role == Strings.adminRoles)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      verticalSpace(20.0),
+                      Text("Add Employee & Create Project", style: textStyle14px500w),
+                      verticalSpace(20.0),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: categoryCard("Register\nEmployee", Assets.imagesIcRegisterEmployee, "Add")
+                                .onClick(() => Navigator.pushNamed(context, Screens.AADHAAR_CARD_VERIFICATION_SCREEN)),
+                          ),
+                          horizontalSpace(20.0),
+                          Flexible(
+                              child: categoryCard("Register\nDepartment", Assets.imagesIcRegisterClient, "Add").onClick(() async {
+                            await Navigator.pushNamed(context, Screens.CLIENT_BASIC_DETAIL);
+                            getAllProjectsWithoutLoader();
+                          })),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+
+              verticalSpace(20.0),
+              if (role == Strings.adminRoles) line(),
+              verticalSpace(20.0),
+
+              Container(
+                decoration: BoxDecoration(image: DecorationImage(image: AssetImage(Assets.imagesIcHomeLine))),
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
                   children: [
-                    Text("Logout", style: textStyleRegular16px600w).onClick(() {
-                      SharedManager.setBooleanPreference(SharedPrefsKeys.kLoggedIn, false);
-                      SharedManager.setStringPreference(SharedPrefsKeys.kUserId, "");
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, Screens.LOGIN_SCREEN);
+                    projectFilter().onClick(() {
+                      showAlertDialog();
                     }),
-                    // Text("HRM", style: textStyleRegular16px600w),
-                    Image.asset(Assets.imagesVipuGroupHalfLogo, width: 28.0),
-                    Image.asset(Assets.imagesIcScanner, height: 28.0)
-                        .onClick(() => Navigator.pushNamed(context, Screens.QR_SCANNER_SCREEN)),
+                    verticalSpace(20.0),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: categoryCard("Manage\nEmployee", Assets.imagesIcManageEmployee, "Edit")
+                              .onClick(() => Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE_OPTIONS, arguments: selectedProjectId)),
+                        ),
+                        horizontalSpace(20.0),
+                        Flexible(child: Container()),
+                      ],
+                    ),
+                    verticalSpace(20.0),
+                    if (role != Strings.clientLoginRoles)
+                      Row(
+                        children: [
+                          Flexible(child: Container()),
+                          horizontalSpace(20.0),
+                          // Flexible(child: categoryCard("Payment&\nInvoices", Assets.imagesIcPaymentInvoice, "View")),
+                          Flexible(
+                            child: categoryCard("Manage\nAccount", Assets.imagesIcManageExpenses, "View").onClick(() =>
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ManageAccountOptionsScreen(selectedProjectId)))),
+                          ),
+                        ],
+                      ),
+                    Row(
+                      children: [
+                        // Flexible(
+                        //   child: categoryCard("Manage\nAccount", Assets.imagesIcManageExpenses, "View")
+                        //       .onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => ManageAccountOptionsScreen(selectedProjectId)))),
+                        // ),
+                        Flexible(
+                            child: categoryCard("Complains/\nSuggestion", Assets.imagesIcViewReports, "View").onClick(
+                                () => Navigator.push(context, MaterialPageRoute(builder: (context) => AllComplainsScreen(selectedProjectId))))),
+                        horizontalSpace(20.0),
+                        Flexible(child: Container()),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(child: Container()),
+                        horizontalSpace(20.0),
+                        Flexible(
+                            child: Container(
+                                color: Colors.white,
+                                child: Opacity(
+                                    opacity: role == Strings.supervisorRoles ? 0.5 : 1.0,
+                                    child: categoryCard("Payout&\nAdv. Payment", Assets.imagesIcPayouts, "Update")))),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Container(
+                              color: Colors.white,
+                              child: Opacity(
+                                  opacity: role == Strings.supervisorRoles ? 0.5 : 1.0,
+                                  child: categoryCard("Payment&\nInvoices", Assets.imagesIcPaymentInvoice, "View"))),
+                        ),
+                        horizontalSpace(20.0),
+                        Flexible(child: Container()),
+                      ],
+                    ),
                   ],
                 ),
               ),
-            ),
-
-            Expanded(
-              child: ListView(
-                children: [
-                  verticalSpace(20.0),
-
-                  Container(
-                    height: 175.0,
-                    child: Swiper(
-                      scale: 0.9,
-                      viewportFraction: 0.8,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          width: 150.0,
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: BoxDecoration(
-                            color: AppColors.baseLightColor,
-                            image: DecorationImage(image: AssetImage(images[index]), fit: BoxFit.fill),
-                          ),
-                        );
-                      },
-                      itemCount: 3,
-                    ),
-                  ),
-
-                  verticalSpace(20.0),
-                  line(),
-
-                  //other
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        verticalSpace(20.0),
-                        Text("Add Employee & Create Project", style: textStyle14px500w),
-                        verticalSpace(20.0),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: categoryCard("Register\nEmployee", Assets.imagesIcRegisterEmployee, "Add")
-                                  .onClick(() => Navigator.pushNamed(context, Screens.AADHAAR_CARD_VERIFICATION_SCREEN)),
-                            ),
-                            horizontalSpace(20.0),
-                            Flexible(
-                                child: categoryCard("Register\nDepartment", Assets.imagesIcRegisterClient, "Add")
-                                    .onClick(() async {
-                                        await Navigator.pushNamed(context, Screens.CLIENT_BASIC_DETAIL);
-                                        getAllProjectsWithoutLoader();
-                                    })),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  verticalSpace(20.0),
-                  line(),
-                  verticalSpace(20.0),
-
-                  Container(
-                    height: 400.0,
-                    decoration: BoxDecoration(image: DecorationImage(image: AssetImage(Assets.imagesIcHomeLine))),
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      children: [
-                        projectFilter().onClick(() {
-                          showAlertDialog();
-                        }),
-                        verticalSpace(20.0),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: categoryCard("Manage\nEmployee", Assets.imagesIcManageEmployee, "Edit").onClick(() =>
-                                  Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE_OPTIONS, arguments: selectedProjectId)),
-                            ),
-                            horizontalSpace(20.0),
-                            Flexible(child: Container()),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Flexible(child: Container()),
-                            horizontalSpace(20.0),
-                            // Flexible(child: categoryCard("Payment&\nInvoices", Assets.imagesIcPaymentInvoice, "View")),
-                            Flexible(
-                              child: categoryCard("Manage\nAccount", Assets.imagesIcManageExpenses, "View")
-                                  .onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => ManageAccountOptionsScreen(selectedProjectId)))),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            // Flexible(
-                            //   child: categoryCard("Manage\nAccount", Assets.imagesIcManageExpenses, "View")
-                            //       .onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => ManageAccountOptionsScreen(selectedProjectId)))),
-                            // ),
-                            Flexible(
-                                child: categoryCard("Complains/\nSuggestion", Assets.imagesIcViewReports, "View").onClick(() =>
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => AllComplainsScreen(selectedProjectId))))),
-                            horizontalSpace(20.0),
-                            Flexible(child: Container()),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Flexible(child: Container()),
-                            horizontalSpace(20.0),
-                            Flexible(child: categoryCard("Payout&\nAdv. Payment", Assets.imagesIcPayouts, "Update")),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            // Flexible(
-                            //     child: categoryCard("Complains/\nSuggestion", Assets.imagesIcViewReports, "View").onClick(() =>
-                            //         Navigator.push(context,
-                            //             MaterialPageRoute(builder: (context) => ComplainsOptionsScreen(selectedProjectId))))),
-                            Flexible(child: categoryCard("Payment&\nInvoices", Assets.imagesIcPaymentInvoice, "View")),
-                            horizontalSpace(20.0),
-                            Flexible(child: Container()),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -279,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(child: Text(e?.clientName ?? "Not Found", style: textStyleSubText14px500w)),
+                    Expanded(child: Text(e?.clientName ?? "Not Found", style: textStyleSubText14px500w)),
                     horizontalSpace(10.0),
                     Icon(Icons.check_circle_outline, color: AppColors.textColorSubText)
                   ],

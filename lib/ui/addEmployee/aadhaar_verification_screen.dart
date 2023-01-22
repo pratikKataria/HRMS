@@ -103,9 +103,10 @@ class _AadhaarVerificationScreenState extends State<AadhaarVerificationScreen> {
   }
 
   Future<void> sendAadhaarOtp(String aadhaarNo) async {
+    FocusScope.of(context).unfocus();
     await Future.delayed(Duration(milliseconds: 200));
     Dialogs.showLoader(context, "Sending otp to register mobile number ...");
-    Map<String, String> body = {"aadhar": "445935418492"};
+    Map<String, String> body = {"aadhar": aadhaarNo};
     var formData = FormData.fromMap(body);
     AdhaarCardSendOtpResponse response = await apiController.post<AdhaarCardSendOtpResponse>(EndPoints.AADHAAR_VERIFICATION, body: formData);
     await Dialogs.hideLoader(context);
@@ -117,12 +118,13 @@ class _AadhaarVerificationScreenState extends State<AadhaarVerificationScreen> {
       // if (listOfProjects.isNotEmpty) selectedProject = listOfProjects?.first?.clientName ?? "";
       // if (listOfProjects.isNotEmpty) selectedProjectId = listOfProjects?.first?.projectId ?? "";
     } else {
-      FlutterToastX.showErrorToastBottom(context, "Failed: ${response.message ?? ""}");
+      FlutterToastX.showErrorToastCenter(context, "Failed: ${response.toJson() ?? ""}");
     }
     setState(() {});
   }
 
   Future<void> verifyAadharOtp(String otp, String refId) async {
+    FocusScope.of(context).unfocus();
     await Future.delayed(Duration(milliseconds: 200));
 
     if (otp.isEmpty) {
@@ -148,14 +150,23 @@ class _AadhaarVerificationScreenState extends State<AadhaarVerificationScreen> {
       addEmployeeRequest.permanentAddress = response.address;
       addEmployeeRequest.dob = response.dob;
       addEmployeeRequest.gender = response.gender;
-      addEmployeeRequest.firstName = response.name;
+
+      if (response.name?.isNotEmpty ?? false) {
+        addEmployeeRequest.firstName = response.name;
+        List<String>? fullName = response.name?.split(" ");
+        if ((fullName?.length ?? 0) > 1) {
+          addEmployeeRequest.firstName = fullName?.first ?? "";
+          addEmployeeRequest.lastName = fullName?.last ?? "";
+        }
+      }
+
       addEmployeeRequest.pincode = response.splitAddress?.pincode;
-      addEmployeeRequest.city = response.splitAddress?.po;
+      addEmployeeRequest.city = response.splitAddress?.vtc;
       addEmployeeRequest.state = response.splitAddress?.state;
 
       Navigator.pushNamed(context, Screens.EMPLOYEE_BASIC_DETAIL);
     } else {
-      FlutterToastX.showErrorToastCenter(context, "Failed: ${response.message ?? "some error occured"}");
+      FlutterToastX.showErrorToastCenter(context, "Failed: ${response.toJson() ?? "some error occured"}");
     }
     this.refId = null;
     otpTextController.clear();

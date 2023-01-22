@@ -40,7 +40,7 @@ abstract class FlutterToastX {
         children: [
           const Icon(Icons.warning_rounded, color: AppColors.white),
           const SizedBox(width: 6.0),
-          Expanded(child: Text("$text", style: textStyleWhite14px500w, maxLines: 2, overflow: TextOverflow.ellipsis)),
+          Expanded(child: Text("$text", style: textStyleWhite12px500w, maxLines: 2, overflow: TextOverflow.ellipsis)),
         ],
       ),
     );
@@ -48,7 +48,7 @@ abstract class FlutterToastX {
     fToast.showToast(
       child: toast,
       gravity: ToastGravity.CENTER,
-      toastDuration: const Duration(seconds: 3),
+      toastDuration: const Duration(seconds: 5),
     );
   }
 
@@ -88,7 +88,7 @@ abstract class FlutterToastX {
         children: [
           const Icon(Icons.warning_rounded, color: AppColors.white),
           const SizedBox(width: 6.0),
-          Expanded(child: Text("$text", style: textStyleWhite14px500w, maxLines: 2, overflow: TextOverflow.ellipsis)),
+          Expanded(child: Text("$text", style: textStyleWhite12px500w, maxLines: 2, overflow: TextOverflow.ellipsis)),
         ],
       ),
     );

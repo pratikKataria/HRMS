@@ -1,4 +1,5 @@
 import 'package:hrms/export.dart';
+import 'package:hrms/res/strings.dart';
 import 'package:hrms/ui/complains/complains_and_suggestion_screen.dart';
 import 'package:hrms/ui/complains/model/get_all_complains_response.dart';
 import 'package:hrms/ui/complains/update_complains_and_suggestion_screen.dart';
@@ -18,11 +19,17 @@ class _AllComplainsScreenState extends State<AllComplainsScreen> {
 
   bool addNew = false;
   String? dob;
+  String? role;
 
   @override
   void initState() {
     super.initState();
     getAllComplains();
+    getRole();
+  }
+
+  getRole() async {
+    role = await SharedManager.getStringPreference(SharedPrefsKeys.kRole);
   }
 
   @override
@@ -53,6 +60,11 @@ class _AllComplainsScreenState extends State<AllComplainsScreen> {
                 child: ListView(
                     children: listOfAllComplaints
                         .map((e) => cardViewComplain(e).onClick(() async {
+                          
+                              if (role != Strings.adminRoles) {
+                                FlutterToastX.showErrorToastBottom(context, "Only admin can update complains");
+                                return;
+                              }
                               await Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateComplainsAndSuggestionScreen(e.cid)));
                               getAllComplainsWithoutLoader();
                             }))

@@ -122,6 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
       FlutterToastX.showSuccessToastBottom(context, "Login successful");
       SharedManager.setBooleanPreference(SharedPrefsKeys.kLoggedIn, true);
       SharedManager.setStringPreference(SharedPrefsKeys.kUserId, response.data!.first.id ?? "");
+      SharedManager.setStringPreference(SharedPrefsKeys.kRole, response.data!.first.role ?? "");
       Navigator.pushReplacementNamed(context, Screens.HOME_SCREEN);
     } else {
       showErrorToast("Failed to Login ${response.message ?? ""}");

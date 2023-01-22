@@ -1,4 +1,5 @@
 import 'package:hrms/export.dart';
+import 'package:hrms/res/strings.dart';
 import 'package:hrms/ui/addClient/model/get_all_user_response.dart';
 import 'package:hrms/ui/manageEmployee/add_employee_to_project.dart';
 import 'package:hrms/util/utility.dart';
@@ -18,12 +19,23 @@ class _ManageEmployeeOptionsScreenState extends State<ManageEmployeeOptionsScree
 
   bool addNew = false;
   String? dob;
+  String? role;
 
   @override
   void initState() {
     super.initState();
     // getAllUsers();
     // searchTextController.addListener(() => setState(() {}));
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getRole();
+    });
+  }
+
+  getRole() async {
+    role = await SharedManager.getStringPreference(SharedPrefsKeys.kRole);
+    print(role);
+    setState(() {});
   }
 
   @override
@@ -38,47 +50,61 @@ class _ManageEmployeeOptionsScreenState extends State<ManageEmployeeOptionsScree
             Header(headerText: "Manage Employee"),
             line(width: Utility.screenWidth(context)),
             verticalSpace(6.0),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
-              child: Text("Mark Attendance Type 1", style: textStyle12px600w),
-            ).onClick(() => Navigator.pushNamed(context, Screens.ATTENDANCE_TYPE_ONE_V2, arguments: widget.projectId)),
 
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
-              child: Text("Mark Attendance Type 2", style: textStyle12px600w),
-            ).onClick(() => Navigator.pushNamed(context, Screens.ATTENDANCE_TYPE_TWO_V2, arguments: widget.projectId)),
+            if (role == Strings.adminRoles || role == Strings.supervisorRoles) ...[
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+                child: Text("Mark Attendance Type 1", style: textStyle12px600w),
+              ).onClick(() => Navigator.pushNamed(context, Screens.ATTENDANCE_TYPE_ONE_V2, arguments: widget.projectId)),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+                child: Text("Mark Attendance Type 2", style: textStyle12px600w),
+              ).onClick(() => Navigator.pushNamed(context, Screens.ATTENDANCE_TYPE_TWO_V2, arguments: widget.projectId)),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+                child: Text("Edit / Remove Employee", style: textStyle12px600w),
+              ).onClick(() => Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE, arguments: widget.projectId)),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+                child: Text("Add Employee in Project", style: textStyle12px600w),
+              ).onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployeesToProject(widget.projectId)))),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+                child: Text("View Attendance", style: textStyle12px600w),
+              ).onClick(() => Navigator.pushNamed(context, Screens.VIEW_ATTENDANCE, arguments: widget.projectId)),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+                child: Text("View Workorder", style: textStyle12px600w),
+              ).onClick(() => Navigator.pushNamed(context, Screens.VIEW_WORKORDER_SCREEN2, arguments: widget.projectId)),
+            ],
 
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
-              child: Text("Edit / Remove Employee", style: textStyle12px600w),
-            ).onClick(() => Navigator.pushNamed(context, Screens.MANAGE_EMPLOYEE, arguments: widget.projectId)),
+            if (role == Strings.clientLoginRoles || role == Strings.supervisorProRoles) ...[
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+                child: Text("View Attendance", style: textStyle12px600w),
+              ).onClick(() => Navigator.pushNamed(context, Screens.VIEW_ATTENDANCE, arguments: widget.projectId)),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
+                child: Text("View Workorder", style: textStyle12px600w),
+              ).onClick(() => Navigator.pushNamed(context, Screens.VIEW_WORKORDER_SCREEN2, arguments: widget.projectId)),
+            ],
 
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
-              child: Text("Add Employee in Project", style: textStyle12px600w),
-            ).onClick(() => Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployeesToProject(widget.projectId)))),
-
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
-              child: Text("View Attendance", style: textStyle12px600w),
-            ).onClick(() => Navigator.pushNamed(context, Screens.VIEW_ATTENDANCE, arguments: widget.projectId)),
-
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              decoration: BoxDecoration(border: Border.all(color: AppColors.lineColor, width: 2.0)),
-              child: Text("View Workorder", style: textStyle12px600w),
-            ).onClick(() => Navigator.pushNamed(context, Screens.VIEW_WORKORDER_SCREEN2, arguments: widget.projectId)),
             Spacer(),
             verticalSpace(10.0),
             // HrmGradientButton(margin: EdgeInsets.symmetric(horizontal: 20.0), text: "Add New").onClick(() {

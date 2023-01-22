@@ -25,4 +25,5 @@ class EndPoints {
   static final String TRANSACTIONS = BASE_URL + "Get_transection_by_type.php";
   static final String AADHAAR_VERIFICATION = BASE_URL + "Send_Aadhar_otp.php";
   static final String AADHAAR_VERIFY_OTP = BASE_URL + "Submit_Aadhar_otp.php";
+  static final String ALL_ROLES = "https://vipugroup.com/final/Get_Roles.php?GET=GET&business_id=12";
 }

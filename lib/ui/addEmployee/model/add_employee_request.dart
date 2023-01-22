@@ -42,6 +42,7 @@ import 'package:dio/dio.dart';
 
 class AddEmployeeRequest {
   String? state;
+  String? role;
 
   AddEmployeeRequest({
       String? firstName,
@@ -371,6 +372,7 @@ AddEmployeeRequest copyWith({  String? firstName,
     map['business_id'] = "12";
     map['Register'] = "Register";
     map['state'] = state ?? "";
+    map['role'] = role ?? "";
     return map;
   }
 
